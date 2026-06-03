@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>thePlantPlanet v3.4.5</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#0e1711;--panel:#18251c;--text:#f1faee;--muted:#b9c9b5;--accent:#d9f87a;--good:#98ee83;--warn:#ffd36e;--bad:#ff8e8e}
+body{margin:0;padding:12px;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",system-ui,sans-serif;background:radial-gradient(circle at top,#29472a,#0e1711 62%);color:var(--text)}
+.wrap{max-width:1040px;margin:auto;display:grid;grid-template-columns:1fr;gap:10px}
+.panel{background:rgba(24,37,28,.96);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.22)}
+h1{font-size:25px;margin:0 0 4px} h2{font-size:16px;margin:0 0 10px} .sub{font-size:13px;color:var(--muted);line-height:1.5}
+@media(min-width:900px){.wrap{grid-template-columns:1fr 1fr}.wide{grid-column:1/-1}}
+.stage{display:flex;gap:12px;align-items:center}.seed{width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#f1ffb0,#70a84b 48%,#24401f 72%);display:flex;align-items:center;justify-content:center;font-size:58px;box-shadow:0 0 40px rgba(217,248,122,.18)}
+.big{font-size:24px;font-weight:900}.note{font-size:13px;color:var(--muted);line-height:1.5}.resultTxt{font-size:20px;font-weight:900;color:var(--accent);margin-top:4px}
+.row{display:grid;grid-template-columns:82px 1fr 58px;gap:8px;align-items:center;padding:6px 0;font-size:14px}
+.meter{height:12px;border-radius:999px;background:#0b120d;border:1px solid rgba(255,255,255,.1);overflow:hidden}.fill{height:100%;width:0%;background:linear-gradient(90deg,#98ee83,#d9f87a)}
+.controls{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.control{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:14px;padding:10px}.ct{font-weight:900;margin-bottom:6px;display:flex;justify-content:space-between}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px}.mainButtons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#142014;cursor:pointer;background:linear-gradient(180deg,#e6ff9d,#98df70);box-shadow:0 3px 0 #538c3d}button:active{transform:translateY(2px);box-shadow:0 1px 0 #538c3d}button.secondary{background:linear-gradient(180deg,#d4eeff,#80bee4);box-shadow:0 3px 0 #3d7fa3}button.danger{background:linear-gradient(180deg,#ffd0a0,#ff9960);box-shadow:0 3px 0 #a65a31}button:disabled{opacity:.45;cursor:not-allowed}
+.candidates{display:grid;gap:8px}.candidate{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px}.candTop{display:flex;justify-content:space-between;gap:8px;font-weight:900}.candDesc{color:var(--muted);font-size:13px;line-height:1.45;margin-top:5px}
+.zukan{display:grid;gap:8px}.zcat{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden}.zhead{width:100%;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.07);color:var(--text);box-shadow:none;border-radius:0;padding:10px 12px;text-align:left}.zhead:active{transform:none;box-shadow:none}.zbody{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;padding:8px}.zbody.closed{display:none}@media(max-width:520px){.zbody{grid-template-columns:1fr}}
+.zitem{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px;font-size:13px;color:#899684}.zitem.found{color:var(--text);border-color:rgba(217,248,122,.55);background:rgba(217,248,122,.08)}.hiddenIcon{filter:brightness(0);opacity:.9}
+.log{height:160px;overflow:auto;background:rgba(0,0,0,.24);border-radius:12px;padding:9px;font-size:13px;line-height:1.55}.log p{margin:0 0 7px}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+.resultPanel{display:none;background:linear-gradient(145deg,#25382b,#152218);border:1px solid rgba(217,248,122,.28);border-radius:16px;padding:14px}.resultPanel.show{display:block}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#d9f87a;color:#142014;font-weight:900;font-size:13px}.resultGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.rbox{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px;font-size:13px}@media(max-width:520px){.resultGrid{grid-template-columns:1fr}}
+.summary{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 8px;font-size:12px}.stepBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.stepBtns button.active{outline:2px solid var(--accent);filter:brightness(1.08)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="panel wide"><h1>thePlantPlanet v3.4.5</h1><div class="sub">植物学者シミュレーター。v3.4.5では増減幅切替を追加。季節欄の横で1・5・10を選び、その単位で環境を増減できる。プレイヤーには基本環境だけを見せ、操作の緩急は内部で進化に反映する。</div></section>
+
+<section class="panel">
+<div class="stage"><div class="seed" id="seedIcon">🌱</div><div><div class="big" id="phaseName">待機中</div><div class="note" id="phaseDesc">スタートを押すと、原始植物が発生します。</div><div class="resultTxt" id="resultText"></div></div></div>
+<div style="margin-top:12px">
+<div class="row"><span>時間</span><div class="meter"><div class="fill" id="timeBar"></div></div><b id="timeText">0秒</b></div>
+<div class="row"><span>水分</span><div class="meter"><div class="fill" id="waterBar"></div></div><b id="waterText">50</b></div>
+<div class="row"><span>日光</span><div class="meter"><div class="fill" id="lightBar"></div></div><b id="lightText">50</b></div>
+<div class="row"><span>乾燥</span><div class="meter"><div class="fill" id="dryBar"></div></div><b id="dryText">50</b></div>
+<div class="row"><span>温度</span><div class="meter"><div class="fill" id="tempBar"></div></div><b id="tempText">16℃</b></div>
+<div class="row"><span>昆虫</span><div class="meter"><div class="fill" id="insectBar"></div></div><b id="insectText">10</b></div>
+<div class="row"><span>肥沃度</span><div class="meter"><div class="fill" id="fertilityBar"></div></div><b id="fertilityText">30</b></div>
+</div>
+<div class="mainButtons"><button id="startBtn">スタート</button><button class="secondary" id="pauseBtn">一時停止</button><button class="danger" id="resetBtn">リセット</button></div>
+<div class="summary"><span class="pill">🔬 研究P: <b id="researchText">0</b></span><span class="pill">🌱 種子: <b id="seedText">0</b></span><span class="pill">✨ レア: <b id="rareText">0</b></span><span class="pill">📖 発見: <b id="foundText">0</b>/151</span></div>
+</section>
+
+<section class="panel"><h2>リアルタイム環境操作</h2><div class="controls">
+<div class="control"><div class="ct"><span>💧 水分</span><span id="waterNow">50</span></div><div class="buttons"><button data-k="water" data-a="8">増やす</button><button class="secondary" data-k="water" data-a="-8">減らす</button></div></div>
+<div class="control"><div class="ct"><span>☀️ 日光</span><span id="lightNow">50</span></div><div class="buttons"><button data-k="light" data-a="8">増やす</button><button class="secondary" data-k="light" data-a="-8">減らす</button></div></div>
+<div class="control"><div class="ct"><span>🏜 乾燥</span><span id="dryNow">50</span></div><div class="buttons"><button data-k="dry" data-a="8">増やす</button><button class="secondary" data-k="dry" data-a="-8">減らす</button></div></div>
+<div class="control"><div class="ct"><span>🌡 温度</span><span id="tempNow">16℃</span></div><div class="buttons"><button data-k="temp" data-a="6">上げる</button><button class="secondary" data-k="temp" data-a="-6">下げる</button></div></div>
+<div class="control"><div class="ct"><span>🐝 昆虫</span><span id="insectNow">10</span></div><div class="buttons"><button data-k="insect" data-a="8">増やす</button><button class="secondary" data-k="insect" data-a="-8">減らす</button></div></div>
+<div class="control"><div class="ct"><span>⭐ 肥沃度</span><span id="fertilityNow">30</span></div><div class="buttons"><button data-k="fertility" data-a="8">肥料</button><button class="secondary" data-k="fertility" data-a="-8">消費</button></div></div>
+<div class="control"><div class="ct"><span>🍃 季節</span><span id="seasonNow">春</span></div><div class="note">スタート時に春・夏・秋・冬のどれかが抽選され、60秒間固定されます。</div></div>
+<div class="control"><div class="ct"><span>増減幅</span><span id="stepNow">5</span></div><div class="stepBtns"><button data-step="1">1</button><button data-step="5" class="active">5</button><button data-step="10">10</button></div></div>
+
+</div></section>
+
+<section class="panel"><h2>現在なりやすい植物</h2><div class="candidates" id="candidates"></div></section>
+
+<section class="panel wide" id="preStartPanel">
+  <h2>スタート前の初期環境設定</h2>
+  <div class="sub">スタート前だけ、開始時の環境を調整できます。プリセットで大まかな生態系を作ってから、細かく調整できます。</div>
+  <div class="controls" style="margin-top:10px">
+    <div class="control"><div class="ct"><span>🌳 温帯林</span><span>標準</span></div><div class="note">バランス型。花木や広葉樹を狙いやすい。</div><button data-preset="temperate">呼び出す</button></div>
+    <div class="control"><div class="ct"><span>💧 湿原</span><span>水分高</span></div><div class="note">コケ・水辺植物・湿地系を狙いやすい。</div><button data-preset="wetland">呼び出す</button></div>
+    <div class="control"><div class="ct"><span>🏜 砂漠</span><span>乾燥強</span></div><div class="note">サボテン・アロエ・乾燥適応種を狙いやすい。</div><button data-preset="desert">呼び出す</button></div>
+    <div class="control"><div class="ct"><span>❄️ ツンドラ</span><span>低温</span></div><div class="note">氷雪コケ・針葉樹・寒冷系を狙いやすい。</div><button data-preset="tundra">呼び出す</button></div>
+    <div class="control"><div class="ct"><span>🌴 熱帯雨林</span><span>高温多湿</span></div><div class="note">巨大シダ・ラン・バナナ系を狙いやすい。</div><button data-preset="rainforest">呼び出す</button></div>
+    <div class="control"><div class="ct"><span>🌍 未知の環境</span><span>ランダム</span></div><div class="note">何が出るか分からない実験用プリセット。</div><button data-preset="random">呼び出す</button></div>
+  </div>
+  <div class="controls" style="margin-top:10px">
+    <div class="control"><div class="ct"><span>💧 初期水分</span><span id="preWaterNow">50</span></div><div class="buttons"><button data-pre="water" data-a="5">上げる</button><button class="secondary" data-pre="water" data-a="-5">下げる</button></div></div>
+    <div class="control"><div class="ct"><span>☀️ 初期日光</span><span id="preLightNow">50</span></div><div class="buttons"><button data-pre="light" data-a="5">上げる</button><button class="secondary" data-pre="light" data-a="-5">下げる</button></div></div>
+    <div class="control"><div class="ct"><span>🏜 初期乾燥</span><span id="preDryNow">50</span></div><div class="buttons"><button data-pre="dry" data-a="5">上げる</button><button class="secondary" data-pre="dry" data-a="-5">下げる</button></div></div>
+    <div class="control"><div class="ct"><span>🌡 初期温度</span><span id="preTempNow">16℃</span></div><div class="buttons"><button data-pre="temp" data-a="5">上げる</button><button class="secondary" data-pre="temp" data-a="-5">下げる</button></div></div>
+    <div class="control"><div class="ct"><span>🐝 初期昆虫</span><span id="preInsectNow">10</span></div><div class="buttons"><button data-pre="insect" data-a="5">上げる</button><button class="secondary" data-pre="insect" data-a="-5">下げる</button></div></div>
+    <div class="control"><div class="ct"><span>⭐ 初期肥沃度</span><span id="preFertilityNow">30</span></div><div class="buttons"><button data-pre="fertility" data-a="5">上げる</button><button class="secondary" data-pre="fertility" data-a="-5">下げる</button></div></div>
+  </div>
+</section>
+
+<section class="panel wide"><h2>折りたたみ図鑑</h2><div class="zukan" id="zukan"></div></section>
+
+
+
+
+
+
+
+<section class="panel wide"><div class="resultPanel" id="resultPanel"><h2>RESULT</h2><div id="resultContent"></div></div></section>
+
+
+<section class="panel"><h2>最近の発見</h2><div class="log" id="historyBox"></div></section>
+<section class="panel"><h2>レア変異コレクション</h2><div class="log" id="rareBox"></div></section>
+<section class="panel">
+  <h2>バイオーム図鑑</h2>
+  <div class="log" id="biomeBox"></div>
+</section>
+<section class="panel">
+  <h2>生態系称号</h2>
+  <div class="log" id="titleBox"></div>
+</section>
+<section class="panel">
+  <h2>生態系ミッション</h2>
+  <div class="log" id="missionBox"></div>
+</section>
+
+<section class="panel wide"><h2>ログ</h2><div class="log" id="logBox"></div></section>
+</div>
+
+<script>
+const TEMP_MIN=-98,TEMP_MAX=60,EVOLVE_SECONDS=60;
+const species=[
+{id:"mizu_goke",no:1,name:"ミズゴケ",icon:"🟢",group:"コケ植物",desc:"湿地や水分の多い環境に強いコケ。水を多く保つ。",why:"水分が多く、日光が弱い環境が続いたため、水をためるコケとして発生した。",fact:"ミズゴケは湿原で水を多く保持し、泥炭の形成にも関わる。",rank:"普通種",score:e=>fit(e.water,85,25)+fit(e.light,35,25)+fit(e.dry,15,25)+fit(e.temp,12,16)+fit(e.insect,5,25)+10},
+{id:"suna_goke",no:2,name:"スナゴケ",icon:"🟢",group:"コケ植物",desc:"乾いた地面にも耐えるコケ。乾燥に強い。",why:"乾燥と強い日光が続いたため、乾いた地面に耐えるコケとして発生した。",fact:"コケ植物にも乾燥に強い種類がある。",rank:"環境適応種",score:e=>fit(e.water,28,25)+fit(e.light,75,25)+fit(e.dry,78,25)+fit(e.temp,18,16)+fit(e.insect,5,25)+16},
+{id:"zeni_goke",no:3,name:"ゼニゴケ",icon:"🟢",group:"コケ植物",desc:"湿った日陰に現れやすいコケ。胞子で増える。",why:"水分が多く日光が弱い環境が続き、日陰に広がるコケになった。",fact:"ゼニゴケはコケ植物の中でも苔類に含まれる。",rank:"普通種",score:e=>fit(e.water,72,25)+fit(e.light,25,25)+fit(e.dry,12,25)+fit(e.temp,16,16)+fit(e.insect,5,25)+10},
+{id:"sugi_goke",no:4,name:"スギゴケ",icon:"🟢",group:"コケ植物",desc:"やや明るい湿った地面に群落を作るコケ。",why:"ほどよい水分と日光が続いたため、地面を覆う群落型のコケになった。",fact:"スギゴケは茎や葉のように見える体をもつ。",rank:"普通種",score:e=>fit(e.water,62,25)+fit(e.light,55,25)+fit(e.dry,25,25)+fit(e.temp,14,16)+fit(e.insect,5,25)+10},
+{id:"jago_ke",no:5,name:"ジャゴケ",icon:"🟢",group:"コケ植物",desc:"湿った日陰に強い苔類。乾燥には弱い。",why:"湿った日陰が長く続いたため、乾燥を避ける苔類として発生した。",fact:"ジャゴケの仲間は地面に張りつくような体をもつ。",rank:"普通種",score:e=>fit(e.water,78,25)+fit(e.light,20,25)+fit(e.dry,8,25)+fit(e.temp,15,16)+fit(e.insect,5,25)+10},
+{id:"hyotan_goke",no:6,name:"ヒョウタンゴケ",icon:"🟢",group:"コケ植物",desc:"身近な場所にも出る小さなコケ。やや湿った環境を好む。",why:"水分と日光がどちらも中程度で、身近な地面に広がるコケになった。",fact:"ヒョウタンゴケは実験材料としても使われることがある。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,50,25)+fit(e.dry,35,25)+fit(e.temp,18,16)+fit(e.insect,5,25)+10},
+{id:"iwa_goke",no:7,name:"岩場コケ",icon:"🟢",group:"コケ植物",desc:"やせた岩場に最初に入り、土づくりのきっかけになる。",why:"肥沃ではない乾き気味の環境で、裸地を覆う先駆者になった。",fact:"コケや地衣類は岩石の風化や土壌形成に関わることがある。",rank:"環境適応種",score:e=>fit(e.water,35,25)+fit(e.light,60,25)+fit(e.dry,60,25)+fit(e.temp,10,16)+fit(e.insect,0,25)+16},
+{id:"hyosetsu_goke",no:8,name:"氷雪コケ",icon:"❄️",group:"コケ植物",desc:"低温で他の植物が少ない環境に耐えるレアなコケ。",why:"低温環境が長く続き、他の植物が少ない場所で耐える形になった。",fact:"南極などにもコケ植物が生育する場所がある。",rank:"希少種",score:e=>fit(e.water,35,25)+fit(e.light,45,25)+fit(e.dry,45,25)+fit(e.temp,-20,16)+fit(e.insect,0,25)+22},
+{id:"warabi",no:9,name:"ワラビ",icon:"🌿",group:"シダ植物",desc:"明るい草地や林縁にも出るシダ植物。",why:"湿り気と日光のバランスがよく、明るい場所にも出るシダになった。",fact:"ワラビは春の山菜としても知られる。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,65,25)+fit(e.dry,45,25)+fit(e.temp,20,16)+fit(e.insect,5,25)+10},
+{id:"zenmai",no:10,name:"ゼンマイ",icon:"🌿",group:"シダ植物",desc:"湿った林に出る大型のシダ。",why:"水分と適度な日陰が続き、大きな葉を広げるシダになった。",fact:"ゼンマイも種子ではなく胞子で増える。",rank:"普通種",score:e=>fit(e.water,72,25)+fit(e.light,42,25)+fit(e.dry,18,25)+fit(e.temp,17,16)+fit(e.insect,5,25)+10},
+{id:"tokusa",no:11,name:"トクサ",icon:"🌿",group:"シダ植物",desc:"湿った土地に強いシダ植物の仲間。茎が目立つ。",why:"水分が多く光もある環境で、茎を目立たせるシダ植物になった。",fact:"トクサはシダ植物の仲間で、胞子で増える。",rank:"普通種",score:e=>fit(e.water,76,25)+fit(e.light,50,25)+fit(e.dry,20,25)+fit(e.temp,16,16)+fit(e.insect,5,25)+10},
+{id:"oshida",no:12,name:"オシダ",icon:"🌿",group:"シダ植物",desc:"林床に出るシダ。日陰と湿り気を好む。",why:"日光が弱く湿った森の下で、葉を広げるシダになった。",fact:"シダ植物は維管束をもち、水や養分を運べる。",rank:"普通種",score:e=>fit(e.water,70,25)+fit(e.light,30,25)+fit(e.dry,15,25)+fit(e.temp,15,16)+fit(e.insect,5,25)+10},
+{id:"adiantum",no:13,name:"アジアンタム",icon:"🌿",group:"シダ植物",desc:"日陰と湿度を好む繊細なシダ。乾燥に弱い。",why:"日光が弱く湿度が高い環境で、薄い葉を広げるシダになった。",fact:"観葉植物としても知られるシダの仲間。",rank:"普通種",score:e=>fit(e.water,78,25)+fit(e.light,28,25)+fit(e.dry,10,25)+fit(e.temp,22,16)+fit(e.insect,5,25)+10},
+{id:"konamishida",no:14,name:"コナミシダ",icon:"🌿",group:"シダ植物",desc:"湿った森で増える小型のシダ。",why:"湿った日陰が安定し、小さな葉で森の下に広がるシダになった。",fact:"シダは花を咲かせず、胞子のうで胞子をつくる。",rank:"普通種",score:e=>fit(e.water,68,25)+fit(e.light,35,25)+fit(e.dry,18,25)+fit(e.temp,18,16)+fit(e.insect,5,25)+10},
+{id:"mokusei_shida",no:15,name:"木生シダ",icon:"🌴",group:"シダ植物",desc:"暖かく湿った環境で樹木のように伸びるシダ。",why:"温暖多湿と十分な日光により、幹のように高く伸びるシダになった。",fact:"木生シダは熱帯・亜熱帯に多い。",rank:"希少種",score:e=>fit(e.water,82,25)+fit(e.light,52,25)+fit(e.dry,10,25)+fit(e.temp,26,16)+fit(e.insect,8,25)+22},
+{id:"kyodai_shida",no:16,name:"巨大シダ",icon:"🌴",group:"シダ植物",desc:"高温多湿で巨大化したシダ。古生代の森を思わせる。",why:"高温多湿が長く続き、大きく伸びるシダとして発達した。",fact:"古生代には大型のシダ植物が森林をつくった。",rank:"希少種",score:e=>fit(e.water,88,25)+fit(e.light,60,25)+fit(e.dry,10,25)+fit(e.temp,32,16)+fit(e.insect,5,25)+22},
+{id:"matsu",no:17,name:"マツ",icon:"🌲",group:"裸子植物",desc:"乾燥ややせた土地にも比較的強い種子植物。",why:"乾燥と強い光が続き、種子で生き残る針葉樹として発生した。",fact:"マツは裸子植物で、花ではなく球果をつくる。",rank:"普通種",score:e=>fit(e.water,35,25)+fit(e.light,70,25)+fit(e.dry,65,25)+fit(e.temp,8,16)+fit(e.insect,5,25)+10},
+{id:"sugi",no:18,name:"スギ",icon:"🌲",group:"裸子植物",desc:"湿り気のある山地で育つ針葉樹。種子で増える。",why:"湿り気と冷涼さが続き、山地型の針葉樹として発生した。",fact:"スギは日本でよく見られる針葉樹。",rank:"普通種",score:e=>fit(e.water,65,25)+fit(e.light,55,25)+fit(e.dry,25,25)+fit(e.temp,12,16)+fit(e.insect,5,25)+10},
+{id:"hinoki",no:19,name:"ヒノキ",icon:"🌲",group:"裸子植物",desc:"山地に生える針葉樹。やや乾いた土地にも耐える。",why:"冷涼でやや乾く環境が続き、耐久力のある針葉樹になった。",fact:"ヒノキは建材としてもよく利用される。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,60,25)+fit(e.dry,45,25)+fit(e.temp,10,16)+fit(e.insect,5,25)+10},
+{id:"icho",no:20,name:"イチョウ",icon:"🌳",group:"裸子植物",desc:"古い系統を残す裸子植物。明るくほどよい水分で出やすい。",why:"ほどよい光と水分が続き、古い系統の裸子植物として成立した。",fact:"イチョウは裸子植物で、独立した古い系統をもつ。",rank:"希少種",score:e=>fit(e.water,50,25)+fit(e.light,65,25)+fit(e.dry,35,25)+fit(e.temp,14,16)+fit(e.insect,5,25)+22},
+{id:"sotetsu",no:21,name:"ソテツ",icon:"🌴",group:"裸子植物",desc:"暖かく乾きやすい環境に強い古いタイプの種子植物。",why:"高温と乾燥により、古い系統の種子植物として耐える形になった。",fact:"ソテツは裸子植物に分類される。",rank:"環境適応種",score:e=>fit(e.water,30,25)+fit(e.light,75,25)+fit(e.dry,65,25)+fit(e.temp,28,16)+fit(e.insect,5,25)+16},
+{id:"momi",no:22,name:"モミ",icon:"🌲",group:"裸子植物",desc:"冷涼で湿った森に出る針葉樹。",why:"冷涼で水分のある環境が続き、森林型の針葉樹になった。",fact:"モミは針葉樹林を構成する樹木の一つ。",rank:"普通種",score:e=>fit(e.water,60,25)+fit(e.light,45,25)+fit(e.dry,25,25)+fit(e.temp,6,16)+fit(e.insect,5,25)+10},
+{id:"tohi",no:23,name:"トウヒ",icon:"🌲",group:"裸子植物",desc:"寒冷地に強い針葉樹。低温環境で有利。",why:"低温とほどよい水分が続き、寒冷地の針葉樹になった。",fact:"亜寒帯の森林には針葉樹が多い。",rank:"環境適応種",score:e=>fit(e.water,45,25)+fit(e.light,55,25)+fit(e.dry,45,25)+fit(e.temp,-5,16)+fit(e.insect,0,25)+16},
+{id:"karamatsu",no:24,name:"カラマツ",icon:"🌲",group:"裸子植物",desc:"寒冷地に適応した落葉性の針葉樹。",why:"寒冷と明るい環境が続き、冬に葉を落とす戦略を獲得した。",fact:"針葉樹にも葉を落とす種類がある。",rank:"希少種",score:e=>fit(e.water,45,25)+fit(e.light,70,25)+fit(e.dry,42,25)+fit(e.temp,0,16)+fit(e.insect,0,25)+22},
+{id:"ine",no:25,name:"イネ",icon:"🌾",group:"単子葉類",desc:"水分が多く、光のある環境で育つ単子葉類。",why:"水分と日光が高く保たれ、湿った草原に強い単子葉類になった。",fact:"イネは単子葉類で、平行脈とひげ根をもつ。",rank:"普通種",score:e=>fit(e.water,80,25)+fit(e.light,70,25)+fit(e.dry,20,25)+fit(e.temp,25,16)+fit(e.insect,30,25)+10},
+{id:"mugi",no:26,name:"ムギ",icon:"🌾",group:"単子葉類",desc:"やや乾いた明るい草原に適応した単子葉類。",why:"明るくやや乾いた環境が続き、草原型の単子葉類になった。",fact:"ムギ類もイネ科の単子葉類。",rank:"普通種",score:e=>fit(e.water,40,25)+fit(e.light,75,25)+fit(e.dry,55,25)+fit(e.temp,18,16)+fit(e.insect,20,25)+10},
+{id:"toumorokoshi",no:27,name:"トウモロコシ",icon:"🌽",group:"単子葉類",desc:"高温・強光でよく育つ大型のイネ科植物。",why:"高温と強い日光が続き、大型化する単子葉類として発生した。",fact:"トウモロコシはイネ科の植物。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,85,25)+fit(e.dry,35,25)+fit(e.temp,28,16)+fit(e.insect,25,25)+10},
+{id:"take",no:28,name:"タケ",icon:"🎋",group:"単子葉類",desc:"地下茎で広がる大型の単子葉類。水分と温暖さで伸びる。",why:"温暖で水分があり、地下で広がる大型単子葉類になった。",fact:"タケは木のように見えるがイネ科の単子葉類。",rank:"環境適応種",score:e=>fit(e.water,65,25)+fit(e.light,60,25)+fit(e.dry,35,25)+fit(e.temp,22,16)+fit(e.insect,20,25)+16},
+{id:"yuri",no:29,name:"ユリ",icon:"🌷",group:"単子葉類",desc:"花を持つ単子葉類。昆虫が多いと出やすい。",why:"昆虫とほどよい光が続き、花を使う単子葉類になった。",fact:"ユリは単子葉類で、花弁が3の倍数になりやすい。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,65,25)+fit(e.dry,30,25)+fit(e.temp,20,16)+fit(e.insect,65,25)+10},
+{id:"ran",no:30,name:"ラン",icon:"🌺",group:"単子葉類",desc:"昆虫との関係が深い花。条件がそろうと珍しく発見される。",why:"昆虫が多く湿った環境が続き、特殊な花で受粉する戦略を得た。",fact:"ラン科は非常に種類の多い植物グループ。",rank:"希少種",score:e=>fit(e.water,60,25)+fit(e.light,45,25)+fit(e.dry,20,25)+fit(e.temp,26,16)+fit(e.insect,85,25)+22},
+{id:"aloe",no:31,name:"アロエ",icon:"🌵",group:"単子葉類",desc:"乾燥に強い多肉植物。葉に水をためる戦略を持つ。",why:"乾燥と強い日光が続き、葉に水をためる多肉型になった。",fact:"アロエは見た目はサボテンに似るが単子葉類に含まれる。",rank:"環境適応種",score:e=>fit(e.water,25,25)+fit(e.light,75,25)+fit(e.dry,80,25)+fit(e.temp,26,16)+fit(e.insect,15,25)+16},
+{id:"banana",no:32,name:"バナナ",icon:"🍌",group:"単子葉類",desc:"高温多湿を好む大型の草本。熱帯環境で出やすい。",why:"高温多湿が続き、大きな葉を広げる単子葉類になった。",fact:"バナナは木のように見えるが草本に分類される。",rank:"希少種",score:e=>fit(e.water,82,25)+fit(e.light,70,25)+fit(e.dry,10,25)+fit(e.temp,30,16)+fit(e.insect,35,25)+22},
+{id:"sakura",no:33,name:"サクラ",icon:"🌸",group:"双子葉類",desc:"昆虫と季節性に関わる花を咲かせる双子葉類。",why:"ほどよい水分と温度、昆虫の存在により、花で受粉する樹木になった。",fact:"サクラは双子葉類で、網状脈をもつ。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,60,25)+fit(e.dry,30,25)+fit(e.temp,15,16)+fit(e.insect,70,25)+10},
+{id:"tanpopo",no:34,name:"タンポポ",icon:"🌼",group:"双子葉類",desc:"明るい草地で広がりやすい花。種子散布も得意。",why:"明るい草地と中程度の乾燥により、種子を飛ばす草花になった。",fact:"タンポポの白い綿毛は果実についた冠毛。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,80,25)+fit(e.dry,50,25)+fit(e.temp,18,16)+fit(e.insect,50,25)+10},
+{id:"himawari",no:35,name:"ヒマワリ",icon:"🌻",group:"双子葉類",desc:"強い光を好む大型の花。昆虫がいると有利。",why:"強い日光と温暖さが続き、大きな花で昆虫を引き寄せる戦略をとった。",fact:"ヒマワリの花は多数の小さな花が集まったもの。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,90,25)+fit(e.dry,45,25)+fit(e.temp,26,16)+fit(e.insect,55,25)+10},
+{id:"bara",no:36,name:"バラ",icon:"🌹",group:"双子葉類",desc:"昆虫と関わりの深い花。ほどよい水分と日光で咲く。",why:"昆虫が多く環境が安定し、花とトゲをもつ双子葉類になった。",fact:"バラのトゲは身を守るための構造として働く。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,65,25)+fit(e.dry,35,25)+fit(e.temp,20,16)+fit(e.insect,75,25)+10},
+{id:"saboten",no:37,name:"花サボテン",icon:"🌵",group:"双子葉類",desc:"乾燥と強い光に適応した多肉質の被子植物。花も咲かせる。",why:"乾燥と強い日差しが長く続いたため、水をためて蒸散を抑える戦略を獲得した。",fact:"サボテンのトゲは葉が変化したもの。",rank:"環境適応種",score:e=>fit(e.water,15,25)+fit(e.light,85,25)+fit(e.dry,90,25)+fit(e.temp,30,16)+fit(e.insect,45,25)+16},
+{id:"hasu",no:38,name:"ハス",icon:"🪷",group:"双子葉類",desc:"水辺に適応した被子植物。水分が高いと出やすい。",why:"水分が非常に多く日光もある環境で、水面に葉を広げる植物になった。",fact:"ハスは水底の泥に根を張り、水面に葉を出す。",rank:"環境適応種",score:e=>fit(e.water,90,25)+fit(e.light,70,25)+fit(e.dry,5,25)+fit(e.temp,24,16)+fit(e.insect,45,25)+16},
+{id:"kaede",no:39,name:"カエデ",icon:"🍁",group:"双子葉類",desc:"温帯の森林を作る樹木。ほどよい水分と冷涼さで出やすい。",why:"冷涼で水分のある森林環境が続き、広葉樹として発生した。",fact:"カエデの葉は大きく切れ込みがあるものが多い。",rank:"普通種",score:e=>fit(e.water,60,25)+fit(e.light,50,25)+fit(e.dry,25,25)+fit(e.temp,12,16)+fit(e.insect,20,25)+10},
+{id:"shirotsumekusa",no:40,name:"シロツメクサ",icon:"☘️",group:"双子葉類",desc:"明るい草地に広がる小さな花。昆虫とも関わる。",why:"明るい草地と昆虫の存在により、地面を覆う草花になった。",fact:"マメ科植物は根粒菌と共生し、窒素固定に関わる。",rank:"環境適応種",score:e=>fit(e.water,50,25)+fit(e.light,70,25)+fit(e.dry,35,25)+fit(e.temp,18,16)+fit(e.insect,55,25)+16},
+{id:"kuro_goke",no:41,name:"クロゴケ",icon:"⚫",group:"コケ植物",desc:"暗く湿った環境に出る黒っぽいコケ。",why:"日光が弱く水分が高い環境で、暗い地表に適応した。",fact:"コケは小さくても環境の違いに敏感に反応する。",rank:"普通種",score:e=>fit(e.water,70,25)+fit(e.light,15,25)+fit(e.dry,10,25)+fit(e.temp,10,16)+fit(e.insect,0,25)+10},
+{id:"ao_goke",no:42,name:"アオゴケ",icon:"🟢",group:"コケ植物",desc:"明るい水辺に広がる青々としたコケ。",why:"水分と光がそろい、地面を緑に覆うコケになった。",fact:"コケは根ではなく仮根で体を支える。",rank:"普通種",score:e=>fit(e.water,68,25)+fit(e.light,58,25)+fit(e.dry,18,25)+fit(e.temp,18,16)+fit(e.insect,0,25)+10},
+{id:"kawa_goke",no:43,name:"カワゴケ",icon:"💧",group:"コケ植物",desc:"流れの近くに出る水辺型のコケ。",why:"水分が絶えず供給される環境で、水辺に張りつく形になった。",fact:"川沿いの岩にもコケがつくことがある。",rank:"普通種",score:e=>fit(e.water,90,25)+fit(e.light,45,25)+fit(e.dry,5,25)+fit(e.temp,12,16)+fit(e.insect,0,25)+10},
+{id:"sabaku_goke",no:44,name:"砂漠コケ",icon:"🟤",group:"コケ植物",desc:"極端な乾燥に耐えるレアなコケ。",why:"乾燥と強光が続き、休眠しながら耐える戦略を得た。",fact:"乾燥地にも雨の後だけ活動するコケがある。",rank:"希少種",score:e=>fit(e.water,12,25)+fit(e.light,82,25)+fit(e.dry,92,25)+fit(e.temp,24,16)+fit(e.insect,0,25)+22},
+{id:"mori_goke",no:45,name:"森ゴケ",icon:"🟢",group:"コケ植物",desc:"湿った森の下に広がるコケ。",why:"日陰と水分が安定し、林床を覆うコケになった。",fact:"森林のコケは小さな生き物のすみかにもなる。",rank:"普通種",score:e=>fit(e.water,72,25)+fit(e.light,25,25)+fit(e.dry,12,25)+fit(e.temp,14,16)+fit(e.insect,5,25)+10},
+{id:"tani_goke",no:46,name:"谷ゴケ",icon:"💧",group:"コケ植物",desc:"谷間の湿った岩に生えるコケ。",why:"冷涼で湿った谷間が続き、岩場に広がった。",fact:"谷間は湿度が高くコケが増えやすい。",rank:"普通種",score:e=>fit(e.water,82,25)+fit(e.light,35,25)+fit(e.dry,10,25)+fit(e.temp,8,16)+fit(e.insect,0,25)+10},
+{id:"kazan_goke",no:47,name:"火山ゴケ",icon:"🌋",group:"コケ植物",desc:"火山性の裸地に入り込む先駆者。",why:"やせた土地と強い日差しの中で、最初に地表を覆う形になった。",fact:"遷移の初期にはコケのような小さな植物が重要になる。",rank:"環境適応種",score:e=>fit(e.water,30,25)+fit(e.light,75,25)+fit(e.dry,70,25)+fit(e.temp,22,16)+fit(e.insect,0,25)+16},
+{id:"mizube_goke",no:48,name:"水辺コケ",icon:"🟢",group:"コケ植物",desc:"池や湿地のふちに出るコケ。",why:"水分が多く温度が穏やかな場所に適応した。",fact:"コケは水分が多い場所で生活しやすい。",rank:"普通種",score:e=>fit(e.water,80,25)+fit(e.light,50,25)+fit(e.dry,10,25)+fit(e.temp,16,16)+fit(e.insect,0,25)+10},
+{id:"asa_goke",no:49,name:"朝露ゴケ",icon:"🟢",group:"コケ植物",desc:"水分変化に強く、朝露で活動するコケ。",why:"乾燥と湿り気が交互に来る環境で、短時間の水を利用する戦略を得た。",fact:"コケは乾いても水を得ると再び活動する種類がある。",rank:"環境適応種",score:e=>fit(e.water,45,25)+fit(e.light,70,25)+fit(e.dry,60,25)+fit(e.temp,12,16)+fit(e.insect,0,25)+16},
+{id:"numa_goke",no:50,name:"沼ゴケ",icon:"💧",group:"コケ植物",desc:"沼地の湿った環境に強いコケ。",why:"高い水分が続き、沼地に広がるコケになった。",fact:"湿地は水分が多く、コケ植物に向く。",rank:"普通種",score:e=>fit(e.water,88,25)+fit(e.light,40,25)+fit(e.dry,5,25)+fit(e.temp,15,16)+fit(e.insect,0,25)+10},
+{id:"hoshi_goke",no:51,name:"星ゴケ",icon:"✨",group:"コケ植物",desc:"低温と強い光に耐えるレアな高地型コケ。",why:"寒さと強光が重なり、低い姿勢で耐える形になった。",fact:"高山では背の低い植物が有利になる。",rank:"希少種",score:e=>fit(e.water,35,25)+fit(e.light,82,25)+fit(e.dry,50,25)+fit(e.temp,-8,16)+fit(e.insect,0,25)+22},
+{id:"awa_goke",no:52,name:"泡ゴケ",icon:"🫧",group:"コケ植物",desc:"水分過多の環境に現れる柔らかなコケ。",why:"水分が非常に多く、乾燥が少ない環境で発生した。",fact:"水辺の植物は乾燥への対策が少なくてすむ。",rank:"普通種",score:e=>fit(e.water,95,25)+fit(e.light,42,25)+fit(e.dry,0,25)+fit(e.temp,18,16)+fit(e.insect,0,25)+10},
+{id:"inomo_to",no:53,name:"イノモトソウ",icon:"🌿",group:"シダ植物",desc:"石垣や道端にも出るたくましいシダ。",why:"やや乾き気味でも光がある環境に耐えるシダになった。",fact:"シダ植物は花を咲かせない。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,62,25)+fit(e.dry,48,25)+fit(e.temp,18,16)+fit(e.insect,0,25)+10},
+{id:"urajiro",no:54,name:"ウラジロ",icon:"🌿",group:"シダ植物",desc:"葉の裏が白っぽい大型のシダ。",why:"暖かく湿った林で、大きな葉を広げるシダになった。",fact:"ウラジロは正月飾りにも使われる。",rank:"普通種",score:e=>fit(e.water,70,25)+fit(e.light,45,25)+fit(e.dry,20,25)+fit(e.temp,18,16)+fit(e.insect,0,25)+10},
+{id:"benishida",no:55,name:"ベニシダ",icon:"🌿",group:"シダ植物",desc:"林の下に出る丈夫なシダ。",why:"湿った日陰が続き、林床に広がるシダになった。",fact:"シダの葉は胞子をつくる器官をもつ。",rank:"普通種",score:e=>fit(e.water,65,25)+fit(e.light,30,25)+fit(e.dry,18,25)+fit(e.temp,16,16)+fit(e.insect,0,25)+10},
+{id:"mizuwarabi",no:56,name:"ミズワラビ",icon:"💧",group:"シダ植物",desc:"水田や湿地に出る水辺型のシダ。",why:"水分が非常に高い環境で、水辺に適応した。",fact:"水辺に生えるシダ植物もある。",rank:"環境適応種",score:e=>fit(e.water,92,25)+fit(e.light,65,25)+fit(e.dry,0,25)+fit(e.temp,24,16)+fit(e.insect,5,25)+16},
+{id:"kusa_sotetsu",no:57,name:"クサソテツ",icon:"🌿",group:"シダ植物",desc:"湿った場所に群生するシダ。",why:"水分が高く冷涼な環境で群落を作るシダになった。",fact:"若芽はコゴミとして知られる。",rank:"普通種",score:e=>fit(e.water,75,25)+fit(e.light,42,25)+fit(e.dry,10,25)+fit(e.temp,10,16)+fit(e.insect,0,25)+10},
+{id:"natsu_shida",no:58,name:"夏シダ",icon:"🌿",group:"シダ植物",desc:"高温多湿でよく伸びるシダ。",why:"夏のような高温多湿が続き、葉を大きく伸ばした。",fact:"シダは湿り気のある環境で増えやすい。",rank:"普通種",score:e=>fit(e.water,78,25)+fit(e.light,55,25)+fit(e.dry,15,25)+fit(e.temp,28,16)+fit(e.insect,0,25)+10},
+{id:"yuki_shida",no:59,name:"雪シダ",icon:"❄️",group:"シダ植物",desc:"冷涼な日陰に耐えるレアなシダ。",why:"低温で日光が弱い環境に適応し、ゆっくり育つ形になった。",fact:"低温環境では成長速度が遅くなりやすい。",rank:"希少種",score:e=>fit(e.water,50,25)+fit(e.light,25,25)+fit(e.dry,35,25)+fit(e.temp,-5,16)+fit(e.insect,0,25)+22},
+{id:"iwa_shida",no:60,name:"岩シダ",icon:"🌿",group:"シダ植物",desc:"岩場に根づく小型のシダ。",why:"乾きやすい岩場で、水分を逃さない形になった。",fact:"シダにも岩場に生える種類がある。",rank:"環境適応種",score:e=>fit(e.water,35,25)+fit(e.light,55,25)+fit(e.dry,65,25)+fit(e.temp,12,16)+fit(e.insect,0,25)+16},
+{id:"kiri_shida",no:61,name:"霧シダ",icon:"🌫️",group:"シダ植物",desc:"霧の多い森で育つシダ。",why:"湿度が高く日光が弱い環境で、霧から水分を得るように広がった。",fact:"霧の多い森では着生植物も増えやすい。",rank:"希少種",score:e=>fit(e.water,85,25)+fit(e.light,22,25)+fit(e.dry,5,25)+fit(e.temp,18,16)+fit(e.insect,0,25)+22},
+{id:"sabana_shida",no:62,name:"サバンナシダ",icon:"🌿",group:"シダ植物",desc:"乾季と雨季の差に耐えるシダ。",why:"水分変化が激しい環境で、耐える胞子植物になった。",fact:"環境変動に耐えることも生存戦略になる。",rank:"環境適応種",score:e=>fit(e.water,45,25)+fit(e.light,75,25)+fit(e.dry,65,25)+fit(e.temp,25,16)+fit(e.insect,0,25)+16},
+{id:"kage_shida",no:63,name:"影シダ",icon:"🌿",group:"シダ植物",desc:"暗い森の下で生きるシダ。",why:"日光が少ないが水分がある環境で、暗所に適応した。",fact:"林床では弱い光を利用する植物が多い。",rank:"普通種",score:e=>fit(e.water,70,25)+fit(e.light,15,25)+fit(e.dry,10,25)+fit(e.temp,16,16)+fit(e.insect,0,25)+10},
+{id:"mizu_uki_shida",no:64,name:"浮きシダ",icon:"💧",group:"シダ植物",desc:"水面に浮く小さなシダ。",why:"水分が過剰な環境で、水面に浮く戦略を得た。",fact:"アカウキクサのような浮遊性のシダがある。",rank:"希少種",score:e=>fit(e.water,98,25)+fit(e.light,70,25)+fit(e.dry,0,25)+fit(e.temp,22,16)+fit(e.insect,0,25)+22},
+{id:"rakanmaki",no:65,name:"ラカンマキ",icon:"🌲",group:"裸子植物",desc:"温暖な地域に出る常緑の裸子植物。",why:"温暖でほどよい水分が続き、常緑の種子植物になった。",fact:"裸子植物は胚珠がむき出しに近い形でつく。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,58,25)+fit(e.dry,35,25)+fit(e.temp,18,16)+fit(e.insect,0,25)+10},
+{id:"nezuko",no:66,name:"ネズコ",icon:"🌲",group:"裸子植物",desc:"湿った山地に出る針葉樹。",why:"冷涼で湿った山地環境に適応した。",fact:"針葉樹は寒冷地や山地で優勢になりやすい。",rank:"普通種",score:e=>fit(e.water,62,25)+fit(e.light,45,25)+fit(e.dry,25,25)+fit(e.temp,8,16)+fit(e.insect,0,25)+10},
+{id:"koya_maki",no:67,name:"コウヤマキ",icon:"🌲",group:"裸子植物",desc:"古い系統を感じさせる針葉樹。",why:"安定した森林環境が続き、特殊な針葉樹として残った。",fact:"コウヤマキは日本固有の針葉樹。",rank:"希少種",score:e=>fit(e.water,55,25)+fit(e.light,45,25)+fit(e.dry,30,25)+fit(e.temp,12,16)+fit(e.insect,0,25)+22},
+{id:"ibuki",no:68,name:"イブキ",icon:"🌲",group:"裸子植物",desc:"乾いた海岸や岩場にも耐える針葉樹。",why:"乾燥と強い光が続き、岩場にも耐える姿になった。",fact:"ビャクシンの仲間には乾燥に強いものがある。",rank:"環境適応種",score:e=>fit(e.water,25,25)+fit(e.light,78,25)+fit(e.dry,75,25)+fit(e.temp,15,16)+fit(e.insect,0,25)+16},
+{id:"metasequoia",no:69,name:"メタセコイア",icon:"🌲",group:"裸子植物",desc:"落葉性の針葉樹。湿った環境を好む。",why:"水分の多い明るい環境で、大きく伸びる針葉樹になった。",fact:"メタセコイアは生きている化石とも呼ばれる。",rank:"希少種",score:e=>fit(e.water,70,25)+fit(e.light,65,25)+fit(e.dry,20,25)+fit(e.temp,14,16)+fit(e.insect,0,25)+22},
+{id:"akamatsu",no:70,name:"アカマツ",icon:"🌲",group:"裸子植物",desc:"乾いた尾根ややせ地にも強いマツ。",why:"乾燥した明るいやせ地が続き、耐乾性のあるマツになった。",fact:"アカマツは明るい場所を好む。",rank:"普通種",score:e=>fit(e.water,25,25)+fit(e.light,82,25)+fit(e.dry,78,25)+fit(e.temp,12,16)+fit(e.insect,0,25)+10},
+{id:"kuromatsu",no:71,name:"クロマツ",icon:"🌲",group:"裸子植物",desc:"海岸の風や乾燥に強いマツ。",why:"強光と乾燥、環境変動に耐える針葉樹になった。",fact:"クロマツは海岸林にも使われる。",rank:"環境適応種",score:e=>fit(e.water,30,25)+fit(e.light,80,25)+fit(e.dry,70,25)+fit(e.temp,15,16)+fit(e.insect,0,25)+16},
+{id:"yew",no:72,name:"イチイ",icon:"🌲",group:"裸子植物",desc:"冷涼な地域に出る針葉樹。",why:"低温と日陰が続き、冷涼な森に適応した。",fact:"イチイは赤い仮種皮をつける。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,35,25)+fit(e.dry,30,25)+fit(e.temp,5,16)+fit(e.insect,0,25)+10},
+{id:"himalaya_sugi",no:73,name:"ヒマラヤスギ",icon:"🌲",group:"裸子植物",desc:"山地型の大きな針葉樹。",why:"冷涼で明るい環境が続き、高く伸びる針葉樹になった。",fact:"ヒマラヤスギはマツ科の針葉樹。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,65,25)+fit(e.dry,45,25)+fit(e.temp,6,16)+fit(e.insect,0,25)+10},
+{id:"kaizuka",no:74,name:"カイヅカイブキ",icon:"🌲",group:"裸子植物",desc:"乾燥や刈り込みにも強い針葉樹。",why:"乾燥と変動に耐え、丈夫な形になった。",fact:"庭木としても利用される。",rank:"普通種",score:e=>fit(e.water,35,25)+fit(e.light,70,25)+fit(e.dry,65,25)+fit(e.temp,15,16)+fit(e.insect,0,25)+10},
+{id:"nanban_sotetsu",no:75,name:"南国ソテツ",icon:"🌴",group:"裸子植物",desc:"高温強光に適応したソテツ型。",why:"高温・強光・乾燥気味の環境で、厚い葉をもつ姿になった。",fact:"ソテツ類は古い植物群の特徴を残す。",rank:"希少種",score:e=>fit(e.water,25,25)+fit(e.light,88,25)+fit(e.dry,70,25)+fit(e.temp,34,16)+fit(e.insect,0,25)+22},
+{id:"tsuga",no:76,name:"ツガ",icon:"🌲",group:"裸子植物",desc:"冷涼な山地に出る針葉樹。",why:"冷涼でやや湿った森が続き、山地型の針葉樹になった。",fact:"ツガはマツ科の針葉樹。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,42,25)+fit(e.dry,30,25)+fit(e.temp,6,16)+fit(e.insect,0,25)+10},
+{id:"sasa",no:77,name:"ササ",icon:"🎋",group:"単子葉類",desc:"地下茎で広がる小型のタケ類。",why:"地下茎で広がる小型のタケ類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,48,25)+fit(e.dry,30,25)+fit(e.temp,12,16)+fit(e.insect,5,25)+10},
+{id:"susuki",no:78,name:"ススキ",icon:"🌾",group:"単子葉類",desc:"明るい草原に強いイネ科植物。",why:"明るい草原に強いイネ科植物。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,35,25)+fit(e.light,82,25)+fit(e.dry,60,25)+fit(e.temp,18,16)+fit(e.insect,10,25)+10},
+{id:"ashi",no:79,name:"ヨシ",icon:"🌾",group:"単子葉類",desc:"湿地に群生する単子葉類。",why:"湿地に群生する単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,88,25)+fit(e.light,65,25)+fit(e.dry,5,25)+fit(e.temp,20,16)+fit(e.insect,10,25)+10},
+{id:"gama",no:80,name:"ガマ",icon:"🌾",group:"単子葉類",desc:"水辺に立つ湿地性の単子葉類。",why:"水辺に立つ湿地性の単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,90,25)+fit(e.light,70,25)+fit(e.dry,5,25)+fit(e.temp,22,16)+fit(e.insect,15,25)+10},
+{id:"suiren_aya",no:81,name:"アヤメ",icon:"💠",group:"単子葉類",desc:"湿った場所に咲く単子葉類の花。",why:"湿った場所に咲く単子葉類の花。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,75,25)+fit(e.light,62,25)+fit(e.dry,12,25)+fit(e.temp,20,16)+fit(e.insect,55,25)+10},
+{id:"hanashobu",no:82,name:"ハナショウブ",icon:"💠",group:"単子葉類",desc:"水辺で美しい花を咲かせる単子葉類。",why:"水辺で美しい花を咲かせる単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,82,25)+fit(e.light,60,25)+fit(e.dry,8,25)+fit(e.temp,20,16)+fit(e.insect,60,25)+10},
+{id:"suisen",no:83,name:"スイセン",icon:"🌼",group:"単子葉類",desc:"球根で冬から春に花を咲かせる単子葉類。",why:"球根で冬から春に花を咲かせる単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,60,25)+fit(e.dry,35,25)+fit(e.temp,8,16)+fit(e.insect,35,25)+10},
+{id:"churippu",no:84,name:"チューリップ",icon:"🌷",group:"単子葉類",desc:"球根から春に花を咲かせる単子葉類。",why:"球根から春に花を咲かせる単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,65,25)+fit(e.dry,30,25)+fit(e.temp,12,16)+fit(e.insect,45,25)+10},
+{id:"hyacinth",no:85,name:"ヒヤシンス",icon:"🪻",group:"単子葉類",desc:"春に香りのある花を咲かせる単子葉類。",why:"春に香りのある花を咲かせる単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,55,25)+fit(e.dry,25,25)+fit(e.temp,12,16)+fit(e.insect,55,25)+10},
+{id:"negi",no:86,name:"ネギ",icon:"🧅",group:"単子葉類",desc:"乾燥にもやや耐える単子葉類。",why:"乾燥にもやや耐える単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,42,25)+fit(e.light,70,25)+fit(e.dry,50,25)+fit(e.temp,14,16)+fit(e.insect,10,25)+10},
+{id:"nira",no:87,name:"ニラ",icon:"🌱",group:"単子葉類",desc:"細長い葉をもつ単子葉類。",why:"細長い葉をもつ単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,65,25)+fit(e.dry,45,25)+fit(e.temp,18,16)+fit(e.insect,15,25)+10},
+{id:"yashi",no:88,name:"ヤシ",icon:"🌴",group:"単子葉類",desc:"高温・強光を好む単子葉類。",why:"高温・強光を好む単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,88,25)+fit(e.dry,45,25)+fit(e.temp,32,16)+fit(e.insect,20,25)+10},
+{id:"koko_yashi",no:89,name:"ココヤシ",icon:"🥥",group:"単子葉類",desc:"海岸の強光と高温に強いヤシ。",why:"海岸の強光と高温に強いヤシ。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,90,25)+fit(e.dry,55,25)+fit(e.temp,32,16)+fit(e.insect,20,25)+10},
+{id:"tako_no_ki",no:90,name:"タコノキ",icon:"🌴",group:"単子葉類",desc:"熱帯の海岸に出る単子葉類。",why:"熱帯の海岸に出る単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,62,25)+fit(e.light,82,25)+fit(e.dry,40,25)+fit(e.temp,30,16)+fit(e.insect,20,25)+10},
+{id:"musa",no:91,name:"芭蕉",icon:"🍌",group:"単子葉類",desc:"大きな葉を広げる高温多湿型。",why:"大きな葉を広げる高温多湿型。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,80,25)+fit(e.light,70,25)+fit(e.dry,12,25)+fit(e.temp,30,16)+fit(e.insect,25,25)+10},
+{id:"sato_kibi",no:92,name:"サトウキビ",icon:"🌾",group:"単子葉類",desc:"高温と強光で育つイネ科植物。",why:"高温と強光で育つイネ科植物。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,65,25)+fit(e.light,85,25)+fit(e.dry,35,25)+fit(e.temp,30,16)+fit(e.insect,20,25)+10},
+{id:"shiba",no:93,name:"シバ",icon:"🌱",group:"単子葉類",desc:"明るい地面を覆う草。",why:"明るい地面を覆う草。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,38,25)+fit(e.light,80,25)+fit(e.dry,55,25)+fit(e.temp,20,16)+fit(e.insect,10,25)+10},
+{id:"karukaya",no:94,name:"カルカヤ",icon:"🌾",group:"単子葉類",desc:"乾いた草原に強いイネ科植物。",why:"乾いた草原に強いイネ科植物。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,25,25)+fit(e.light,82,25)+fit(e.dry,75,25)+fit(e.temp,22,16)+fit(e.insect,5,25)+10},
+{id:"orchid_white",no:95,name:"白ラン",icon:"🤍",group:"単子葉類",desc:"湿度と昆虫がそろうと出る希少なラン。",why:"湿度と昆虫がそろうと出る希少なラン。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,68,25)+fit(e.light,40,25)+fit(e.dry,15,25)+fit(e.temp,24,16)+fit(e.insect,92,25)+22},
+{id:"vanilla",no:96,name:"バニラ",icon:"🌺",group:"単子葉類",desc:"ラン科のつる植物。高温多湿と昆虫が鍵。",why:"ラン科のつる植物。高温多湿と昆虫が鍵。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,78,25)+fit(e.light,45,25)+fit(e.dry,8,25)+fit(e.temp,28,16)+fit(e.insect,85,25)+10},
+{id:"duckweed",no:97,name:"ウキクサ",icon:"💧",group:"単子葉類",desc:"水面に浮かぶ小さな単子葉類。",why:"水面に浮かぶ小さな単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,98,25)+fit(e.light,65,25)+fit(e.dry,0,25)+fit(e.temp,24,16)+fit(e.insect,5,25)+10},
+{id:"pondweed",no:98,name:"セキショウモ",icon:"💧",group:"単子葉類",desc:"水中に生える単子葉類。",why:"水中に生える単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,100,25)+fit(e.light,50,25)+fit(e.dry,0,25)+fit(e.temp,20,16)+fit(e.insect,0,25)+10},
+{id:"ginger",no:99,name:"ショウガ",icon:"🌱",group:"単子葉類",desc:"温暖で湿った土を好む単子葉類。",why:"温暖で湿った土を好む単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,70,25)+fit(e.light,45,25)+fit(e.dry,20,25)+fit(e.temp,25,16)+fit(e.insect,20,25)+10},
+{id:"myoga",no:100,name:"ミョウガ",icon:"🌱",group:"単子葉類",desc:"湿った半日陰に育つ単子葉類。",why:"湿った半日陰に育つ単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,72,25)+fit(e.light,35,25)+fit(e.dry,15,25)+fit(e.temp,22,16)+fit(e.insect,20,25)+10},
+{id:"lotus_grass",no:101,name:"湿原草",icon:"🌾",group:"単子葉類",desc:"湿原に適応した草本。",why:"湿原に適応した草本。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,90,25)+fit(e.light,55,25)+fit(e.dry,5,25)+fit(e.temp,16,16)+fit(e.insect,10,25)+16},
+{id:"alpine_lily",no:102,name:"高山ユリ",icon:"🌷",group:"単子葉類",desc:"冷涼で明るい場所に咲く単子葉類。",why:"冷涼で明るい場所に咲く単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,45,25)+fit(e.light,75,25)+fit(e.dry,40,25)+fit(e.temp,2,16)+fit(e.insect,30,25)+16},
+{id:"desert_lily",no:103,name:"砂漠ユリ",icon:"🌷",group:"単子葉類",desc:"乾いた地域で一時的に花を咲かせる単子葉類。",why:"乾いた地域で一時的に花を咲かせる単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,20,25)+fit(e.light,85,25)+fit(e.dry,88,25)+fit(e.temp,26,16)+fit(e.insect,35,25)+16},
+{id:"wild_oat",no:104,name:"カラスムギ",icon:"🌾",group:"単子葉類",desc:"明るくやや乾いた草地に出るイネ科。",why:"明るくやや乾いた草地に出るイネ科。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,35,25)+fit(e.light,78,25)+fit(e.dry,60,25)+fit(e.temp,17,16)+fit(e.insect,10,25)+10},
+{id:"reed_bamboo",no:105,name:"ヨシタケ",icon:"🎋",group:"単子葉類",desc:"水辺に広がる大型の単子葉類。",why:"水辺に広がる大型の単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,82,25)+fit(e.light,65,25)+fit(e.dry,8,25)+fit(e.temp,21,16)+fit(e.insect,10,25)+10},
+{id:"snow_grass",no:106,name:"雪原草",icon:"❄️",group:"単子葉類",desc:"低温でも短期間で伸びる草。",why:"低温でも短期間で伸びる草。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,35,25)+fit(e.light,60,25)+fit(e.dry,50,25)+fit(e.temp,-10,16)+fit(e.insect,0,25)+16},
+{id:"heat_grass",no:107,name:"熱砂草",icon:"🌾",group:"単子葉類",desc:"高温乾燥に耐える草。",why:"高温乾燥に耐える草。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,18,25)+fit(e.light,90,25)+fit(e.dry,90,25)+fit(e.temp,38,16)+fit(e.insect,5,25)+16},
+{id:"rain_lily",no:108,name:"レインリリー",icon:"🌷",group:"単子葉類",desc:"雨の後に花を咲かせる単子葉類。",why:"雨の後に花を咲かせる単子葉類。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,85,25)+fit(e.light,70,25)+fit(e.dry,35,25)+fit(e.temp,24,16)+fit(e.insect,45,25)+10},
+{id:"star_orchid",no:109,name:"星ラン",icon:"✨",group:"単子葉類",desc:"昆虫が多い安定環境で出るレアなラン。",why:"昆虫が多い安定環境で出るレアなラン。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,60,25)+fit(e.light,42,25)+fit(e.dry,15,25)+fit(e.temp,24,16)+fit(e.insect,98,25)+22},
+{id:"moon_grass",no:110,name:"月草",icon:"🌙",group:"単子葉類",desc:"日光が弱く湿った場所に出る草。",why:"日光が弱く湿った場所に出る草。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,70,25)+fit(e.light,18,25)+fit(e.dry,10,25)+fit(e.temp,18,16)+fit(e.insect,10,25)+10},
+{id:"golden_rice",no:111,name:"黄金イネ",icon:"🌾",group:"単子葉類",desc:"高温多湿と強光がそろう希少なイネ型。",why:"高温多湿と強光がそろう希少なイネ型。 その環境が続いたため、単子葉類として発生した。",fact:"単子葉類は葉脈が平行脈になりやすく、ひげ根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,88,25)+fit(e.light,88,25)+fit(e.dry,10,25)+fit(e.temp,30,16)+fit(e.insect,40,25)+22},
+{id:"tsutsuji",no:112,name:"ツツジ",icon:"🌺",group:"双子葉類",desc:"昆虫と関わる花木。",why:"昆虫と関わる花木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,60,25)+fit(e.dry,35,25)+fit(e.temp,18,16)+fit(e.insect,65,25)+10},
+{id:"tsubaki",no:113,name:"ツバキ",icon:"🌺",group:"双子葉類",desc:"温暖で湿った常緑の花木。",why:"温暖で湿った常緑の花木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,65,25)+fit(e.light,45,25)+fit(e.dry,20,25)+fit(e.temp,16,16)+fit(e.insect,55,25)+10},
+{id:"buna",no:114,name:"ブナ",icon:"🌳",group:"双子葉類",desc:"冷涼で湿った森を作る広葉樹。",why:"冷涼で湿った森を作る広葉樹。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,70,25)+fit(e.light,42,25)+fit(e.dry,15,25)+fit(e.temp,8,16)+fit(e.insect,15,25)+10},
+{id:"konara",no:115,name:"コナラ",icon:"🌳",group:"双子葉類",desc:"雑木林を作るどんぐりの木。",why:"雑木林を作るどんぐりの木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,58,25)+fit(e.dry,35,25)+fit(e.temp,16,16)+fit(e.insect,20,25)+10},
+{id:"akasia",no:116,name:"アカシア",icon:"🌳",group:"双子葉類",desc:"乾燥気味の明るい環境に強い樹木。",why:"乾燥気味の明るい環境に強い樹木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,28,25)+fit(e.light,80,25)+fit(e.dry,70,25)+fit(e.temp,26,16)+fit(e.insect,20,25)+16},
+{id:"cha",no:117,name:"チャノキ",icon:"🍵",group:"双子葉類",desc:"温暖で湿った常緑低木。",why:"温暖で湿った常緑低木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,65,25)+fit(e.light,55,25)+fit(e.dry,25,25)+fit(e.temp,18,16)+fit(e.insect,20,25)+10},
+{id:"coffee",no:118,name:"コーヒーノキ",icon:"☕",group:"双子葉類",desc:"温暖で湿った半日陰を好む。",why:"温暖で湿った半日陰を好む。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,70,25)+fit(e.light,42,25)+fit(e.dry,15,25)+fit(e.temp,24,16)+fit(e.insect,25,25)+10},
+{id:"olive",no:119,name:"オリーブ",icon:"🫒",group:"双子葉類",desc:"乾燥気味で日当たりのよい環境に強い。",why:"乾燥気味で日当たりのよい環境に強い。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,32,25)+fit(e.light,80,25)+fit(e.dry,65,25)+fit(e.temp,20,16)+fit(e.insect,20,25)+10},
+{id:"suikazura",no:120,name:"スイカズラ",icon:"🌼",group:"双子葉類",desc:"昆虫を呼ぶつる性の花。",why:"昆虫を呼ぶつる性の花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,60,25)+fit(e.dry,35,25)+fit(e.temp,20,16)+fit(e.insect,70,25)+10},
+{id:"asagao",no:121,name:"アサガオ",icon:"🌺",group:"双子葉類",desc:"夏の朝に花を咲かせるつる植物。",why:"夏の朝に花を咲かせるつる植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,75,25)+fit(e.dry,35,25)+fit(e.temp,26,16)+fit(e.insect,45,25)+10},
+{id:"ajisai",no:122,name:"アジサイ",icon:"💠",group:"双子葉類",desc:"梅雨のような湿った環境を好む花木。",why:"梅雨のような湿った環境を好む花木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,82,25)+fit(e.light,38,25)+fit(e.dry,10,25)+fit(e.temp,20,16)+fit(e.insect,35,25)+10},
+{id:"ume",no:123,name:"ウメ",icon:"🌸",group:"双子葉類",desc:"寒さの後、早春に花を咲かせる樹木。",why:"寒さの後、早春に花を咲かせる樹木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,60,25)+fit(e.dry,35,25)+fit(e.temp,6,16)+fit(e.insect,35,25)+10},
+{id:"momo",no:124,name:"モモ",icon:"🌸",group:"双子葉類",desc:"温暖な春に花を咲かせる果樹。",why:"温暖な春に花を咲かせる果樹。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,52,25)+fit(e.light,68,25)+fit(e.dry,35,25)+fit(e.temp,16,16)+fit(e.insect,55,25)+10},
+{id:"ringo",no:125,name:"リンゴ",icon:"🍎",group:"双子葉類",desc:"冷涼な地域で育つ果樹。",why:"冷涼な地域で育つ果樹。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,65,25)+fit(e.dry,35,25)+fit(e.temp,8,16)+fit(e.insect,45,25)+10},
+{id:"mikan",no:126,name:"ミカン",icon:"🍊",group:"双子葉類",desc:"温暖で日当たりのよい場所に強い常緑樹。",why:"温暖で日当たりのよい場所に強い常緑樹。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,75,25)+fit(e.dry,45,25)+fit(e.temp,20,16)+fit(e.insect,35,25)+10},
+{id:"budou",no:127,name:"ブドウ",icon:"🍇",group:"双子葉類",desc:"日当たりとやや乾いた環境を好むつる植物。",why:"日当たりとやや乾いた環境を好むつる植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,35,25)+fit(e.light,82,25)+fit(e.dry,58,25)+fit(e.temp,22,16)+fit(e.insect,35,25)+10},
+{id:"ichigo",no:128,name:"イチゴ",icon:"🍓",group:"双子葉類",desc:"明るい草地に出る小型の双子葉類。",why:"明るい草地に出る小型の双子葉類。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,68,25)+fit(e.dry,35,25)+fit(e.temp,16,16)+fit(e.insect,55,25)+10},
+{id:"tomato",no:129,name:"トマト",icon:"🍅",group:"双子葉類",desc:"高温と日光を好む草本。",why:"高温と日光を好む草本。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,82,25)+fit(e.dry,45,25)+fit(e.temp,26,16)+fit(e.insect,30,25)+10},
+{id:"potato",no:130,name:"ジャガイモ",icon:"🥔",group:"双子葉類",desc:"冷涼な環境で地下茎を太らせる。",why:"冷涼な環境で地下茎を太らせる。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,65,25)+fit(e.dry,40,25)+fit(e.temp,12,16)+fit(e.insect,15,25)+10},
+{id:"soy",no:131,name:"ダイズ",icon:"🫘",group:"双子葉類",desc:"根粒菌と関わるマメ科植物。",why:"根粒菌と関わるマメ科植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,70,25)+fit(e.dry,40,25)+fit(e.temp,22,16)+fit(e.insect,30,25)+10},
+{id:"azuki",no:132,name:"アズキ",icon:"🫘",group:"双子葉類",desc:"温暖な畑に育つマメ科植物。",why:"温暖な畑に育つマメ科植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,75,25)+fit(e.dry,45,25)+fit(e.temp,24,16)+fit(e.insect,25,25)+10},
+{id:"renge",no:133,name:"レンゲ",icon:"☘️",group:"双子葉類",desc:"田畑の肥沃化にも関わるマメ科植物。",why:"田畑の肥沃化にも関わるマメ科植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,60,25)+fit(e.light,65,25)+fit(e.dry,30,25)+fit(e.temp,16,16)+fit(e.insect,55,25)+10},
+{id:"kuzu",no:134,name:"クズ",icon:"🌿",group:"双子葉類",desc:"つるで旺盛に広がるマメ科植物。",why:"つるで旺盛に広がるマメ科植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,78,25)+fit(e.dry,45,25)+fit(e.temp,25,16)+fit(e.insect,25,25)+10},
+{id:"dokudami",no:135,name:"ドクダミ",icon:"🌿",group:"双子葉類",desc:"湿った日陰に強い草本。",why:"湿った日陰に強い草本。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,75,25)+fit(e.light,25,25)+fit(e.dry,10,25)+fit(e.temp,20,16)+fit(e.insect,10,25)+10},
+{id:"mint",no:136,name:"ミント",icon:"🌿",group:"双子葉類",desc:"湿った明るい場所に広がる草。",why:"湿った明るい場所に広がる草。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,62,25)+fit(e.light,65,25)+fit(e.dry,25,25)+fit(e.temp,20,16)+fit(e.insect,35,25)+10},
+{id:"sage",no:137,name:"セージ",icon:"🌿",group:"双子葉類",desc:"乾燥と日光を好む香草。",why:"乾燥と日光を好む香草。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,30,25)+fit(e.light,78,25)+fit(e.dry,68,25)+fit(e.temp,20,16)+fit(e.insect,40,25)+16},
+{id:"rosemary",no:138,name:"ローズマリー",icon:"🌿",group:"双子葉類",desc:"乾燥と強光に強い常緑低木。",why:"乾燥と強光に強い常緑低木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,25,25)+fit(e.light,85,25)+fit(e.dry,75,25)+fit(e.temp,22,16)+fit(e.insect,35,25)+16},
+{id:"cosmos",no:139,name:"コスモス",icon:"🌸",group:"双子葉類",desc:"明るい草地に咲く花。",why:"明るい草地に咲く花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,78,25)+fit(e.dry,50,25)+fit(e.temp,18,16)+fit(e.insect,55,25)+10},
+{id:"pansy",no:140,name:"パンジー",icon:"🌼",group:"双子葉類",desc:"冷涼な時期に咲きやすい花。",why:"冷涼な時期に咲きやすい花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,60,25)+fit(e.dry,30,25)+fit(e.temp,8,16)+fit(e.insect,40,25)+10},
+{id:"violet",no:141,name:"スミレ",icon:"💜",group:"双子葉類",desc:"春の林縁や草地に咲く小さな花。",why:"春の林縁や草地に咲く小さな花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,52,25)+fit(e.dry,25,25)+fit(e.temp,12,16)+fit(e.insect,50,25)+10},
+{id:"nemophila",no:142,name:"ネモフィラ",icon:"💙",group:"双子葉類",desc:"春の明るい場所に咲く花。",why:"春の明るい場所に咲く花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,72,25)+fit(e.dry,35,25)+fit(e.temp,14,16)+fit(e.insect,45,25)+10},
+{id:"poppy",no:143,name:"ポピー",icon:"🌺",group:"双子葉類",desc:"明るくやや乾いた場所に咲く花。",why:"明るくやや乾いた場所に咲く花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"普通種",score:e=>fit(e.water,35,25)+fit(e.light,80,25)+fit(e.dry,60,25)+fit(e.temp,18,16)+fit(e.insect,45,25)+10},
+{id:"mangrove2",no:144,name:"マングローブ",icon:"🌴",group:"双子葉類",desc:"高温多湿の水辺に適応した樹木。",why:"高温多湿の水辺に適応した樹木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,92,25)+fit(e.light,70,25)+fit(e.dry,5,25)+fit(e.temp,30,16)+fit(e.insect,20,25)+16},
+{id:"carnivorous",no:145,name:"モウセンゴケ",icon:"🪰",group:"双子葉類",desc:"湿地で虫を捕らえる食虫植物。",why:"湿地で虫を捕らえる食虫植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,90,25)+fit(e.light,65,25)+fit(e.dry,5,25)+fit(e.temp,20,16)+fit(e.insect,90,25)+22},
+{id:"venus",no:146,name:"ハエトリグサ",icon:"🪰",group:"双子葉類",desc:"湿地で虫を捕らえるレア植物。",why:"湿地で虫を捕らえるレア植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,85,25)+fit(e.light,70,25)+fit(e.dry,10,25)+fit(e.temp,24,16)+fit(e.insect,95,25)+22},
+{id:"rafflesia",no:147,name:"ラフレシア",icon:"🌺",group:"双子葉類",desc:"高温多湿で特殊な花を咲かせる希少植物。",why:"高温多湿で特殊な花を咲かせる希少植物。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,88,25)+fit(e.light,35,25)+fit(e.dry,5,25)+fit(e.temp,30,16)+fit(e.insect,90,25)+22},
+{id:"baobab",no:148,name:"バオバブ",icon:"🌳",group:"双子葉類",desc:"乾燥地で水をためる巨大な木。",why:"乾燥地で水をためる巨大な木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,20,25)+fit(e.light,88,25)+fit(e.dry,88,25)+fit(e.temp,30,16)+fit(e.insect,20,25)+22},
+{id:"alpine_flower",no:149,name:"高山花",icon:"🌼",group:"双子葉類",desc:"低温と強光に耐える小さな花。",why:"低温と強光に耐える小さな花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,35,25)+fit(e.light,82,25)+fit(e.dry,55,25)+fit(e.temp,-2,16)+fit(e.insect,20,25)+16},
+{id:"gold_sakura",no:150,name:"金桜",icon:"🌸",group:"双子葉類",desc:"春と昆虫が重なったときに出る希少な桜。",why:"春と昆虫が重なったときに出る希少な桜。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,55,25)+fit(e.light,70,25)+fit(e.dry,25,25)+fit(e.temp,15,16)+fit(e.insect,90,25)+22},
+{id:"black_rose",no:151,name:"黒バラ",icon:"🌹",group:"双子葉類",desc:"昆虫が多い安定環境で出る希少な花。",why:"昆虫が多い安定環境で出る希少な花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,50,25)+fit(e.light,45,25)+fit(e.dry,30,25)+fit(e.temp,18,16)+fit(e.insect,95,25)+22}
+];
+const ids=["seedIcon","phaseName","phaseDesc","resultText","timeBar","timeText","waterBar","waterText","lightBar","lightText","dryBar","dryText","tempBar","tempText","insectBar","insectText","fertilityBar","fertilityText","waterNow","lightNow","dryNow","tempNow","insectNow","fertilityNow","seasonNow","stepNow","candidates","zukan","logBox","historyBox","startBtn","pauseBtn","resetBtn","researchText","seedText","foundText","rareText","rareBox","biomeBox","titleBox","missionBox","preWaterNow","preLightNow","preDryNow","preTempNow","preInsectNow","preFertilityNow","resultPanel","resultContent"];
+const el={}; ids.forEach(id=>el[id]=document.getElementById(id));
+let env,initialEnv,stepSize,avg,prevEnv,volatility,opVolatility,seasonIndex,seasonCounts,seconds,found,hints,history,rares,biomes,biomeStats,biomePlants,research,seeds,running=false,paused=false,finished=false,intervalId,audioCtx=null,soundOn=true;
+let openCats={"コケ植物":true,"シダ植物":false,"裸子植物":false,"単子葉類":false,"双子葉類":false};
+function fit(v,t,r){return Math.max(0,100-Math.abs(v-t)*(100/r))}
+function clamp01(x){return Math.max(0,Math.min(100,x))}
+function clampTemp(x){return Math.max(TEMP_MIN,Math.min(TEMP_MAX,x))}
+function rand(a,b){return a+Math.random()*(b-a)}
+
+
+function seasonName(){return ["春","夏","秋","冬"][seasonIndex]||"春"}
+function applySeasonDrift(){
+  if(seasonIndex===0){ // 春
+    env.temp=clampTemp(env.temp+0.12);
+    env.insect=clamp01(env.insect+0.18);
+    env.water=clamp01(env.water+0.06);
+  }else if(seasonIndex===1){ // 夏
+    env.temp=clampTemp(env.temp+0.18);
+    env.light=clamp01(env.light+0.10);
+    env.dry=clamp01(env.dry+0.10);
+    env.water=clamp01(env.water-0.08);
+    env.insect=clamp01(env.insect+0.10);
+  }else if(seasonIndex===2){ // 秋
+    env.temp=clampTemp(env.temp-0.10);
+    env.fertility=clamp01(env.fertility+0.16);
+    env.insect=clamp01(env.insect-0.05);
+  }else{ // 冬
+    env.temp=clampTemp(env.temp-0.22);
+    env.insect=clamp01(env.insect-0.22);
+    env.dry=clamp01(env.dry+0.05);
+  }
+}
+function dominantSeason(){
+  const max=Math.max(...seasonCounts);
+  const idx=seasonCounts.indexOf(max);
+  return ["春","夏","秋","冬"][idx]||"春";
+}
+
+const biomeDefs=[
+  {id:"wetland",icon:"💧",name:"湿原",desc:"水分が多く乾燥が少ない生態系。コケや水辺植物が出やすい。"},
+  {id:"desert",icon:"🏜",name:"砂漠",desc:"乾燥と強い日光が支配する生態系。多肉植物や乾燥適応種が出やすい。"},
+  {id:"rainforest",icon:"🌴",name:"熱帯雨林",desc:"高温多湿の生態系。大型シダやラン、熱帯植物が出やすい。"},
+  {id:"tundra",icon:"❄️",name:"ツンドラ",desc:"低温が続く生態系。低温に耐えるコケや針葉樹が出やすい。"},
+  {id:"alpine",icon:"⛰",name:"高山帯",desc:"低温と強光、乾燥が重なる生態系。高山植物が出やすい。"},
+  {id:"grassland",icon:"🌾",name:"草原",desc:"日光が強く、乾燥もほどよくある生態系。イネ科や草花が出やすい。"},
+  {id:"temperateForest",icon:"🌳",name:"温帯林",desc:"水分と光のバランスがよい森林型生態系。広葉樹や花木が出やすい。"},
+  {id:"shadedForest",icon:"🌲",name:"陰湿林",desc:"日光が弱く水分がある生態系。シダや日陰植物が出やすい。"},
+  {id:"savanna",icon:"🦒",name:"サバンナ",desc:"高温・強光・乾燥が混ざる生態系。乾燥に強い樹木や草が出やすい。"},
+  {id:"bareland",icon:"🪨",name:"裸地",desc:"水分や肥沃度が少なく、先駆植物が入りやすい初期生態系。"}
+];
+function biomeById(id){return biomeDefs.find(b=>b.id===id)||biomeDefs[6]}
+function evaluateBiome(a){
+  if(a.water>=78 && a.dry<=22 && a.temp>=22) return "rainforest";
+  if(a.water>=78 && a.dry<=25) return "wetland";
+  if(a.temp<=-8 && a.light>=55) return "alpine";
+  if(a.temp<=0) return "tundra";
+  if(a.dry>=75 && a.light>=72 && a.temp>=20) return "desert";
+  if(a.dry>=58 && a.light>=70 && a.temp>=22) return "savanna";
+  if(a.light>=72 && a.dry>=42) return "grassland";
+  if(a.light<=35 && a.water>=55) return "shadedForest";
+  if(a.water<=35 && a.dry>=55) return "bareland";
+  return "temperateForest";
+}
+function biomeScore(a,id){
+  if(id==="wetland") return fit(a.water,88,20)+fit(a.dry,5,30);
+  if(id==="desert") return fit(a.dry,88,20)+fit(a.light,85,20)+fit(a.water,15,25);
+  if(id==="rainforest") return fit(a.water,88,18)+fit(a.temp,28,12)+fit(a.dry,5,25);
+  if(id==="tundra") return fit(a.temp,-12,22)+fit(a.insect,0,25);
+  if(id==="alpine") return fit(a.temp,-4,20)+fit(a.light,80,20)+fit(a.dry,55,30);
+  if(id==="grassland") return fit(a.light,80,20)+fit(a.dry,50,30)+fit(a.water,40,30);
+  if(id==="shadedForest") return fit(a.light,20,25)+fit(a.water,70,25);
+  if(id==="savanna") return fit(a.temp,28,14)+fit(a.light,82,18)+fit(a.dry,68,22);
+  if(id==="bareland") return fit(a.water,25,25)+fit(a.dry,65,25)+fit(a.light,65,30);
+  return fit(a.water,55,25)+fit(a.light,55,25)+fit(a.temp,16,18);
+}
+
+
+function tempToPercent(t){return ((t-TEMP_MIN)/(TEMP_MAX-TEMP_MIN))*100}
+function loadData(){try{return JSON.parse(localStorage.getItem("plantPlanetV10")||"{}")}catch(e){return {}}}
+function saveData(){localStorage.setItem("plantPlanetV10",JSON.stringify({found,hints,history,rares,biomes,biomeStats,biomePlants,research,seeds,initialEnv,stepSize}))}
+function init(clearLog=false){const d=loadData();found=d.found||{};hints=d.hints||{};history=d.history||[];rares=d.rares||[];biomes=d.biomes||{};biomeStats=d.biomeStats||{};biomePlants=d.biomePlants||{};research=d.research||0;seeds=d.seeds||0;initialEnv=d.initialEnv||{water:50,light:50,dry:50,temp:16,insect:10,fertility:30};stepSize=d.stepSize||5;env={...initialEnv};avg={water:0,light:0,dry:0,temp:0,insect:0,fertility:0,volatility:0};prevEnv={...env};volatility=0;opVolatility=0;seasonIndex=0;seasonCounts=[0,0,0,0];seconds=0;running=false;paused=false;finished=false;el.seedIcon.textContent="🌱";el.phaseName.textContent="待機中";el.phaseDesc.textContent="スタートを押すと、原始植物が発生します。";el.resultText.textContent="";el.startBtn.disabled=false;el.pauseBtn.textContent="一時停止";el.resultPanel.classList.remove("show");if(clearLog)el.logBox.innerHTML="";render()}
+function startRun(){ensureAudio();if(!initialEnv)initialEnv={water:50,light:50,dry:50,temp:16,insect:10,fertility:30};env={...initialEnv};avg={water:0,light:0,dry:0,temp:0,insect:0,fertility:0,volatility:0};prevEnv={...env};volatility=0;opVolatility=0;seconds=0;seasonIndex=Math.floor(Math.random()*4);seasonCounts=[0,0,0,0];running=true;paused=false;finished=false;el.seedIcon.textContent="🌱";el.phaseName.textContent="発生中の原始植物";el.phaseDesc.textContent="環境を操作して、どの植物へ進化するか見守ろう。";el.resultText.textContent="";el.startBtn.disabled=true;el.resultPanel.classList.remove("show");log("🌱 発生開始。今回の季節は「"+seasonName()+"」。事前設定した環境から進化する。","good");playTone([440,660,880],.08);render()}
+function resetAll(){init(true);log("🔄 リセットしました。保存済み図鑑は残ります。","warn")}
+
+function setStepSize(n){stepSize=n;saveData();render();}
+function applyPreset(type){
+  if(running){
+    log("⚠️ プリセットはスタート前だけ使えます。","warn");
+    return;
+  }
+  const presets={
+    temperate:{water:55,light:58,dry:35,temp:16,insect:35,fertility:50},
+    wetland:{water:90,light:45,dry:5,temp:18,insect:25,fertility:60},
+    desert:{water:15,light:90,dry:90,temp:35,insect:5,fertility:20},
+    tundra:{water:35,light:60,dry:50,temp:-15,insect:0,fertility:18},
+    rainforest:{water:88,light:55,dry:8,temp:30,insect:55,fertility:70}
+  };
+  if(type==="random"){
+    initialEnv={
+      water:Math.round(rand(5,95)),
+      light:Math.round(rand(5,95)),
+      dry:Math.round(rand(5,95)),
+      temp:Math.round(rand(TEMP_MIN,TEMP_MAX)),
+      insect:Math.round(rand(0,95)),
+      fertility:Math.round(rand(5,95))
+    };
+  }else{
+    initialEnv={...presets[type]};
+  }
+  env={...initialEnv};
+  saveData();
+  log("🌍 初期環境プリセットを設定しました。","good");
+  render();
+}
+function adjustInitialEnv(k,a){if(running){log("⚠️ 初期環境はスタート前だけ変更できます。","warn");return}if(!initialEnv)initialEnv={water:50,light:50,dry:50,temp:16,insect:10,fertility:30};const delta=(a>0?1:-1)*(stepSize||5);if(k==="temp")initialEnv.temp=clampTemp(initialEnv.temp+delta);else initialEnv[k]=clamp01(initialEnv[k]+delta);if(k==="water")initialEnv.dry=clamp01(initialEnv.dry-delta*.35);if(k==="dry")initialEnv.water=clamp01(initialEnv.water-delta*.35);env={...initialEnv};saveData();render()}
+function nudge(k,a){if(!running||finished){log("⚠️ 先にスタートしてください。","warn");return}const delta=(a>0?1:-1)*(stepSize||5);if(k==="temp")env.temp=clampTemp(env.temp+delta);else{env[k]=clamp01(env[k]+delta);if(k==="water")env.dry=clamp01(env.dry-delta*.45);if(k==="dry")env.water=clamp01(env.water-delta*.45)}const names={water:"💧水分",light:"☀️日光",dry:"🏜乾燥",temp:"🌡温度",insect:"🐝昆虫",fertility:"⭐肥沃度"};log(names[k]+(delta>0?"を上げた。":"を下げた。")+"（"+Math.abs(delta)+"）","warn");opVolatility=clamp01(opVolatility+Math.abs(delta)*0.85);playTone(delta>0?[520]:[320],.04);render()}
+function tick(){if(!running||paused||finished)return;seconds++;env.water=clamp01(env.water+rand(-2,2)-env.dry*.012);env.dry=clamp01(env.dry+rand(-1.5,1.5)-env.water*.006+env.light*.006);env.light=clamp01(env.light+rand(-1.5,1.5));env.temp=clampTemp(env.temp+rand(-.8,.8)+(env.light-50)*.015-(env.water-50)*.006);env.insect=clamp01(env.insect+rand(-1,1)+(env.temp>8&&env.temp<35&&env.water>35?.35:-.25));env.fertility=clamp01(env.fertility+rand(-.6,.8)+(env.water>55?.12:0)-(env.dry>70?.2:0));
+applySeasonDrift();
+seasonCounts[seasonIndex]++;
+const naturalChange=(Math.abs(env.water-prevEnv.water)+Math.abs(env.light-prevEnv.light)+Math.abs(env.dry-prevEnv.dry)+Math.abs(env.temp-prevEnv.temp)*1.4+Math.abs(env.insect-prevEnv.insect)+Math.abs(env.fertility-prevEnv.fertility))/6;
+volatility=clamp01(volatility*0.90 + naturalChange*1.8 + opVolatility*0.28);
+opVolatility=clamp01(opVolatility*0.72);
+prevEnv={...env};
+for(const k in avg)avg[k]+=env[k];
+avg.volatility+=volatility;if(seconds%10===0)randomEvent();if(seconds>=EVOLVE_SECONDS)decideEvolution();render()}
+function randomEvent(){volatility=clamp01(volatility+18);const ev=[()=>{env.water=clamp01(env.water+15);log("🌧 長雨。水分が大きく増えた。","good");playTone([600,760],.06)},()=>{env.dry=clamp01(env.dry+15);env.water=clamp01(env.water-8);log("🏜 乾燥化。乾燥が進み、水分が減った。","bad");playTone([220,180],.08)},()=>{env.light=clamp01(env.light+12);env.temp=clampTemp(env.temp+4);log("☀️ 強い日差し。日光と温度が上がった。","warn");playTone([700],.08)},()=>{env.temp=clampTemp(env.temp-12);env.insect=clamp01(env.insect-8);log("❄️ 寒冷化。温度と昆虫が減った。","bad");playTone([260,210],.08)},()=>{env.insect=clamp01(env.insect+16);log("🐝 昆虫が増えた。花をもつ植物が出やすくなる。","good");playTone([520,620,720],.04)},()=>{env.fertility=clamp01(env.fertility+18);log("🍂 落ち葉が分解され、肥沃度が上がった。","good");playTone([420,520],.07)}];ev[Math.floor(Math.random()*ev.length)]()}
+function currentAverage(){const d=Math.max(1,seconds);const v=(avg.volatility||0)/d;return {water:avg.water/d,light:avg.light/d,dry:avg.dry/d,temp:avg.temp/d,insect:avg.insect/d,fertility:avg.fertility/d,volatility:v,stability:100-v,season:dominantSeason(),spring:seasonCounts[0],summer:seasonCounts[1],autumn:seasonCounts[2],winter:seasonCounts[3]}}
+function scoreList(){const a=currentAverage();a.volatility=Number.isFinite(a.volatility)?a.volatility:0;a.stability=Number.isFinite(a.stability)?a.stability:100;return species.map(s=>{let bonus=0;
+if(["サクラ","ヒマワリ","バラ","ハス","バナナ","ラン","トウモロコシ"].includes(s.name))bonus+=fit(a.fertility,70,28);
+if(["岩場コケ","スナゴケ","マツ","花サボテン","ソテツ"].includes(s.name))bonus+=fit(a.fertility,18,25);
+if(["ワラビ","ゼンマイ","スギ","カエデ","シロツメクサ"].includes(s.name))bonus+=fit(a.fertility,45,30);
+if(["ラン","バナナ","アジアンタム","オシダ","スギ","ブナ","ハス","バラ"].includes(s.name))bonus+=fit(a.stability,82,25);
+if(["スナゴケ","岩場コケ","タンポポ","ワラビ","マツ","カラマツ","花サボテン","シロツメクサ"].includes(s.name))bonus+=fit(a.volatility,55,35);
+if(["氷雪コケ","トウヒ","カラマツ"].includes(s.name))bonus+=fit(a.volatility,40,40);
+if(a.season==="春" && ["サクラ","シロツメクサ","バラ","ユリ","タンポポ"].includes(s.name))bonus+=85;
+if(a.season==="夏" && ["イネ","トウモロコシ","ヒマワリ","バナナ","巨大シダ","木生シダ","ソテツ"].includes(s.name))bonus+=85;
+if(a.season==="秋" && ["カエデ","カラマツ","マツ","スギ","ヒノキ"].includes(s.name))bonus+=85;
+if(a.season==="冬" && ["氷雪コケ","トウヒ","モミ","カラマツ"].includes(s.name))bonus+=95;
+const bio=evaluateBiome(a);
+if(bio==="rainforest" && ["シダ植物","単子葉類"].includes(s.group))bonus+=30;
+if(bio==="desert" && ["花サボテン","アロエ","砂漠コケ","バオバブ","ローズマリー"].includes(s.name))bonus+=70;
+if(bio==="alpine" && ["氷雪コケ","トウヒ","カラマツ","高山花","高山ユリ"].includes(s.name))bonus+=70;
+if(bio==="wetland" && ["ミズゴケ","沼ゴケ","カワゴケ","ハス","スイレン","ウキクサ","ミズワラビ"].includes(s.name))bonus+=70;
+if(bio==="grassland" && ["イネ","ムギ","ススキ","タンポポ","シロツメクサ"].includes(s.name))bonus+=45;
+return Object.assign({},s,{score:Math.max(1,s.score(a)+bonus+rand(-8,8))})}).sort((x,y)=>y.score-x.score)}
+
+function cappedProbabilityList(limit=6){
+  const list=scoreList().slice(0,limit).map(s=>Object.assign({},s,{weight:Math.max(1,Number.isFinite(s.score)?s.score:1)}));
+  if(list.length===0) return [];
+  // 最大確率を80%に制限する。トップが強すぎる場合はトップの重みを下げる。
+  let total=list.reduce((m,s)=>m+s.weight,0);
+  let top=list[0];
+  let others=total-top.weight;
+  if(others<=0){
+    list.forEach((s,i)=>s.weight=i===0?4:1);
+  }else if(top.weight/(top.weight+others)>0.8){
+    top.weight=others*4; // top / (top + others) = 80%
+  }
+  total=list.reduce((m,s)=>m+s.weight,0);
+  list.forEach(s=>s.prob=Math.max(5,Math.min(80,Math.round(s.weight/total*100))));
+  return list;
+}
+function decideEvolution(){finished=true;running=false;const list=cappedProbabilityList(6);const total=list.reduce((m,s)=>m+s.weight,0);let r=Math.random()*total,chosen=list[0];for(const s of list){r-=s.weight;if(r<=0){chosen=s;break}}const biomeId=evaluateBiome(currentAverage());const biome=biomeById(biomeId);biomes[biomeId]=true;biomeStats[biomeId]=(biomeStats[biomeId]||0)+1;if(!biomePlants[biomeId])biomePlants[biomeId]={};biomePlants[biomeId][chosen.id]=true;const isNew=!found[chosen.id];found[chosen.id]=true;history.unshift({id:chosen.id,name:chosen.name,icon:chosen.icon,rank:chosen.rank,date:new Date().toLocaleString("ja-JP")});history=history.slice(0,12);const gainR=chosen.rank==="希少種"?20:chosen.rank==="環境適応種"?14:10;const gainS=chosen.rank==="希少種"?3:chosen.rank==="環境適応種"?2:1;research+=gainR;seeds+=gainS;
+const rare = rollRare(chosen);
+if(rare){rares.unshift(rare);rares=rares.slice(0,30);research+=8;log("✨ レア変異発見："+rare.label+" "+chosen.name+"！ 研究ポイント+8","good");}
+saveData();el.resultText.textContent="進化結果："+(rare?rare.label:"")+chosen.name;el.seedIcon.textContent=chosen.icon;el.phaseName.textContent=chosen.name;el.phaseDesc.textContent=chosen.group+"："+chosen.desc;el.startBtn.disabled=false;showResult(chosen,isNew,gainR,gainS,rare,biome);log("📖 図鑑登録："+chosen.name+"。"+chosen.desc,"good");playTone([523,659,784,1046],.12);render()}
+function showResult(s,isNew,gainR,gainS,rare,biome){const a=currentAverage();el.resultPanel.classList.add("show");el.resultContent.innerHTML=`<p><span class="badge">${s.rank}</span> ${isNew?"📖 新発見":"🔁 発見済み"}</p><h2>No.${String(s.no).padStart(3,"0")} ${s.icon} ${rare?rare.label:""}${s.name}</h2><p><b>${s.group}</b>：${s.desc}</p><p><b>今回の生態系</b><br>${biome.icon} ${biome.name}：${biome.desc}</p><p><b>生態系レポート</b><br>${ecosystemReport(a,biome,s)}</p><p><b>生態系評価</b><br>${ecosystemStars(a,biome)}　${ecosystemTitle(a,biome)}</p><p><b>次の狙い</b><br>${nextTargetAdvice(a,biome,s)}</p><div class="resultGrid"><div class="rbox">平均温度：<b>${Math.round(a.temp)}℃</b></div><div class="rbox">平均水分：<b>${Math.round(a.water)}</b></div><div class="rbox">平均乾燥：<b>${Math.round(a.dry)}</b></div><div class="rbox">平均日光：<b>${Math.round(a.light)}</b></div><div class="rbox">平均昆虫：<b>${Math.round(a.insect)}</b></div><div class="rbox">平均肥沃度：<b>${Math.round(a.fertility)}</b></div><div class="rbox">主な季節：<b>${a.season}</b></div><div class="rbox">環境評価：<b>${biome.icon} ${biome.name}</b></div></div><p><b>なぜ生まれた？</b><br>${s.why}${hiddenEnvComment(a,s)}</p><p><b>豆知識</b><br>${s.fact}</p><p><b>今回の獲得</b><br>🌱 種子 +${gainS}　🔬 研究ポイント +${gainR}${rare?"　✨ レア変異登録":""}</p>`}
+
+
+
+function nextTargetAdvice(a,biome,s){
+  if(biome.id==="wetland") return "湿原をさらに深めるなら水分を高く、乾燥を低く保とう。ハス・ウキクサ・ミズワラビ系が狙いやすい。";
+  if(biome.id==="desert") return "砂漠型を狙うなら日光と乾燥を高く、水分を低く保とう。花サボテン・アロエ・バオバブ系が狙える。";
+  if(biome.id==="rainforest") return "熱帯雨林を狙うなら水分と温度を高く、昆虫も増やそう。ラン・巨大シダ・バナナ系が狙いやすい。";
+  if(biome.id==="tundra" || biome.id==="alpine") return "寒冷系を狙うなら温度を下げ、日光や乾燥との組み合わせを試そう。氷雪コケ・トウヒ・高山植物が狙える。";
+  if(biome.id==="grassland") return "草原型を狙うなら日光を高く、水分と乾燥を中間に寄せよう。イネ科やタンポポ系が出やすい。";
+  if(biome.id==="shadedForest") return "陰湿林を狙うなら日光を下げ、水分を高く保とう。シダ植物や日陰植物が狙いやすい。";
+  return "温帯林はバランス型。昆虫を増やすと花木、水分を増やすと森林系、乾燥を上げると草原・乾燥系へ寄せられる。";
+}
+function biomePlantList(id){
+  const map=biomePlants&&biomePlants[id]?biomePlants[id]:{};
+  const arr=species.filter(s=>map[s.id]).slice(0,8);
+  if(!arr.length) return "記録なし";
+  return arr.map(s=>s.icon+s.name).join("、");
+}
+function missionDone(type){
+  const foundCount=Object.keys(found||{}).length;
+  const biomeCount=Object.keys(biomes||{}).length;
+  const rareCount=(rares||[]).length;
+  if(type==="plants10") return foundCount>=10;
+  if(type==="plants40") return foundCount>=40;
+  if(type==="biome3") return biomeCount>=3;
+  if(type==="biomeAll") return biomeCount>=biomeDefs.length;
+  if(type==="rare1") return rareCount>=1;
+  if(type==="mossAll") return species.filter(s=>s.group==="コケ植物").every(s=>found[s.id]);
+  return false;
+}
+function ecosystemStars(a,biome){
+  const sc = biomeScore(a,biome.id);
+  if(sc>=175) return "★★★★★";
+  if(sc>=145) return "★★★★☆";
+  if(sc>=110) return "★★★☆☆";
+  if(sc>=75) return "★★☆☆☆";
+  return "★☆☆☆☆";
+}
+function ecosystemTitle(a,biome){
+  if(biome.id==="wetland" && a.water>=88) return "水を抱く星";
+  if(biome.id==="desert" && a.dry>=85) return "乾燥の支配者";
+  if(biome.id==="rainforest" && a.temp>=26) return "熱帯の温室";
+  if(biome.id==="tundra" || biome.id==="alpine") return "氷風の研究者";
+  if(biome.id==="grassland") return "光の草原";
+  if(biome.id==="shadedForest") return "影の森";
+  if(biome.id==="temperateForest") return "均衡の森";
+  return "はじまりの大地";
+}
+function ecosystemReport(a,biome,s){
+  let parts=[];
+  if(a.water>=75) parts.push("水分が高く、湿った環境が形成された");
+  if(a.dry>=70) parts.push("乾燥が強く、水を守る戦略が有利になった");
+  if(a.light>=75) parts.push("日光が強く、光を多く使う植物が有利になった");
+  if(a.temp<=0) parts.push("低温が続き、寒さに耐える植物が選ばれやすくなった");
+  if(a.temp>=26) parts.push("高温が続き、熱帯型の成長が起こりやすくなった");
+  if(a.insect>=65) parts.push("昆虫が多く、花を使う繁殖戦略が有利になった");
+  if(a.fertility>=65) parts.push("肥沃度が高く、大きく育つ植物が出やすくなった");
+  if(parts.length===0) parts.push("環境のバランスがよく、温帯型の生態系になった");
+  return parts.join("。")+"。その結果、"+s.name+"が発生した。";
+}
+function hiddenEnvComment(a,s){
+  if(a.volatility >= 55){
+    return "<br>さらに、環境変化の激しい条件が続いたことも、この植物の発生に影響した。";
+  }
+  if(a.stability >= 78){
+    return "<br>また、環境が安定していたため、繊細な成長戦略をとりやすかった。";
+  }
+  if(["サクラ","カエデ","ヒマワリ","イネ"].includes(s.name)){
+    return "<br>今回の固定シーズンも、この植物の発生に影響した。";
+  }
+  return "";
+}
+function togglePause(){if(!running||finished)return;paused=!paused;el.pauseBtn.textContent=paused?"再開":"一時停止";playTone(paused?[260]:[520],.06)}
+function render(){setBar("time",Math.min(100,seconds/EVOLVE_SECONDS*100),seconds+"秒");setBar("water",env.water,Math.round(env.water));setBar("light",env.light,Math.round(env.light));setBar("dry",env.dry,Math.round(env.dry));setBar("temp",tempToPercent(env.temp),Math.round(env.temp)+"℃");setBar("insect",env.insect,Math.round(env.insect));setBar("fertility",env.fertility,Math.round(env.fertility));["water","light","dry","insect","fertility"].forEach(k=>el[k+"Now"].textContent=Math.round(env[k]));el.tempNow.textContent=Math.round(env.temp)+"℃";el.seasonNow.textContent=seasonName();if(el.stepNow)el.stepNow.textContent=stepSize||5;document.querySelectorAll("[data-step]").forEach(b=>b.classList.toggle("active",Number(b.dataset.step)===(stepSize||5)));renderPreStart();if(!running && !finished){
+  el.candidates.innerHTML=`<div class="candidate"><div class="candTop"><span>？？？？</span><span>--%</span></div><div class="candDesc">スタート後に進化予測が表示されます。</div></div>
+  <div class="candidate"><div class="candTop"><span>？？？？</span><span>--%</span></div><div class="candDesc">初期設定から何が出るか予想してみよう。</div></div>`;
+}else{
+  const list=cappedProbabilityList(6).slice(0,4);
+  el.candidates.innerHTML=list.map(s=>{const p=Math.max(5,Math.min(80,s.prob||5));return `<div class="candidate"><div class="candTop"><span>${s.icon} ${s.name}</span><span>${p}%</span></div><div class="meter" style="margin-top:7px"><div class="fill" style="width:${p}%"></div></div><div class="candDesc">${s.group}：${s.desc}</div></div>`}).join("");
+}renderZukan();renderHistory();renderRare();renderBiomes();renderTitles();renderMissions();el.researchText.textContent=research;el.seedText.textContent=seeds;el.foundText.textContent=Object.keys(found).length}
+
+
+
+function hintText(s){
+  if(!hints[s.id]) return "未発見";
+  const a = hintFromName(s.name);
+  return "ヒント："+a;
+}
+function hintFromName(name){
+  const wet=["ミズゴケ","ゼニゴケ","ジャゴケ","ハス","イネ","バナナ","巨大シダ","木生シダ"];
+  const dry=["スナゴケ","岩場コケ","マツ","ソテツ","アロエ","花サボテン"];
+  const cold=["氷雪コケ","トウヒ","モミ","カラマツ"];
+  const insect=["ラン","ユリ","サクラ","バラ","シロツメクサ","ヒマワリ"];
+  if(wet.includes(name)) return "水分を高めに保つ";
+  if(dry.includes(name)) return "乾燥と日光を高める";
+  if(cold.includes(name)) return "低温の季節や環境を狙う";
+  if(insect.includes(name)) return "昆虫を増やす";
+  return "平均環境を大きく偏らせすぎない";
+}
+function unlockHint(id){
+  const s=species.find(x=>x.id===id);
+  if(!s || found[id]) return;
+  if(hints[id]){log("🔬 その植物のヒントは解放済みです。","warn");return;}
+  if(research<15){log("⚠️ 研究ポイントが足りません。ヒント解放には15P必要です。","warn");return;}
+  research-=15;
+  hints[id]=true;
+  saveData();
+  log("🔬 No."+String(s.no).padStart(3,"0")+" の研究ヒントを解放しました。","good");
+  render();
+}
+function renderPreStart(){if(!el.preWaterNow)return;const e=initialEnv||env;el.preWaterNow.textContent=Math.round(e.water);el.preLightNow.textContent=Math.round(e.light);el.preDryNow.textContent=Math.round(e.dry);el.preTempNow.textContent=Math.round(e.temp)+"℃";el.preInsectNow.textContent=Math.round(e.insect);el.preFertilityNow.textContent=Math.round(e.fertility);}
+function renderZukan(){const groups=["コケ植物","シダ植物","裸子植物","単子葉類","双子葉類"];el.zukan.innerHTML=groups.map(g=>{const arr=species.filter(s=>s.group===g);const got=arr.filter(s=>found[s.id]).length;return `<div class="zcat"><button class="zhead" data-cat="${g}"><span>${openCats[g]?"▼":"▶"} ${g} (${got}/${arr.length})</span><span>${arr.length?Math.round(got/arr.length*100):0}%</span></button><div class="zbody ${openCats[g]?"":"closed"}">${arr.map(s=>{const ok=found[s.id];return `<div class="zitem ${ok?"found":""}">${ok?`No.${String(s.no).padStart(3,"0")} ${s.icon} ${s.name}<br><span style="font-size:11px;color:#b9c9b5">${s.rank}</span>`:`No.${String(s.no).padStart(3,"0")} <span class="hiddenIcon">⬛</span> ????<br><span style="font-size:11px;color:#777">${hints[s.id]?hintText(s):"未発見"}</span><br><button class="secondary" style="margin-top:6px;padding:6px 8px;font-size:12px" onclick="unlockHint('${s.id}')">${hints[s.id]?"ヒント済":"研究P 15でヒント"}</button>`}</div>`}).join("")}</div></div>`}).join("");document.querySelectorAll(".zhead").forEach(b=>b.onclick=()=>{openCats[b.dataset.cat]=!openCats[b.dataset.cat];renderZukan()})}
+
+function rollRare(s){
+  let chance=0.035;
+  const a=currentAverage();
+  if(a.volatility>=55) chance+=0.035;
+  if(s.rank==="希少種") chance+=0.025;
+  if(a.stability>=80) chance+=0.015;
+  if(Math.random()>chance) return null;
+  const pool=[
+    {label:"金色の",icon:"✨"},
+    {label:"白い",icon:"🤍"},
+    {label:"黒い",icon:"🖤"},
+    {label:"巨大な",icon:"🌟"},
+    {label:"斑入りの",icon:"🍃"}
+  ];
+  const r=pool[Math.floor(Math.random()*pool.length)];
+  return {id:s.id+"_"+r.label+"_"+Date.now(),base:s.name,label:r.label,icon:r.icon,rank:s.rank,date:new Date().toLocaleString("ja-JP")};
+}
+
+function renderBiomes(){
+  if(!el.biomeBox) return;
+  const got=biomeDefs.filter(b=>biomes&&biomes[b.id]).length;
+  el.biomeBox.innerHTML=`<p>発見 ${got}/${biomeDefs.length}</p>`+biomeDefs.map(b=>{
+    const ok=biomes&&biomes[b.id];
+    const count=biomeStats&&biomeStats[b.id]?biomeStats[b.id]:0;
+    return `<p>${ok?b.icon:"⬛"} ${ok?b.name:"????"} <span style="color:#b9c9b5">${ok?b.desc:"未発見の生態系"}${ok?" / 記録"+count+"回<br>植物："+biomePlantList(b.id):""}</span></p>`;
+  }).join("");
+}
+
+
+function renderMissions(){
+  if(!el.missionBox) return;
+  const missions=[
+    ["plants10","📖 植物を10種発見する"],
+    ["plants40","🌱 40種図鑑を突破する"],
+    ["biome3","🌍 バイオームを3種類発見する"],
+    ["biomeAll","🧭 全バイオームを発見する"],
+    ["rare1","✨ レア変異を1つ発見する"],
+    ["mossAll","🟢 コケ植物を全種発見する"]
+  ];
+  el.missionBox.innerHTML=missions.map(m=>`<p>${missionDone(m[0])?"✅":"⬜"} ${m[1]}</p>`).join("");
+}
+function renderTitles(){
+  if(!el.titleBox) return;
+  const totalBio=Object.keys(biomes||{}).length;
+  const totalPlants=Object.keys(found||{}).length;
+  const rareCount=(rares||[]).length;
+  const titles=[];
+  if(totalPlants>=10) titles.push("📖 新米植物学者");
+  if(totalPlants>=40) titles.push("🌱 第一図鑑完成者");
+  if(totalPlants>=80) titles.push("🌿 生態系調査員");
+  if(totalPlants>=151) titles.push("🏆 151種の記録者");
+  if(totalBio>=3) titles.push("🌍 バイオーム観測者");
+  if(totalBio>=7) titles.push("🧭 生態系探検家");
+  if(rareCount>=1) titles.push("✨ 変異の目撃者");
+  if(rareCount>=10) titles.push("🌟 レア変異研究者");
+  el.titleBox.innerHTML=titles.length?titles.map(t=>`<p>${t}</p>`).join(""):"<p>まだ称号なし。植物やバイオームを発見しよう。</p>";
+}
+function renderRare(){
+  el.rareText.textContent=rares.length;
+  el.rareBox.innerHTML=rares.length?rares.map(r=>`<p>${r.icon} ${r.label}${r.base} <span style="color:#b9c9b5">(${r.date})</span></p>`).join(""):"<p>まだレア変異なし</p>";
+}
+function renderHistory(){el.historyBox.innerHTML=history.length?history.map(h=>`<p>${h.icon} ${h.name} <span style="color:#b9c9b5">(${h.rank})</span></p>`).join(""):"<p>まだ発見なし</p>"}
+function setBar(id,val,label){document.getElementById(id+"Bar").style.width=Math.round(clamp01(val))+"%";document.getElementById(id+"Text").textContent=label}
+function log(t,c=""){el.logBox.innerHTML=`<p class="${c}">${t}</p>`+el.logBox.innerHTML}
+function ensureAudio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}
+function playTone(freqs,dur){if(!soundOn)return;try{ensureAudio();const now=audioCtx.currentTime;freqs.forEach((f,i)=>{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type="sine";osc.frequency.value=f;gain.gain.setValueAtTime(.0001,now+i*dur);gain.gain.exponentialRampToValueAtTime(.08,now+i*dur+.01);gain.gain.exponentialRampToValueAtTime(.0001,now+(i+1)*dur);osc.connect(gain);gain.connect(audioCtx.destination);osc.start(now+i*dur);osc.stop(now+(i+1)*dur+.02)})}catch(e){}}
+function toggleSound(){soundOn=!soundOn;el.soundNow.textContent=soundOn?"ON":"OFF";if(soundOn)playTone([440,660,880],.08)}
+el.startBtn.onclick=startRun;el.pauseBtn.onclick=togglePause;el.resetBtn.onclick=resetAll;document.querySelectorAll("[data-k]").forEach(btn=>btn.onclick=()=>nudge(btn.dataset.k,Number(btn.dataset.a)));document.querySelectorAll("[data-pre]").forEach(btn=>btn.onclick=()=>adjustInitialEnv(btn.dataset.pre,Number(btn.dataset.a)));document.querySelectorAll("[data-preset]").forEach(btn=>btn.onclick=()=>applyPreset(btn.dataset.preset));document.querySelectorAll("[data-step]").forEach(btn=>btn.onclick=()=>setStepSize(Number(btn.dataset.step)));
+init(false);log("待機中。スタートを押すと60秒の進化が始まります。","warn");intervalId=setInterval(tick,1000);
+</script>
+</body>
+</html>
