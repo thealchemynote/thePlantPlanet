@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>thePlantPlanet v6.0</title>
+<title>thePlantPlanet v6.0.3</title>
 <style>
 *{box-sizing:border-box}
 :root{--bg:#0e1711;--panel:#18251c;--text:#f1faee;--muted:#b9c9b5;--accent:#d9f87a;--good:#98ee83;--warn:#ffd36e;--bad:#ff8e8e}
@@ -29,7 +29,7 @@ button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#14201
 </head>
 <body>
 <div class="wrap">
-<section class="panel wide"><h1>thePlantPlanet v6.0</h1><div class="sub">植物学者シミュレーター。v6.0完成版。環境をつくり、植物を発見し、図鑑・生態系・遷移・研究ノート・実績・伝説植物を集める植物惑星シミュレーター。プレイヤーには基本環境だけを見せ、操作の緩急は内部で進化に反映する。</div></section>
+<section class="panel wide"><h1>thePlantPlanet v6.0.3</h1><div class="sub">植物学者シミュレーター。v6.0完成版。環境をつくり、植物を発見し、図鑑・生態系・遷移・研究ノート・実績・伝説植物を集める植物惑星シミュレーター。プレイヤーには基本環境だけを見せ、操作の緩急は内部で進化に反映する。</div></section>
 
 <section class="panel">
 <div class="stage"><div class="seed" id="seedIcon">🌱</div><div><div class="big" id="phaseName">待機中</div><div class="note" id="phaseDesc">スタートを押すと、原始植物が発生します。</div><div class="resultTxt" id="resultText"></div></div></div>
@@ -761,7 +761,7 @@ const rare = rollRare(chosen);
 if(rare){rares.unshift(rare);rares=rares.slice(0,30);research+=8;log("✨ レア変異発見："+rare.label+" "+chosen.name+"！ 研究ポイント+8","good");}
 const legend=rollLegend(chosen,currentAverage(),biome);
 addResearchNote("plant",{id:chosen.id,name:(rare?rare.label:"")+chosen.name,icon:chosen.icon,rank:chosen.rank,group:chosen.group,biomeId,biomeName:biome.name,biomeIcon:biome.icon,stageName:stage.name,stageIcon:stage.icon,eventName:currentEvent?currentEvent.name:"なし",legendName:legend?legend.name:"なし",env:envSnapshot(currentAverage())});
-saveData();el.resultText.textContent="進化結果："+(rare?rare.label:"")+chosen.name;el.seedIcon.textContent=chosen.icon;el.phaseName.textContent=chosen.name;el.phaseDesc.textContent=chosen.group+"："+chosen.desc;el.startBtn.disabled=false;checkAchievements();showResult(chosen,isNew,gainR,gainS,rare,biome);log("📖 図鑑登録："+chosen.name+"。"+chosen.desc,"good");playTone([523,659,784,1046],.12);render()}
+saveData();el.resultText.textContent="進化結果："+(rare?rare.label:"")+chosen.name;el.seedIcon.textContent=chosen.icon;el.phaseName.textContent=chosen.name;el.phaseDesc.textContent=chosen.group+"："+chosen.desc;el.startBtn.disabled=false;checkAchievements();showResult(chosen,isNew,gainR,gainS,rare,biome,stage,legend);log("📖 図鑑登録："+chosen.name+"。"+chosen.desc,"good");playTone([523,659,784,1046],.12);render()}
 
 
 function deadAdvice(a){
@@ -798,7 +798,7 @@ function showDeadResult(){
   <p><b>次の実験</b><br>${deadAdvice(a)}</p>`;
   log("💀 定着失敗。この環境では植物が枯れてしまった。","bad");checkAchievements();
 }
-function showResult(s,isNew,gainR,gainS,rare,biome){const a=currentAverage();el.resultPanel.classList.add("show");el.resultContent.innerHTML=`<p><span class="badge">${s.rank}</span> ${isNew?"📖 新発見":"🔁 発見済み"}</p><h2>No.${String(s.no).padStart(3,"0")} ${s.icon} ${rare?rare.label:""}${s.name}</h2><p><b>${s.group}</b>：${s.desc}</p><p><b>今回の生態系</b><br>${biome.icon} ${biome.name}：${biome.desc}</p><p><b>遷移段階</b><br>${stage.icon} ${stage.name}：${stage.desc}</p><p><b>生態系レポート</b><br>${ecosystemReport(a,biome,s)}</p><p><b>生態系評価</b><br>${ecosystemStars(a,biome)}　${ecosystemTitle(a,biome)}</p><p><b>次の狙い</b><br>${nextTargetAdvice(a,biome,s)}</p><p><b>遷移チェーン</b><br>${chainBonus(s)>0?"発見済み植物との相性によって、この植物が出やすくなっていました。":"この植物は環境条件を中心に発生しました。"}<br>${nextChainTargets(s)}</p><div class="resultGrid"><div class="rbox">平均温度：<b>${Math.round(a.temp)}℃</b></div><div class="rbox">平均水分：<b>${Math.round(a.water)}</b></div><div class="rbox">平均乾燥：<b>${Math.round(a.dry)}</b></div><div class="rbox">平均日光：<b>${Math.round(a.light)}</b></div><div class="rbox">平均昆虫：<b>${Math.round(a.insect)}</b></div><div class="rbox">平均肥沃度：<b>${Math.round(a.fertility)}</b></div><div class="rbox">主な季節：<b>${a.season}</b></div><div class="rbox">環境評価：<b>${biome.icon} ${biome.name}</b></div></div><p><b>なぜ生まれた？</b><br>${s.why}${hiddenEnvComment(a,s)}</p><p><b>豆知識</b><br>${s.fact}</p><p><b>今回の獲得</b><br>🌱 種子 +${gainS}　🔬 研究ポイント +${gainR}${rare?"　✨ レア変異登録":""}${legend?"　🌟 伝説植物発見":""}</p>${legend?`<p><b>🌟 特別発見</b><br>${legend.icon} ${legend.name}<br>${legend.desc}</p>`:""}`}
+function showResult(s,isNew,gainR,gainS,rare,biome,stage,legend){const a=currentAverage();stage=stage||currentSuccessionStage(biome.id);legend=legend||null;el.resultPanel.classList.add("show");el.resultContent.innerHTML=`<p><span class="badge">${s.rank}</span> ${isNew?"📖 新発見":"🔁 発見済み"}</p><h2>No.${String(s.no).padStart(3,"0")} ${s.icon} ${rare?rare.label:""}${s.name}</h2><p><b>${s.group}</b>：${s.desc}</p><p><b>今回の生態系</b><br>${biome.icon} ${biome.name}：${biome.desc}</p><p><b>遷移段階</b><br>${stage.icon} ${stage.name}：${stage.desc}</p><p><b>生態系レポート</b><br>${ecosystemReport(a,biome,s)}</p><p><b>生態系評価</b><br>${ecosystemStars(a,biome)}　${ecosystemTitle(a,biome)}</p><p><b>次の狙い</b><br>${nextTargetAdvice(a,biome,s)}</p><p><b>遷移チェーン</b><br>${chainBonus(s)>0?"発見済み植物との相性によって、この植物が出やすくなっていました。":"この植物は環境条件を中心に発生しました。"}<br>${nextChainTargets(s)}</p><div class="resultGrid"><div class="rbox">平均温度：<b>${Math.round(a.temp)}℃</b></div><div class="rbox">平均水分：<b>${Math.round(a.water)}</b></div><div class="rbox">平均乾燥：<b>${Math.round(a.dry)}</b></div><div class="rbox">平均日光：<b>${Math.round(a.light)}</b></div><div class="rbox">平均昆虫：<b>${Math.round(a.insect)}</b></div><div class="rbox">平均肥沃度：<b>${Math.round(a.fertility)}</b></div><div class="rbox">主な季節：<b>${a.season}</b></div><div class="rbox">環境評価：<b>${biome.icon} ${biome.name}</b></div></div><p><b>なぜ生まれた？</b><br>${s.why}${hiddenEnvComment(a,s)}</p><p><b>豆知識</b><br>${s.fact}</p><p><b>今回の獲得</b><br>🌱 種子 +${gainS}　🔬 研究ポイント +${gainR}${rare?"　✨ レア変異登録":""}${legend?"　🌟 伝説植物発見":""}</p>${legend?`<p><b>🌟 特別発見</b><br>${legend.icon} ${legend.name}<br>${legend.desc}</p>`:""}`}
 
 
 
