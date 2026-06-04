@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>thePlantPlanet v6.0.3</title>
+<title>thePlantPlanet_FINAL_v1.0</title>
 <style>
 *{box-sizing:border-box}
 :root{--bg:#0e1711;--panel:#18251c;--text:#f1faee;--muted:#b9c9b5;--accent:#d9f87a;--good:#98ee83;--warn:#ffd36e;--bad:#ff8e8e}
@@ -29,7 +29,7 @@ button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#14201
 </head>
 <body>
 <div class="wrap">
-<section class="panel wide"><h1>thePlantPlanet v6.0.3</h1><div class="sub">植物学者シミュレーター。v6.0完成版。環境をつくり、植物を発見し、図鑑・生態系・遷移・研究ノート・実績・伝説植物を集める植物惑星シミュレーター。プレイヤーには基本環境だけを見せ、操作の緩急は内部で進化に反映する。</div></section>
+<section class="panel wide"><h1>thePlantPlanet_FINAL_v1.0</h1><div class="sub">植物学者シミュレーター。FINAL v1.0。環境をつくり、植物を発見し、図鑑・生態系・遷移・研究ノート・実績・伝説植物を集める植物惑星シミュレーター。プレイヤーには基本環境だけを見せ、操作の緩急は内部で進化に反映する。</div></section>
 
 <section class="panel">
 <div class="stage"><div class="seed" id="seedIcon">🌱</div><div><div class="big" id="phaseName">待機中</div><div class="note" id="phaseDesc">スタートを押すと、原始植物が発生します。</div><div class="resultTxt" id="resultText"></div></div></div>
@@ -96,7 +96,7 @@ button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#14201
   <div class="summary" id="classSummary"></div>
   <div class="log" id="classTitleBox" style="height:auto;min-height:80px;margin-top:8px"></div>
 </div></section>
-<section class="panel wide"><button class="foldToggle" data-fold="zukan"><span>折りたたみ図鑑</span><span id="foldIcon_zukan">▼</span></button><div class="foldBody  " id="foldBody_zukan"><h2 style="display:none">折りたたみ図鑑</h2><div class="zukan" id="zukan"></div></div></section>
+<section class="panel wide"><button class="foldToggle" data-fold="zukan"><span>折りたたみ図鑑</span><span id="foldIcon_zukan">▶</span></button><div class="foldBody  " id="foldBody_zukan"><h2 style="display:none">折りたたみ図鑑</h2><div class="zukan" id="zukan"></div></div></section>
 
 
 
@@ -370,7 +370,7 @@ const ids=["seedIcon","phaseName","phaseDesc","resultText","timeBar","timeText",
 const el={}; ids.forEach(id=>el[id]=document.getElementById(id));
 let env,initialEnv,stepSize,avg,prevEnv,volatility,opVolatility,seasonIndex,seasonCounts,seconds,currentEvent,eventCooldown,found,hints,history,rares,biomes,biomeStats,biomePlants,succession,notes,discoveryCounts,achievements,legends,research,seeds,running=false,paused=false,finished=false,intervalId,audioCtx=null,soundOn=true;
 let openCats={"コケ植物":true,"シダ植物":false,"裸子植物":false,"単子葉類":false,"双子葉類":false};
-let foldState={history:false,rare:false,notes:false,biome:false,succession:false,legends:false,themes:false,classes:false,chains:false,titles:false,missions:false,zukan:true,completion:true,ranking:false,achievements:false,data:false,log:false};
+let foldState={history:false,rare:false,notes:false,biome:false,succession:false,legends:false,themes:false,classes:false,chains:false,titles:false,missions:false,zukan:false,completion:true,ranking:false,achievements:false,data:false,log:false};
 function fit(v,t,r){return Math.max(0,100-Math.abs(v-t)*(100/r))}
 function clamp01(x){return Math.max(0,Math.min(100,x))}
 function clampTemp(x){return Math.max(TEMP_MIN,Math.min(TEMP_MAX,x))}
@@ -1408,4 +1408,11 @@ el.startBtn.onclick=startRun;el.pauseBtn.onclick=togglePause;el.resetBtn.onclick
 init(false);log("待機中。スタートを押すと60秒の進化が始まります。","warn");intervalId=setInterval(tick,1000);
 </script>
 </body>
-</html>
+</html><section class="panel wide">
+  <h2>遊び方</h2>
+  <div class="sub">
+    ① 初期設定で環境をつくる → ② スタート → ③ 60秒間リアルタイムに環境を変える → ④ 植物・生態系・遷移を記録。<br>
+    環境に合う植物がない場合は「枯れてしまった」になります。図鑑の観察・研究ノート・再実験を使って、200種＋伝説植物を目指そう。
+  </div>
+</section>
+
