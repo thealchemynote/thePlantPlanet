@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>thePlantPlanet v3.4.5</title>
+<title>thePlantPlanet v6.0</title>
 <style>
 *{box-sizing:border-box}
 :root{--bg:#0e1711;--panel:#18251c;--text:#f1faee;--muted:#b9c9b5;--accent:#d9f87a;--good:#98ee83;--warn:#ffd36e;--bad:#ff8e8e}
@@ -13,23 +13,23 @@ body{margin:0;padding:12px;font-family:-apple-system,BlinkMacSystemFont,"Hiragin
 h1{font-size:25px;margin:0 0 4px} h2{font-size:16px;margin:0 0 10px} .sub{font-size:13px;color:var(--muted);line-height:1.5}
 @media(min-width:900px){.wrap{grid-template-columns:1fr 1fr}.wide{grid-column:1/-1}}
 .stage{display:flex;gap:12px;align-items:center}.seed{width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#f1ffb0,#70a84b 48%,#24401f 72%);display:flex;align-items:center;justify-content:center;font-size:58px;box-shadow:0 0 40px rgba(217,248,122,.18)}
-.big{font-size:24px;font-weight:900}.note{font-size:13px;color:var(--muted);line-height:1.5}.resultTxt{font-size:20px;font-weight:900;color:var(--accent);margin-top:4px}
+.big{font-size:24px;font-weight:900}.note{font-size:13px;color:var(--muted);line-height:1.5}.resultTxt{font-size:20px;font-weight:900;color:var(--accent);margin-top:4px}.dead{color:var(--bad)}
 .row{display:grid;grid-template-columns:82px 1fr 58px;gap:8px;align-items:center;padding:6px 0;font-size:14px}
 .meter{height:12px;border-radius:999px;background:#0b120d;border:1px solid rgba(255,255,255,.1);overflow:hidden}.fill{height:100%;width:0%;background:linear-gradient(90deg,#98ee83,#d9f87a)}
 .controls{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.control{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:14px;padding:10px}.ct{font-weight:900;margin-bottom:6px;display:flex;justify-content:space-between}
 .buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px}.mainButtons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#142014;cursor:pointer;background:linear-gradient(180deg,#e6ff9d,#98df70);box-shadow:0 3px 0 #538c3d}button:active{transform:translateY(2px);box-shadow:0 1px 0 #538c3d}button.secondary{background:linear-gradient(180deg,#d4eeff,#80bee4);box-shadow:0 3px 0 #3d7fa3}button.danger{background:linear-gradient(180deg,#ffd0a0,#ff9960);box-shadow:0 3px 0 #a65a31}button:disabled{opacity:.45;cursor:not-allowed}
 .candidates{display:grid;gap:8px}.candidate{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px}.candTop{display:flex;justify-content:space-between;gap:8px;font-weight:900}.candDesc{color:var(--muted);font-size:13px;line-height:1.45;margin-top:5px}
-.zukan{display:grid;gap:8px}.zcat{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden}.zhead{width:100%;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.07);color:var(--text);box-shadow:none;border-radius:0;padding:10px 12px;text-align:left}.zhead:active{transform:none;box-shadow:none}.zbody{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;padding:8px}.zbody.closed{display:none}@media(max-width:520px){.zbody{grid-template-columns:1fr}}
+.zukan{display:grid;gap:8px}.zcat{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden}.zhead{width:100%;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.07);color:var(--text);box-shadow:none;border-radius:0;padding:10px 12px;text-align:left}.zhead:active{transform:none;box-shadow:none}.zbody{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;padding:8px}.zbody.closed{display:none}.foldToggle{width:100%;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.07);color:var(--text);box-shadow:none;border-radius:12px;padding:10px 12px;text-align:left}.foldToggle:active{transform:none;box-shadow:none}.foldBody.closed{display:none}@media(max-width:520px){.zbody{grid-template-columns:1fr}}
 .zitem{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px;font-size:13px;color:#899684}.zitem.found{color:var(--text);border-color:rgba(217,248,122,.55);background:rgba(217,248,122,.08)}.hiddenIcon{filter:brightness(0);opacity:.9}
 .log{height:160px;overflow:auto;background:rgba(0,0,0,.24);border-radius:12px;padding:9px;font-size:13px;line-height:1.55}.log p{margin:0 0 7px}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
 .resultPanel{display:none;background:linear-gradient(145deg,#25382b,#152218);border:1px solid rgba(217,248,122,.28);border-radius:16px;padding:14px}.resultPanel.show{display:block}.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#d9f87a;color:#142014;font-weight:900;font-size:13px}.resultGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.rbox{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px;font-size:13px}@media(max-width:520px){.resultGrid{grid-template-columns:1fr}}
-.summary{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 8px;font-size:12px}.stepBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.stepBtns button.active{outline:2px solid var(--accent);filter:brightness(1.08)}
+.summary{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 8px;font-size:12px}.stepBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.stepBtns button.active{outline:2px solid var(--accent);filter:brightness(1.08)}.miniBtn{margin-top:6px;padding:6px 8px;font-size:12px}
 </style>
 </head>
 <body>
 <div class="wrap">
-<section class="panel wide"><h1>thePlantPlanet v3.4.5</h1><div class="sub">植物学者シミュレーター。v3.4.5では増減幅切替を追加。季節欄の横で1・5・10を選び、その単位で環境を増減できる。プレイヤーには基本環境だけを見せ、操作の緩急は内部で進化に反映する。</div></section>
+<section class="panel wide"><h1>thePlantPlanet v6.0</h1><div class="sub">植物学者シミュレーター。v6.0完成版。環境をつくり、植物を発見し、図鑑・生態系・遷移・研究ノート・実績・伝説植物を集める植物惑星シミュレーター。プレイヤーには基本環境だけを見せ、操作の緩急は内部で進化に反映する。</div></section>
 
 <section class="panel">
 <div class="stage"><div class="seed" id="seedIcon">🌱</div><div><div class="big" id="phaseName">待機中</div><div class="note" id="phaseDesc">スタートを押すと、原始植物が発生します。</div><div class="resultTxt" id="resultText"></div></div></div>
@@ -43,7 +43,15 @@ button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#14201
 <div class="row"><span>肥沃度</span><div class="meter"><div class="fill" id="fertilityBar"></div></div><b id="fertilityText">30</b></div>
 </div>
 <div class="mainButtons"><button id="startBtn">スタート</button><button class="secondary" id="pauseBtn">一時停止</button><button class="danger" id="resetBtn">リセット</button></div>
-<div class="summary"><span class="pill">🔬 研究P: <b id="researchText">0</b></span><span class="pill">🌱 種子: <b id="seedText">0</b></span><span class="pill">✨ レア: <b id="rareText">0</b></span><span class="pill">📖 発見: <b id="foundText">0</b>/151</span></div>
+<div class="summary"><span class="pill">🔬 研究P: <b id="researchText">0</b></span><span class="pill">🌱 種子: <b id="seedText">0</b></span><span class="pill">✨ レア: <b id="rareText">0</b></span><span class="pill">📖 発見: <b id="foundText">0</b>/200</span></div>
+</section>
+
+<section class="panel wide">
+  <h2>遊び方</h2>
+  <div class="sub">
+    ① 初期設定で環境をつくる → ② スタート → ③ 60秒間リアルタイムに環境を変える → ④ 植物・生態系・遷移を記録。<br>
+    環境に合う植物がない場合は「枯れてしまった」になります。図鑑の観察・研究ノート・再実験を使って、200種＋伝説植物を目指そう。
+  </div>
 </section>
 
 <section class="panel"><h2>リアルタイム環境操作</h2><div class="controls">
@@ -58,11 +66,22 @@ button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#14201
 
 </div></section>
 
+<section class="panel">
+  <h2>気候イベント</h2>
+  <div class="stage" style="min-height:86px">
+    <div class="seed" id="eventIcon">🌎</div>
+    <div>
+      <h1 id="eventName">静かな環境</h1>
+      <p id="eventDesc">進化中、まれに気候イベントが発生します。</p>
+    </div>
+  </div>
+</section>
+
 <section class="panel"><h2>現在なりやすい植物</h2><div class="candidates" id="candidates"></div></section>
 
 <section class="panel wide" id="preStartPanel">
   <h2>スタート前の初期環境設定</h2>
-  <div class="sub">スタート前だけ、開始時の環境を調整できます。プリセットで大まかな生態系を作ってから、細かく調整できます。</div>
+  <div class="sub">スタート前だけ、開始時の環境を調整できます。プリセットや研究ノートの再現で大まかな生態系を作ってから、細かく調整できます。</div>
   <div class="controls" style="margin-top:10px">
     <div class="control"><div class="ct"><span>🌳 温帯林</span><span>標準</span></div><div class="note">バランス型。花木や広葉樹を狙いやすい。</div><button data-preset="temperate">呼び出す</button></div>
     <div class="control"><div class="ct"><span>💧 湿原</span><span>水分高</span></div><div class="note">コケ・水辺植物・湿地系を狙いやすい。</div><button data-preset="wetland">呼び出す</button></div>
@@ -81,7 +100,11 @@ button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#14201
   </div>
 </section>
 
-<section class="panel wide"><h2>折りたたみ図鑑</h2><div class="zukan" id="zukan"></div></section>
+<section class="panel wide"><button class="foldToggle" data-fold="classes"><span>分類図鑑</span><span id="foldIcon_classes">▶</span></button><div class="foldBody closed" id="foldBody_classes"><h2 style="display:none">分類図鑑</h2>
+  <div class="summary" id="classSummary"></div>
+  <div class="log" id="classTitleBox" style="height:auto;min-height:80px;margin-top:8px"></div>
+</div></section>
+<section class="panel wide"><button class="foldToggle" data-fold="zukan"><span>折りたたみ図鑑</span><span id="foldIcon_zukan">▼</span></button><div class="foldBody  " id="foldBody_zukan"><h2 style="display:none">折りたたみ図鑑</h2><div class="zukan" id="zukan"></div></div></section>
 
 
 
@@ -92,22 +115,57 @@ button{border:0;border-radius:11px;padding:10px 8px;font-weight:900;color:#14201
 <section class="panel wide"><div class="resultPanel" id="resultPanel"><h2>RESULT</h2><div id="resultContent"></div></div></section>
 
 
-<section class="panel"><h2>最近の発見</h2><div class="log" id="historyBox"></div></section>
-<section class="panel"><h2>レア変異コレクション</h2><div class="log" id="rareBox"></div></section>
-<section class="panel">
-  <h2>バイオーム図鑑</h2>
+<section class="panel"><button class="foldToggle" data-fold="history"><span>最近の発見</span><span id="foldIcon_history">▶</span></button><div class="foldBody closed" id="foldBody_history"><h2 style="display:none">最近の発見</h2><div class="log" id="historyBox"></div></div></section>
+<section class="panel"><button class="foldToggle" data-fold="rare"><span>レア変異コレクション</span><span id="foldIcon_rare">▶</span></button><div class="foldBody closed" id="foldBody_rare"><h2 style="display:none">レア変異コレクション</h2><div class="log" id="rareBox"></div></div></section>
+<section class="panel wide"><button class="foldToggle" data-fold="notes"><span>研究ノート</span><span id="foldIcon_notes">▶</span></button><div class="foldBody closed" id="foldBody_notes"><h2 style="display:none">研究ノート</h2>
+  <div class="sub">直近の実験結果を保存します。どの環境で、どの植物・生態系・遷移段階になったかを振り返れます。</div>
+  <div class="log" id="noteBox" style="height:260px;margin-top:8px"></div>
+</div></section>
+
+<section class="panel"><button class="foldToggle" data-fold="biome"><span>バイオーム図鑑</span><span id="foldIcon_biome">▶</span></button><div class="foldBody closed" id="foldBody_biome"><h2 style="display:none">バイオーム図鑑</h2>
   <div class="log" id="biomeBox"></div>
-</section>
-<section class="panel">
-  <h2>生態系称号</h2>
+</div></section>
+<section class="panel"><button class="foldToggle" data-fold="succession"><span>生態系遷移</span><span id="foldIcon_succession">▶</span></button><div class="foldBody closed" id="foldBody_succession"><h2 style="display:none">生態系遷移</h2>
+  <div class="log" id="successionBox"></div>
+</div></section>
+<section class="panel"><button class="foldToggle" data-fold="chains"><span>植物相性・遷移チェーン</span><span id="foldIcon_chains">▶</span></button><div class="foldBody closed" id="foldBody_chains"><h2 style="display:none">植物相性・遷移チェーン</h2>
+  <div class="log" id="chainBox"></div>
+</div></section>
+<section class="panel"><button class="foldToggle" data-fold="titles"><span>生態系称号</span><span id="foldIcon_titles">▶</span></button><div class="foldBody closed" id="foldBody_titles"><h2 style="display:none">生態系称号</h2>
   <div class="log" id="titleBox"></div>
-</section>
-<section class="panel">
-  <h2>生態系ミッション</h2>
+</div></section>
+<section class="panel"><button class="foldToggle" data-fold="missions"><span>生態系ミッション</span><span id="foldIcon_missions">▶</span></button><div class="foldBody closed" id="foldBody_missions"><h2 style="display:none">生態系ミッション</h2>
   <div class="log" id="missionBox"></div>
+</div></section>
+
+<section class="panel wide">
+  <button class="foldToggle" data-fold="completion"><span>Plant Planet 総合進捗</span><span id="foldIcon_completion">▼</span></button>
+  <div class="foldBody" id="foldBody_completion">
+    <h2 style="display:none">Plant Planet 総合進捗</h2>
+    <div class="summary" id="completionSummary"></div>
+    <div class="log" id="completionBox" style="height:auto;min-height:120px;margin-top:8px"></div>
+  </div>
 </section>
 
-<section class="panel wide"><h2>ログ</h2><div class="log" id="logBox"></div></section>
+<section class="panel wide">
+  <button class="foldToggle" data-fold="ranking"><span>発見ランキング</span><span id="foldIcon_ranking">▶</span></button>
+  <div class="foldBody closed" id="foldBody_ranking">
+    <h2 style="display:none">発見ランキング</h2>
+    <div class="log" id="rankingBox" style="height:260px"></div>
+  </div>
+</section>
+
+<section class="panel wide"><button class="foldToggle" data-fold="data"><span>データ管理</span><span id="foldIcon_data">▶</span></button><div class="foldBody closed" id="foldBody_data"><h2 style="display:none">データ管理</h2>
+  <div class="sub">図鑑・研究ノート・レア変異・バイオーム・遷移などはこの端末に自動保存されます。</div>
+  <div class="controls" style="margin-top:10px">
+    <div class="control"><div class="ct"><span>📤 バックアップ</span><span>保存用</span></div><div class="note">現在の保存データをコピーします。メモ帳などに保存できます。</div><button id="backupBtn">コピー</button></div>
+    <div class="control"><div class="ct"><span>📥 復元</span><span>読込</span></div><div class="note">バックアップ文字列を貼り付けて復元します。</div><button class="secondary" id="restoreBtn">復元</button></div>
+    <div class="control"><div class="ct"><span>🗑 初期化</span><span>危険</span></div><div class="note">図鑑・研究ノート・称号などをすべて削除します。</div><button class="danger" id="wipeBtn">全データ初期化</button></div>
+  </div>
+  <textarea id="backupText" placeholder="バックアップ文字列がここに表示されます。復元するときはここに貼り付けます。" style="width:100%;height:120px;margin-top:10px;border-radius:12px;background:#0b120d;color:var(--text);border:1px solid rgba(255,255,255,.18);padding:10px;font-family:monospace"></textarea>
+</div></section>
+
+<section class="panel wide"><button class="foldToggle" data-fold="log"><span>ログ</span><span id="foldIcon_log">▶</span></button><div class="foldBody closed" id="foldBody_log"><h2 style="display:none">ログ</h2><div class="log" id="logBox"></div></div></section>
 </div>
 
 <script>
@@ -263,12 +321,64 @@ const species=[
 {id:"baobab",no:148,name:"バオバブ",icon:"🌳",group:"双子葉類",desc:"乾燥地で水をためる巨大な木。",why:"乾燥地で水をためる巨大な木。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,20,25)+fit(e.light,88,25)+fit(e.dry,88,25)+fit(e.temp,30,16)+fit(e.insect,20,25)+22},
 {id:"alpine_flower",no:149,name:"高山花",icon:"🌼",group:"双子葉類",desc:"低温と強光に耐える小さな花。",why:"低温と強光に耐える小さな花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"環境適応種",score:e=>fit(e.water,35,25)+fit(e.light,82,25)+fit(e.dry,55,25)+fit(e.temp,-2,16)+fit(e.insect,20,25)+16},
 {id:"gold_sakura",no:150,name:"金桜",icon:"🌸",group:"双子葉類",desc:"春と昆虫が重なったときに出る希少な桜。",why:"春と昆虫が重なったときに出る希少な桜。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,55,25)+fit(e.light,70,25)+fit(e.dry,25,25)+fit(e.temp,15,16)+fit(e.insect,90,25)+22},
-{id:"black_rose",no:151,name:"黒バラ",icon:"🌹",group:"双子葉類",desc:"昆虫が多い安定環境で出る希少な花。",why:"昆虫が多い安定環境で出る希少な花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,50,25)+fit(e.light,45,25)+fit(e.dry,30,25)+fit(e.temp,18,16)+fit(e.insect,95,25)+22}
+{id:"black_rose",no:151,name:"黒バラ",icon:"🌹",group:"双子葉類",desc:"昆虫が多い安定環境で出る希少な花。",why:"昆虫が多い安定環境で出る希少な花。 その条件が続いたため、双子葉類として発生した。",fact:"双子葉類は網状脈や主根をもつものが多い。",rank:"希少種",score:e=>fit(e.water,50,25)+fit(e.light,45,25)+fit(e.dry,30,25)+fit(e.temp,18,16)+fit(e.insect,95,25)+22},
+{id:"lichen",no:152,name:"地衣類",icon:"🪨",group:"コケ植物",desc:"岩場や裸地に最初に入りやすい先駆植物的な存在。",why:"水分と肥沃度が少ない裸地で、ゆっくり地表に定着した。",fact:"地衣類は菌類と藻類などが共生した生物で、厳密には植物ではないが遷移の先駆者として扱う。",rank:"環境適応種",score:e=>fit(e.water,25,25)+fit(e.light,70,25)+fit(e.dry,70,25)+fit(e.temp,10,16)+fit(e.insect,0,25)+16},
+{id:"haigoke",no:153,name:"ハイゴケ",icon:"🟢",group:"コケ植物",desc:"地面を這うように広がるコケ。湿った林床に強い。",why:"湿り気のある日陰で、地表を覆うように広がった。",fact:"ハイゴケは園芸や苔庭にも使われる。",rank:"普通種",score:e=>fit(e.water,65,25)+fit(e.light,30,25)+fit(e.dry,20,25)+fit(e.temp,15,16)+fit(e.insect,0,25)+10},
+{id:"hinoki_goke",no:154,name:"ヒノキゴケ",icon:"🟢",group:"コケ植物",desc:"森の中でふわふわと群生する美しいコケ。",why:"日陰で湿度が高い森が続き、柔らかな群落を作った。",fact:"ヒノキゴケは姿が美しく、苔庭でも知られる。",rank:"普通種",score:e=>fit(e.water,72,25)+fit(e.light,22,25)+fit(e.dry,12,25)+fit(e.temp,14,16)+fit(e.insect,0,25)+10},
+{id:"sunagoke_white",no:155,name:"白砂ゴケ",icon:"⚪",group:"コケ植物",desc:"乾いた砂地で白っぽく見える乾燥適応型のコケ。",why:"乾燥と強光が続き、体を乾かして耐える戦略を選んだ。",fact:"乾燥時に色が変わって見えるコケもある。",rank:"環境適応種",score:e=>fit(e.water,18,25)+fit(e.light,82,25)+fit(e.dry,88,25)+fit(e.temp,22,16)+fit(e.insect,0,25)+16},
+{id:"peat_moss",no:156,name:"泥炭ゴケ",icon:"🟤",group:"コケ植物",desc:"長く湿原が続いた場所に現れるレアなコケ。",why:"水分が多い環境が安定し、有機物がたまりやすい湿原型になった。",fact:"泥炭は湿地で植物遺体が分解されにくく堆積したもの。",rank:"希少種",score:e=>fit(e.water,92,25)+fit(e.light,40,25)+fit(e.dry,5,25)+fit(e.temp,10,16)+fit(e.insect,0,25)+22},
+{id:"komochi_shida",no:157,name:"コモチシダ",icon:"🌿",group:"シダ植物",desc:"葉に小さな芽をつけて増えるシダ。",why:"湿った明るい林で、胞子以外でも広がりやすい形になった。",fact:"コモチシダは葉に無性芽をつけることがある。",rank:"環境適応種",score:e=>fit(e.water,72,25)+fit(e.light,50,25)+fit(e.dry,20,25)+fit(e.temp,20,16)+fit(e.insect,0,25)+16},
+{id:"nokishinobu",no:158,name:"ノキシノブ",icon:"🌿",group:"シダ植物",desc:"木や岩にも着生する乾燥に強めのシダ。",why:"乾きやすい岩や樹皮の上で、水分を逃さず耐える形になった。",fact:"ノキシノブは着生するシダとして身近に見られる。",rank:"環境適応種",score:e=>fit(e.water,35,25)+fit(e.light,55,25)+fit(e.dry,60,25)+fit(e.temp,15,16)+fit(e.insect,0,25)+16},
+{id:"hebino_negoza",no:159,name:"ヘビノネゴザ",icon:"🌿",group:"シダ植物",desc:"金属を含む土地にも見られることがあるシダ。",why:"やや特殊な土壌条件の中で、耐性をもつシダとして定着した。",fact:"ヘビノネゴザは鉱山跡などで知られることがある。",rank:"希少種",score:e=>fit(e.water,45,25)+fit(e.light,60,25)+fit(e.dry,45,25)+fit(e.temp,16,16)+fit(e.insect,0,25)+22},
+{id:"azolla",no:160,name:"アカウキクサ",icon:"💧",group:"シダ植物",desc:"水面に浮く小さなシダ植物。",why:"水分が非常に多い環境で、水面に浮かぶ生活を選んだ。",fact:"アカウキクサは水田で見られることがある浮遊性のシダ。",rank:"環境適応種",score:e=>fit(e.water,98,25)+fit(e.light,65,25)+fit(e.dry,0,25)+fit(e.temp,22,16)+fit(e.insect,0,25)+16},
+{id:"treefern_gold",no:161,name:"金色木生シダ",icon:"🌴",group:"シダ植物",desc:"高温多湿の森林で大きく伸びる希少なシダ。",why:"熱帯雨林のような高温多湿が続き、木のように高く伸びた。",fact:"木生シダは古い時代の森林を思わせる姿をしている。",rank:"希少種",score:e=>fit(e.water,88,25)+fit(e.light,55,25)+fit(e.dry,8,25)+fit(e.temp,30,16)+fit(e.insect,5,25)+22},
+{id:"juniper",no:162,name:"ビャクシン",icon:"🌲",group:"裸子植物",desc:"乾燥や海風に耐える針葉樹。",why:"乾燥と強光に耐え、硬い葉で水分を守った。",fact:"ビャクシンの仲間は庭木や海岸にも見られる。",rank:"普通種",score:e=>fit(e.water,30,25)+fit(e.light,75,25)+fit(e.dry,70,25)+fit(e.temp,16,16)+fit(e.insect,0,25)+10},
+{id:"cedar_old",no:163,name:"老スギ",icon:"🌲",group:"裸子植物",desc:"湿った山地で長く生きる大木。",why:"水分のある山地環境が安定し、長寿の針葉樹になった。",fact:"スギは日本の森林を代表する針葉樹の一つ。",rank:"希少種",score:e=>fit(e.water,68,25)+fit(e.light,55,25)+fit(e.dry,22,25)+fit(e.temp,12,16)+fit(e.insect,0,25)+22},
+{id:"dawn_redwood",no:164,name:"落葉メタセコイア",icon:"🌲",group:"裸子植物",desc:"湿った明るい土地で育つ落葉性の針葉樹。",why:"水分と日光が安定し、落葉して季節に対応する針葉樹になった。",fact:"メタセコイアは化石で先に知られた植物として有名。",rank:"希少種",score:e=>fit(e.water,72,25)+fit(e.light,65,25)+fit(e.dry,18,25)+fit(e.temp,13,16)+fit(e.insect,0,25)+22},
+{id:"gnetum",no:165,name:"グネツム",icon:"🌿",group:"裸子植物",desc:"熱帯に見られる変わった裸子植物。",why:"高温多湿の環境で、広い葉をもつ裸子植物として残った。",fact:"グネツム類は裸子植物の中でも特徴的なグループ。",rank:"希少種",score:e=>fit(e.water,75,25)+fit(e.light,45,25)+fit(e.dry,15,25)+fit(e.temp,28,16)+fit(e.insect,0,25)+22},
+{id:"cycad_old",no:166,name:"古代ソテツ",icon:"🌴",group:"裸子植物",desc:"古い時代の姿を残すようなソテツ型植物。",why:"高温と乾燥に耐え、厚い葉で生き残る形になった。",fact:"ソテツ類は古い植物群として教材的にも面白い。",rank:"希少種",score:e=>fit(e.water,28,25)+fit(e.light,82,25)+fit(e.dry,70,25)+fit(e.temp,30,16)+fit(e.insect,0,25)+22},
+{id:"oats",no:167,name:"エンバク",icon:"🌾",group:"単子葉類",desc:"明るくやや冷涼な草地に育つイネ科植物。",why:"日光のある草原で、冷涼さにも耐える草本になった。",fact:"エンバクはイネ科の作物として知られる。",rank:"普通種",score:e=>fit(e.water,42,25)+fit(e.light,75,25)+fit(e.dry,50,25)+fit(e.temp,14,16)+fit(e.insect,10,25)+10},
+{id:"rice_wild",no:168,name:"野生イネ",icon:"🌾",group:"単子葉類",desc:"湿地に近い場所で育つイネの野生型。",why:"水分の多い明るい環境で、細長い葉を広げた。",fact:"イネの仲間は水辺や湿った土地に適応したものがある。",rank:"普通種",score:e=>fit(e.water,82,25)+fit(e.light,70,25)+fit(e.dry,18,25)+fit(e.temp,24,16)+fit(e.insect,20,25)+10},
+{id:"lotus_reed",no:169,name:"マコモ",icon:"🌾",group:"単子葉類",desc:"水辺に群生する大型のイネ科植物。",why:"湿原や水辺が続き、背の高い草として広がった。",fact:"マコモは湿地に生えるイネ科植物。",rank:"普通種",score:e=>fit(e.water,88,25)+fit(e.light,68,25)+fit(e.dry,8,25)+fit(e.temp,22,16)+fit(e.insect,10,25)+10},
+{id:"cattail_dwarf",no:170,name:"ヒメガマ",icon:"🌾",group:"単子葉類",desc:"ガマより小型の水辺植物。",why:"水辺の明るい環境で、群生して花穂をつけた。",fact:"ヒメガマはガマの仲間で湿地に生える。",rank:"普通種",score:e=>fit(e.water,86,25)+fit(e.light,65,25)+fit(e.dry,8,25)+fit(e.temp,21,16)+fit(e.insect,15,25)+10},
+{id:"wild_iris",no:171,name:"ノハナショウブ",icon:"💠",group:"単子葉類",desc:"湿った草地に咲くアヤメ科の植物。",why:"湿った明るい場所で、昆虫を利用する花を咲かせた。",fact:"ハナショウブの原種に近い植物として知られる。",rank:"普通種",score:e=>fit(e.water,78,25)+fit(e.light,62,25)+fit(e.dry,15,25)+fit(e.temp,20,16)+fit(e.insect,55,25)+10},
+{id:"crocus",no:172,name:"クロッカス",icon:"🌷",group:"単子葉類",desc:"寒い時期の終わりに咲く球根植物。",why:"冷涼な季節と日光を利用し、早く花を咲かせた。",fact:"クロッカスは球根植物として親しまれる。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,65,25)+fit(e.dry,35,25)+fit(e.temp,6,16)+fit(e.insect,35,25)+10},
+{id:"garlic",no:173,name:"ニンニク",icon:"🧄",group:"単子葉類",desc:"乾き気味の明るい畑にも育つ単子葉類。",why:"明るくやや乾いた環境で、地下に養分をためる戦略を選んだ。",fact:"ニンニクはネギ属の植物。",rank:"普通種",score:e=>fit(e.water,38,25)+fit(e.light,72,25)+fit(e.dry,55,25)+fit(e.temp,16,16)+fit(e.insect,10,25)+10},
+{id:"pineapple",no:174,name:"パイナップル",icon:"🍍",group:"単子葉類",desc:"高温と強い日光を好む熱帯植物。",why:"高温・強光・やや乾いた環境で、厚い葉をもつ形になった。",fact:"パイナップルは単子葉類の植物。",rank:"環境適応種",score:e=>fit(e.water,45,25)+fit(e.light,85,25)+fit(e.dry,55,25)+fit(e.temp,28,16)+fit(e.insect,25,25)+16},
+{id:"agave",no:175,name:"アガベ",icon:"🌵",group:"単子葉類",desc:"乾燥地で厚い葉をもつ多肉植物。",why:"乾燥と強光が続き、葉に水をためる戦略をとった。",fact:"アガベは乾燥地に強い単子葉植物。",rank:"環境適応種",score:e=>fit(e.water,20,25)+fit(e.light,88,25)+fit(e.dry,85,25)+fit(e.temp,28,16)+fit(e.insect,10,25)+16},
+{id:"papyrus",no:176,name:"パピルス",icon:"🌾",group:"単子葉類",desc:"水辺に高く伸びる植物。",why:"水分が豊富な明るい場所で、茎を高く伸ばした。",fact:"パピルスは古代エジプトの紙の材料として知られる。",rank:"希少種",score:e=>fit(e.water,92,25)+fit(e.light,75,25)+fit(e.dry,5,25)+fit(e.temp,26,16)+fit(e.insect,10,25)+22},
+{id:"oak_kunugi",no:177,name:"クヌギ",icon:"🌳",group:"双子葉類",desc:"雑木林をつくるどんぐりの木。",why:"日光と水分のバランスがよい土地で、森林を作る広葉樹になった。",fact:"クヌギは昆虫が集まりやすい樹木としても知られる。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,60,25)+fit(e.dry,35,25)+fit(e.temp,16,16)+fit(e.insect,35,25)+10},
+{id:"keyaki",no:178,name:"ケヤキ",icon:"🌳",group:"双子葉類",desc:"明るい土地で大きく育つ広葉樹。",why:"水分と日光のバランスが整い、大きな樹木として成長した。",fact:"ケヤキは街路樹としてもよく使われる。",rank:"普通種",score:e=>fit(e.water,55,25)+fit(e.light,65,25)+fit(e.dry,35,25)+fit(e.temp,16,16)+fit(e.insect,20,25)+10},
+{id:"willow",no:179,name:"ヤナギ",icon:"🌳",group:"双子葉類",desc:"水辺に強いしなやかな樹木。",why:"水分の多い川沿いで、しなやかな枝を伸ばした。",fact:"ヤナギは水辺でよく見られる樹木。",rank:"普通種",score:e=>fit(e.water,82,25)+fit(e.light,55,25)+fit(e.dry,12,25)+fit(e.temp,18,16)+fit(e.insect,20,25)+10},
+{id:"birch",no:180,name:"シラカバ",icon:"🌳",group:"双子葉類",desc:"冷涼で明るい場所に育つ白い幹の木。",why:"冷涼で日光のある環境で、明るい林を作った。",fact:"シラカバは冷涼な地域を代表する樹木の一つ。",rank:"普通種",score:e=>fit(e.water,48,25)+fit(e.light,72,25)+fit(e.dry,40,25)+fit(e.temp,6,16)+fit(e.insect,15,25)+10},
+{id:"alder",no:181,name:"ハンノキ",icon:"🌳",group:"双子葉類",desc:"湿地や水辺に生える樹木。",why:"水分が多い土地で、湿地林を形成した。",fact:"ハンノキの仲間は湿地に強い。",rank:"普通種",score:e=>fit(e.water,82,25)+fit(e.light,55,25)+fit(e.dry,12,25)+fit(e.temp,12,16)+fit(e.insect,15,25)+10},
+{id:"mugwort",no:182,name:"ヨモギ",icon:"🌿",group:"双子葉類",desc:"明るい草地に広がる丈夫な草。",why:"日光のある草地で、地下茎などを使って広がった。",fact:"ヨモギは身近な野草として知られる。",rank:"普通種",score:e=>fit(e.water,42,25)+fit(e.light,75,25)+fit(e.dry,55,25)+fit(e.temp,18,16)+fit(e.insect,25,25)+10},
+{id:"plantain",no:183,name:"オオバコ",icon:"🌿",group:"双子葉類",desc:"踏まれても生きる草地の植物。",why:"人や動物に踏まれるような環境でも、低く広がって耐えた。",fact:"オオバコは踏みつけに強い野草。",rank:"環境適応種",score:e=>fit(e.water,38,25)+fit(e.light,70,25)+fit(e.dry,55,25)+fit(e.temp,18,16)+fit(e.insect,20,25)+16},
+{id:"clover_red",no:184,name:"アカツメクサ",icon:"☘️",group:"双子葉類",desc:"草地で昆虫を呼ぶマメ科植物。",why:"明るい草地で、昆虫を利用して花を咲かせた。",fact:"マメ科植物は根粒菌との共生で土を豊かにすることがある。",rank:"普通種",score:e=>fit(e.water,50,25)+fit(e.light,72,25)+fit(e.dry,38,25)+fit(e.temp,18,16)+fit(e.insect,60,25)+10},
+{id:"dandelion_white",no:185,name:"シロバナタンポポ",icon:"🌼",group:"双子葉類",desc:"白い花を咲かせるタンポポの仲間。",why:"明るい草地とほどよい乾燥の中で、種子を飛ばす戦略をとった。",fact:"日本には白い花のタンポポも見られる。",rank:"希少種",score:e=>fit(e.water,45,25)+fit(e.light,80,25)+fit(e.dry,50,25)+fit(e.temp,16,16)+fit(e.insect,45,25)+22},
+{id:"violet_alpine",no:186,name:"高山スミレ",icon:"💜",group:"双子葉類",desc:"低温と強光に耐える小さな花。",why:"高山の短い夏に合わせ、低く小さく咲く形になった。",fact:"高山植物は背を低くして寒さや風に耐えるものが多い。",rank:"環境適応種",score:e=>fit(e.water,35,25)+fit(e.light,78,25)+fit(e.dry,45,25)+fit(e.temp,2,16)+fit(e.insect,25,25)+16},
+{id:"edelweiss",no:187,name:"エーデルワイス",icon:"🤍",group:"双子葉類",desc:"高山に咲く白い毛をもつ花。",why:"強い日光と低温に耐え、白い毛で身を守る姿になった。",fact:"エーデルワイスは高山植物の代表例として知られる。",rank:"希少種",score:e=>fit(e.water,30,25)+fit(e.light,85,25)+fit(e.dry,55,25)+fit(e.temp,0,16)+fit(e.insect,20,25)+22},
+{id:"cactus_column",no:188,name:"柱サボテン",icon:"🌵",group:"双子葉類",desc:"乾燥地で高く伸びるサボテン。",why:"乾燥と強光が続き、茎に水をためて高く伸びた。",fact:"サボテンの茎は光合成と貯水の役割をもつ。",rank:"希少種",score:e=>fit(e.water,12,25)+fit(e.light,90,25)+fit(e.dry,92,25)+fit(e.temp,32,16)+fit(e.insect,25,25)+22},
+{id:"succulent_sedum",no:189,name:"マンネングサ",icon:"🌵",group:"双子葉類",desc:"乾いた岩場にも強い多肉植物。",why:"乾いた明るい岩場で、小さな葉に水をためて耐えた。",fact:"マンネングサの仲間は多肉質の葉をもつ。",rank:"環境適応種",score:e=>fit(e.water,22,25)+fit(e.light,80,25)+fit(e.dry,75,25)+fit(e.temp,20,16)+fit(e.insect,20,25)+16},
+{id:"water_lily",no:190,name:"スイレン",icon:"🪷",group:"双子葉類",desc:"水面に葉を浮かべる水生植物。",why:"水分が非常に多く日光もある環境で、水面に葉を広げた。",fact:"スイレンは水面に浮かぶ葉と美しい花で知られる。",rank:"環境適応種",score:e=>fit(e.water,92,25)+fit(e.light,70,25)+fit(e.dry,5,25)+fit(e.temp,24,16)+fit(e.insect,45,25)+16},
+{id:"lotus_ancient",no:191,name:"古代ハス",icon:"🪷",group:"双子葉類",desc:"長い休眠から発芽するイメージの希少なハス。",why:"水辺環境が安定し、種子で長く生き残る戦略を得た。",fact:"ハスの種子は長い休眠後に発芽した例で知られる。",rank:"希少種",score:e=>fit(e.water,92,25)+fit(e.light,72,25)+fit(e.dry,5,25)+fit(e.temp,24,16)+fit(e.insect,50,25)+22},
+{id:"pitcher",no:192,name:"ウツボカズラ",icon:"🪰",group:"双子葉類",desc:"袋状の葉で虫を捕らえる食虫植物。",why:"高温多湿で虫が多い環境で、栄養を虫から補う戦略を選んだ。",fact:"ウツボカズラは袋のような捕虫葉をもつ。",rank:"希少種",score:e=>fit(e.water,80,25)+fit(e.light,55,25)+fit(e.dry,12,25)+fit(e.temp,28,16)+fit(e.insect,95,25)+22},
+{id:"sundew_alpine",no:193,name:"高山モウセンゴケ",icon:"🪰",group:"双子葉類",desc:"湿った寒冷地で虫を捕る小さな食虫植物。",why:"低温の湿地で、虫を捕らえて栄養を補う戦略を選んだ。",fact:"食虫植物は栄養の少ない湿地に見られることがある。",rank:"希少種",score:e=>fit(e.water,85,25)+fit(e.light,65,25)+fit(e.dry,10,25)+fit(e.temp,8,16)+fit(e.insect,75,25)+22},
+{id:"poison_hemlock",no:194,name:"ドクニンジン",icon:"☠️",group:"双子葉類",desc:"有毒成分で身を守る草本。",why:"明るい草地で、食べられにくい化学防御を発達させた。",fact:"植物には有毒成分で身を守るものがある。",rank:"環境適応種",score:e=>fit(e.water,45,25)+fit(e.light,70,25)+fit(e.dry,45,25)+fit(e.temp,18,16)+fit(e.insect,20,25)+16},
+{id:"foxglove",no:195,name:"ジギタリス",icon:"🌺",group:"双子葉類",desc:"美しい花と有毒成分をもつ植物。",why:"昆虫を呼ぶ花を咲かせつつ、毒で食害を防いだ。",fact:"ジギタリスは薬にも毒にも関わる成分で知られる。",rank:"希少種",score:e=>fit(e.water,50,25)+fit(e.light,60,25)+fit(e.dry,35,25)+fit(e.temp,16,16)+fit(e.insect,65,25)+22},
+{id:"lavender",no:196,name:"ラベンダー",icon:"💜",group:"双子葉類",desc:"乾燥と日光を好む香りの強い低木。",why:"乾いた明るい環境で、香りによって昆虫を引き寄せた。",fact:"ラベンダーは香りのあるハーブとして有名。",rank:"普通種",score:e=>fit(e.water,30,25)+fit(e.light,82,25)+fit(e.dry,68,25)+fit(e.temp,20,16)+fit(e.insect,45,25)+10},
+{id:"basil",no:197,name:"バジル",icon:"🌿",group:"双子葉類",desc:"温暖で日当たりのよい場所に育つ香草。",why:"温暖な環境で、香りをもつ葉を広げて成長した。",fact:"バジルはシソ科のハーブ。",rank:"普通種",score:e=>fit(e.water,48,25)+fit(e.light,75,25)+fit(e.dry,40,25)+fit(e.temp,24,16)+fit(e.insect,25,25)+10},
+{id:"cotton",no:198,name:"ワタ",icon:"🌿",group:"双子葉類",desc:"温暖な土地で綿毛をつける植物。",why:"高温と日光のある環境で、種子に繊維をまとわせた。",fact:"ワタの種子の毛は繊維として利用される。",rank:"普通種",score:e=>fit(e.water,45,25)+fit(e.light,82,25)+fit(e.dry,50,25)+fit(e.temp,26,16)+fit(e.insect,30,25)+10},
+{id:"cacao",no:199,name:"カカオ",icon:"🍫",group:"双子葉類",desc:"高温多湿の森に育つ熱帯樹。",why:"熱帯雨林のような湿った高温環境で、日陰に耐えながら育った。",fact:"カカオはチョコレートの原料になる種子をつける。",rank:"希少種",score:e=>fit(e.water,82,25)+fit(e.light,35,25)+fit(e.dry,10,25)+fit(e.temp,28,16)+fit(e.insect,45,25)+22},
+{id:"rubber",no:200,name:"ゴムノキ",icon:"🌳",group:"双子葉類",desc:"高温多湿の森で育つ樹木。",why:"熱帯の湿った環境で、樹液をもつ木として成長した。",fact:"ゴムノキから天然ゴムの原料が得られる。",rank:"普通種",score:e=>fit(e.water,78,25)+fit(e.light,45,25)+fit(e.dry,12,25)+fit(e.temp,28,16)+fit(e.insect,25,25)+10},
+{id:"mimosa",no:201,name:"オジギソウ",icon:"🌿",group:"双子葉類",desc:"触れると葉を閉じる運動をする植物。",why:"温暖で明るい草地で、葉を動かして身を守る戦略を得た。",fact:"オジギソウは刺激で葉を閉じる運動が有名。",rank:"希少種",score:e=>fit(e.water,50,25)+fit(e.light,75,25)+fit(e.dry,45,25)+fit(e.temp,25,16)+fit(e.insect,30,25)+22},
+{id:"aquatic_mint",no:202,name:"ミズハッカ",icon:"🌿",group:"双子葉類",desc:"湿った水辺に育つ香りのある植物。",why:"水分の多い明るい場所で、香りをもつ葉を広げた。",fact:"水辺にも香りのあるシソ科植物が育つ。",rank:"普通種",score:e=>fit(e.water,78,25)+fit(e.light,62,25)+fit(e.dry,15,25)+fit(e.temp,20,16)+fit(e.insect,35,25)+10}
 ];
-const ids=["seedIcon","phaseName","phaseDesc","resultText","timeBar","timeText","waterBar","waterText","lightBar","lightText","dryBar","dryText","tempBar","tempText","insectBar","insectText","fertilityBar","fertilityText","waterNow","lightNow","dryNow","tempNow","insectNow","fertilityNow","seasonNow","stepNow","candidates","zukan","logBox","historyBox","startBtn","pauseBtn","resetBtn","researchText","seedText","foundText","rareText","rareBox","biomeBox","titleBox","missionBox","preWaterNow","preLightNow","preDryNow","preTempNow","preInsectNow","preFertilityNow","resultPanel","resultContent"];
+const ids=["seedIcon","phaseName","phaseDesc","resultText","timeBar","timeText","waterBar","waterText","lightBar","lightText","dryBar","dryText","tempBar","tempText","insectBar","insectText","fertilityBar","fertilityText","waterNow","lightNow","dryNow","tempNow","insectNow","fertilityNow","seasonNow","stepNow","candidates","zukan","completionSummary","completionBox","rankingBox","backupBtn","restoreBtn","wipeBtn","backupText","logBox","historyBox","startBtn","pauseBtn","resetBtn","researchText","seedText","foundText","rareText","rareBox","noteBox","biomeBox","titleBox","missionBox","preWaterNow","preLightNow","preDryNow","preTempNow","preInsectNow","preFertilityNow","resultPanel","resultContent"];
 const el={}; ids.forEach(id=>el[id]=document.getElementById(id));
-let env,initialEnv,stepSize,avg,prevEnv,volatility,opVolatility,seasonIndex,seasonCounts,seconds,found,hints,history,rares,biomes,biomeStats,biomePlants,research,seeds,running=false,paused=false,finished=false,intervalId,audioCtx=null,soundOn=true;
+let env,initialEnv,stepSize,avg,prevEnv,volatility,opVolatility,seasonIndex,seasonCounts,seconds,currentEvent,eventCooldown,found,hints,history,rares,biomes,biomeStats,biomePlants,succession,notes,discoveryCounts,achievements,legends,research,seeds,running=false,paused=false,finished=false,intervalId,audioCtx=null,soundOn=true;
 let openCats={"コケ植物":true,"シダ植物":false,"裸子植物":false,"単子葉類":false,"双子葉類":false};
+let foldState={history:false,rare:false,notes:false,biome:false,succession:false,legends:false,themes:false,classes:false,chains:false,titles:false,missions:false,zukan:true,completion:true,ranking:false,achievements:false,data:false,log:false};
 function fit(v,t,r){return Math.max(0,100-Math.abs(v-t)*(100/r))}
 function clamp01(x){return Math.max(0,Math.min(100,x))}
 function clampTemp(x){return Math.max(TEMP_MIN,Math.min(TEMP_MAX,x))}
@@ -344,9 +454,9 @@ function biomeScore(a,id){
 
 function tempToPercent(t){return ((t-TEMP_MIN)/(TEMP_MAX-TEMP_MIN))*100}
 function loadData(){try{return JSON.parse(localStorage.getItem("plantPlanetV10")||"{}")}catch(e){return {}}}
-function saveData(){localStorage.setItem("plantPlanetV10",JSON.stringify({found,hints,history,rares,biomes,biomeStats,biomePlants,research,seeds,initialEnv,stepSize}))}
-function init(clearLog=false){const d=loadData();found=d.found||{};hints=d.hints||{};history=d.history||[];rares=d.rares||[];biomes=d.biomes||{};biomeStats=d.biomeStats||{};biomePlants=d.biomePlants||{};research=d.research||0;seeds=d.seeds||0;initialEnv=d.initialEnv||{water:50,light:50,dry:50,temp:16,insect:10,fertility:30};stepSize=d.stepSize||5;env={...initialEnv};avg={water:0,light:0,dry:0,temp:0,insect:0,fertility:0,volatility:0};prevEnv={...env};volatility=0;opVolatility=0;seasonIndex=0;seasonCounts=[0,0,0,0];seconds=0;running=false;paused=false;finished=false;el.seedIcon.textContent="🌱";el.phaseName.textContent="待機中";el.phaseDesc.textContent="スタートを押すと、原始植物が発生します。";el.resultText.textContent="";el.startBtn.disabled=false;el.pauseBtn.textContent="一時停止";el.resultPanel.classList.remove("show");if(clearLog)el.logBox.innerHTML="";render()}
-function startRun(){ensureAudio();if(!initialEnv)initialEnv={water:50,light:50,dry:50,temp:16,insect:10,fertility:30};env={...initialEnv};avg={water:0,light:0,dry:0,temp:0,insect:0,fertility:0,volatility:0};prevEnv={...env};volatility=0;opVolatility=0;seconds=0;seasonIndex=Math.floor(Math.random()*4);seasonCounts=[0,0,0,0];running=true;paused=false;finished=false;el.seedIcon.textContent="🌱";el.phaseName.textContent="発生中の原始植物";el.phaseDesc.textContent="環境を操作して、どの植物へ進化するか見守ろう。";el.resultText.textContent="";el.startBtn.disabled=true;el.resultPanel.classList.remove("show");log("🌱 発生開始。今回の季節は「"+seasonName()+"」。事前設定した環境から進化する。","good");playTone([440,660,880],.08);render()}
+function saveData(){localStorage.setItem("plantPlanetV10",JSON.stringify({found,hints,history,rares,biomes,biomeStats,biomePlants,succession,notes,discoveryCounts,achievements,legends,research,seeds,initialEnv,stepSize}))}
+function init(clearLog=false){const d=loadData();found=d.found||{};hints=d.hints||{};history=d.history||[];rares=d.rares||[];biomes=d.biomes||{};biomeStats=d.biomeStats||{};biomePlants=d.biomePlants||{};succession=d.succession||{};notes=d.notes||[];discoveryCounts=d.discoveryCounts||{};achievements=d.achievements||{};legends=d.legends||{};research=d.research||0;seeds=d.seeds||0;initialEnv=d.initialEnv||{water:50,light:50,dry:50,temp:16,insect:10,fertility:30};stepSize=d.stepSize||5;env={...initialEnv};avg={water:0,light:0,dry:0,temp:0,insect:0,fertility:0,volatility:0};prevEnv={...env};volatility=0;opVolatility=0;seasonIndex=0;seasonCounts=[0,0,0,0];seconds=0;currentEvent=null;eventCooldown=0;running=false;paused=false;finished=false;el.seedIcon.textContent="🌱";el.phaseName.textContent="待機中";el.phaseDesc.textContent="スタートを押すと、原始植物が発生します。";el.resultText.textContent="";el.startBtn.disabled=false;el.pauseBtn.textContent="一時停止";el.resultPanel.classList.remove("show");if(clearLog)el.logBox.innerHTML="";render()}
+function startRun(){ensureAudio();if(!initialEnv)initialEnv={water:50,light:50,dry:50,temp:16,insect:10,fertility:30};env={...initialEnv};avg={water:0,light:0,dry:0,temp:0,insect:0,fertility:0,volatility:0};prevEnv={...env};volatility=0;opVolatility=0;seconds=0;currentEvent=null;eventCooldown=8;seasonIndex=Math.floor(Math.random()*4);seasonCounts=[0,0,0,0];running=true;paused=false;finished=false;el.seedIcon.textContent="🌱";el.phaseName.textContent="発生中の原始植物";el.phaseDesc.textContent="環境を操作して、どの植物へ進化するか見守ろう。";el.resultText.textContent="";el.startBtn.disabled=true;el.resultPanel.classList.remove("show");log("🌱 発生開始。今回の季節は「"+seasonName()+"」。事前設定した環境から進化する。","good");playTone([440,660,880],.08);render()}
 function resetAll(){init(true);log("🔄 リセットしました。保存済み図鑑は残ります。","warn")}
 
 function setStepSize(n){stepSize=n;saveData();render();}
@@ -381,6 +491,37 @@ function applyPreset(type){
 }
 function adjustInitialEnv(k,a){if(running){log("⚠️ 初期環境はスタート前だけ変更できます。","warn");return}if(!initialEnv)initialEnv={water:50,light:50,dry:50,temp:16,insect:10,fertility:30};const delta=(a>0?1:-1)*(stepSize||5);if(k==="temp")initialEnv.temp=clampTemp(initialEnv.temp+delta);else initialEnv[k]=clamp01(initialEnv[k]+delta);if(k==="water")initialEnv.dry=clamp01(initialEnv.dry-delta*.35);if(k==="dry")initialEnv.water=clamp01(initialEnv.water-delta*.35);env={...initialEnv};saveData();render()}
 function nudge(k,a){if(!running||finished){log("⚠️ 先にスタートしてください。","warn");return}const delta=(a>0?1:-1)*(stepSize||5);if(k==="temp")env.temp=clampTemp(env.temp+delta);else{env[k]=clamp01(env[k]+delta);if(k==="water")env.dry=clamp01(env.dry-delta*.45);if(k==="dry")env.water=clamp01(env.water-delta*.45)}const names={water:"💧水分",light:"☀️日光",dry:"🏜乾燥",temp:"🌡温度",insect:"🐝昆虫",fertility:"⭐肥沃度"};log(names[k]+(delta>0?"を上げた。":"を下げた。")+"（"+Math.abs(delta)+"）","warn");opVolatility=clamp01(opVolatility+Math.abs(delta)*0.85);playTone(delta>0?[520]:[320],.04);render()}
+
+const climateEvents=[
+  {id:"rain",icon:"☔",name:"豪雨",desc:"水分が上がり、乾燥が下がる。湿原植物に有利。",apply:()=>{env.water=clamp01(env.water+14);env.dry=clamp01(env.dry-12);}},
+  {id:"heat",icon:"☀️",name:"熱波",desc:"温度と乾燥が上がる。砂漠・熱帯植物に影響。",apply:()=>{env.temp=clampTemp(env.temp+8);env.dry=clamp01(env.dry+12);env.water=clamp01(env.water-8);}},
+  {id:"cold",icon:"❄️",name:"寒波",desc:"温度が下がる。高山・寒冷系に寄りやすい。",apply:()=>{env.temp=clampTemp(env.temp-10);env.insect=clamp01(env.insect-8);}},
+  {id:"bloom",icon:"🦋",name:"昆虫大量発生",desc:"昆虫が増える。花植物・食虫植物に影響。",apply:()=>{env.insect=clamp01(env.insect+22);}},
+  {id:"drywind",icon:"🌬️",name:"乾いた風",desc:"乾燥が上がり、水分が少し下がる。",apply:()=>{env.dry=clamp01(env.dry+16);env.water=clamp01(env.water-10);}},
+  {id:"fog",icon:"🌫️",name:"霧",desc:"水分が少し上がり、日光が下がる。日陰・シダ植物に影響。",apply:()=>{env.water=clamp01(env.water+10);env.light=clamp01(env.light-12);}},
+  {id:"fertile",icon:"🍂",name:"落ち葉の堆積",desc:"肥沃度が上がる。森林・草原の発達に影響。",apply:()=>{env.fertility=clamp01(env.fertility+18);}}
+];
+function triggerClimateEvent(){
+  if(!running||finished) return;
+  const e=climateEvents[Math.floor(Math.random()*climateEvents.length)];
+  currentEvent={...e,time:seconds};
+  e.apply();
+  opVolatility=clamp01(opVolatility+12);
+  log(e.icon+" 気候イベント："+e.name+" — "+e.desc,"warn");
+  playTone([360,520,680],.05);
+}
+function renderEvent(){
+  if(!el.eventIcon) return;
+  if(currentEvent && seconds-currentEvent.time<8){
+    el.eventIcon.textContent=currentEvent.icon;
+    el.eventName.textContent=currentEvent.name;
+    el.eventDesc.textContent=currentEvent.desc;
+  }else{
+    el.eventIcon.textContent="🌎";
+    el.eventName.textContent=running?"静かな環境":"待機中";
+    el.eventDesc.textContent=running?"気候イベントは発生していません。":"進化中、まれに気候イベントが発生します。";
+  }
+}
 function tick(){if(!running||paused||finished)return;seconds++;env.water=clamp01(env.water+rand(-2,2)-env.dry*.012);env.dry=clamp01(env.dry+rand(-1.5,1.5)-env.water*.006+env.light*.006);env.light=clamp01(env.light+rand(-1.5,1.5));env.temp=clampTemp(env.temp+rand(-.8,.8)+(env.light-50)*.015-(env.water-50)*.006);env.insect=clamp01(env.insect+rand(-1,1)+(env.temp>8&&env.temp<35&&env.water>35?.35:-.25));env.fertility=clamp01(env.fertility+rand(-.6,.8)+(env.water>55?.12:0)-(env.dry>70?.2:0));
 applySeasonDrift();
 seasonCounts[seasonIndex]++;
@@ -392,7 +533,145 @@ for(const k in avg)avg[k]+=env[k];
 avg.volatility+=volatility;if(seconds%10===0)randomEvent();if(seconds>=EVOLVE_SECONDS)decideEvolution();render()}
 function randomEvent(){volatility=clamp01(volatility+18);const ev=[()=>{env.water=clamp01(env.water+15);log("🌧 長雨。水分が大きく増えた。","good");playTone([600,760],.06)},()=>{env.dry=clamp01(env.dry+15);env.water=clamp01(env.water-8);log("🏜 乾燥化。乾燥が進み、水分が減った。","bad");playTone([220,180],.08)},()=>{env.light=clamp01(env.light+12);env.temp=clampTemp(env.temp+4);log("☀️ 強い日差し。日光と温度が上がった。","warn");playTone([700],.08)},()=>{env.temp=clampTemp(env.temp-12);env.insect=clamp01(env.insect-8);log("❄️ 寒冷化。温度と昆虫が減った。","bad");playTone([260,210],.08)},()=>{env.insect=clamp01(env.insect+16);log("🐝 昆虫が増えた。花をもつ植物が出やすくなる。","good");playTone([520,620,720],.04)},()=>{env.fertility=clamp01(env.fertility+18);log("🍂 落ち葉が分解され、肥沃度が上がった。","good");playTone([420,520],.07)}];ev[Math.floor(Math.random()*ev.length)]()}
 function currentAverage(){const d=Math.max(1,seconds);const v=(avg.volatility||0)/d;return {water:avg.water/d,light:avg.light/d,dry:avg.dry/d,temp:avg.temp/d,insect:avg.insect/d,fertility:avg.fertility/d,volatility:v,stability:100-v,season:dominantSeason(),spring:seasonCounts[0],summer:seasonCounts[1],autumn:seasonCounts[2],winter:seasonCounts[3]}}
-function scoreList(){const a=currentAverage();a.volatility=Number.isFinite(a.volatility)?a.volatility:0;a.stability=Number.isFinite(a.stability)?a.stability:100;return species.map(s=>{let bonus=0;
+
+function habitatRequirement(s){
+  const n=s.name, g=s.group;
+  const r={};
+  function set(obj){Object.assign(r,obj)}
+
+  // 分類ごとの基本条件
+  if(g==="コケ植物") set({waterMin:18});
+  if(g==="シダ植物") set({waterMin:32,dryMax:82});
+
+  // 湿原・水辺
+  if(["ハス","アヤメ","ハナショウブ","ヨシ","ガマ","ウキクサ","セキショウモ","湿原草","ミズワラビ","浮きシダ","マングローブ","モウセンゴケ","ハエトリグサ"].includes(n)) set({waterMin:68,dryMax:38});
+  if(["ウキクサ","セキショウモ","浮きシダ","アカウキクサ","スイレン","古代ハス"].includes(n)) set({waterMin:88,dryMax:15});
+  if(["ハス","ガマ","ヨシ","ハナショウブ","アヤメ"].includes(n)) set({tempMin:8});
+  if(n==="マングローブ") set({waterMin:75,tempMin:22,dryMax:25});
+  if(["モウセンゴケ","ハエトリグサ"].includes(n)) set({waterMin:70,lightMin:45,insectMin:50,dryMax:25});
+
+  // 湿ったコケ
+  if(["ミズゴケ","カワゴケ","谷ゴケ","沼ゴケ","泡ゴケ","水辺コケ"].includes(n)) set({waterMin:60,dryMax:42});
+  if(["泡ゴケ","カワゴケ"].includes(n)) set({waterMin:78,dryMax:22});
+
+  // 日陰・林床
+  if(["ゼニゴケ","ジャゴケ","クロゴケ","森ゴケ","オシダ","アジアンタム","ベニシダ","影シダ","ドクダミ","月草","ミョウガ"].includes(n)) set({lightMax:62,waterMin:42,dryMax:55});
+  if(["アジアンタム","霧シダ"].includes(n)) set({waterMin:65,dryMax:25,lightMax:48});
+
+  // 乾燥・砂漠・多肉
+  if(["花サボテン","アロエ","砂漠コケ","砂漠ユリ","熱砂草","バオバブ","ローズマリー","セージ","アカシア","オリーブ","イブキ","アカマツ","クロマツ","柱サボテン","アガベ","ラベンダー"].includes(n)) set({dryMin:55,lightMin:45,waterMax:55});
+  if(["花サボテン","砂漠コケ","熱砂草","バオバブ","砂漠ユリ"].includes(n)) set({dryMin:68,lightMin:60,waterMax:42});
+  if(["花サボテン","熱砂草","バオバブ"].includes(n)) set({tempMin:18});
+  if(["アロエ","南国ソテツ"].includes(n)) set({dryMin:55,lightMin:60,tempMin:18});
+
+  // 寒冷・高山
+  if(["氷雪コケ","星ゴケ","雪シダ","トウヒ","カラマツ","雪原草"].includes(n)) set({tempMax:10});
+  if(["氷雪コケ","雪原草"].includes(n)) set({tempMax:0});
+  if(["高山花","高山ユリ","高山スミレ","エーデルワイス"].includes(n)) set({tempMax:10,lightMin:55,dryMin:25});
+  if(["トウヒ","モミ","ツガ","ヒマラヤスギ","イチイ","カラマツ"].includes(n)) set({tempMax:16});
+  if(["リンゴ","ジャガイモ","パンジー","ウメ"].includes(n)) set({tempMax:22});
+
+  // 熱帯・高温多湿
+  if(["バナナ","芭蕉","バニラ","ヤシ","ココヤシ","タコノキ","サトウキビ","黄金イネ","巨大シダ","木生シダ","ラフレシア","カカオ","ゴムノキ","パイナップル","金色木生シダ","グネツム"].includes(n)) set({tempMin:20,waterMin:45});
+  if(["バナナ","芭蕉","巨大シダ","木生シダ","ラフレシア"].includes(n)) set({tempMin:24,waterMin:65,dryMax:35});
+  if(["バニラ","ラフレシア"].includes(n)) set({insectMin:60,lightMax:70});
+  if(["ヤシ","ココヤシ","タコノキ","サトウキビ"].includes(n)) set({lightMin:55,tempMin:22});
+
+  // 花と昆虫
+  if(["ラン","白ラン","星ラン","バニラ","黒バラ","金桜","ラフレシア","ウツボカズラ","高山モウセンゴケ","ジギタリス"].includes(n)) set({insectMin:55});
+  if(["サクラ","バラ","ツツジ","スイカズラ","ヒマワリ","ユリ","チューリップ","ヒヤシンス"].includes(n)) set({insectMin:25});
+  if(n==="ヒマワリ") set({lightMin:70,tempMin:16});
+  if(["サクラ","ウメ","モモ","チューリップ","ヒヤシンス","スイセン"].includes(n)) set({tempMax:24});
+
+  // 草原
+  if(["タンポポ","シロツメクサ","ススキ","シバ","カラスムギ","ムギ","コスモス","ポピー"].includes(n)) set({lightMin:55,dryMin:25,waterMin:20});
+  if(["イネ","トウモロコシ","サトウキビ","黄金イネ"].includes(n)) set({lightMin:60,tempMin:16});
+  if(["イネ","黄金イネ"].includes(n)) set({waterMin:55,dryMax:55});
+
+  // 森林・裸子植物
+  if(["マツ","アカマツ","クロマツ","イブキ","カイヅカイブキ"].includes(n)) set({lightMin:45,dryMin:35});
+  if(["スギ","ヒノキ","モミ","ツガ","トウヒ","ネズコ","コウヤマキ","カエデ","ブナ","コナラ"].includes(n)) set({waterMin:35,dryMax:65});
+  if(n==="ブナ") set({waterMin:55,tempMax:18});
+  if(["カエデ","コナラ"].includes(n)) set({tempMax:24});
+
+  // 先駆・岩場
+  if(["岩場コケ","火山ゴケ","朝露ゴケ","イノモトソウ","岩シダ","カイヅカイブキ","地衣類","ノキシノブ","マンネングサ"].includes(n)) set({lightMin:25});
+  if(["火山ゴケ","岩場コケ"].includes(n)) set({fertilityMax:55});
+
+  return r;
+}
+function canLive(s,a){
+  const r=habitatRequirement(s);
+  if(r.waterMin!==undefined && a.water<r.waterMin) return false;
+  if(r.waterMax!==undefined && a.water>r.waterMax) return false;
+  if(r.dryMin!==undefined && a.dry<r.dryMin) return false;
+  if(r.dryMax!==undefined && a.dry>r.dryMax) return false;
+  if(r.lightMin!==undefined && a.light<r.lightMin) return false;
+  if(r.lightMax!==undefined && a.light>r.lightMax) return false;
+  if(r.tempMin!==undefined && a.temp<r.tempMin) return false;
+  if(r.tempMax!==undefined && a.temp>r.tempMax) return false;
+  if(r.insectMin!==undefined && a.insect<r.insectMin) return false;
+  if(r.fertilityMin!==undefined && a.fertility<r.fertilityMin) return false;
+  if(r.fertilityMax!==undefined && a.fertility>r.fertilityMax) return false;
+  return true;
+}
+function reqText(s){
+  const r=habitatRequirement(s);
+  const parts=[];
+  if(r.waterMin!==undefined) parts.push("水分"+Math.round(r.waterMin)+"以上");
+  if(r.waterMax!==undefined) parts.push("水分"+Math.round(r.waterMax)+"以下");
+  if(r.dryMin!==undefined) parts.push("乾燥"+Math.round(r.dryMin)+"以上");
+  if(r.dryMax!==undefined) parts.push("乾燥"+Math.round(r.dryMax)+"以下");
+  if(r.lightMin!==undefined) parts.push("日光"+Math.round(r.lightMin)+"以上");
+  if(r.lightMax!==undefined) parts.push("日光"+Math.round(r.lightMax)+"以下");
+  if(r.tempMin!==undefined) parts.push("温度"+Math.round(r.tempMin)+"℃以上");
+  if(r.tempMax!==undefined) parts.push("温度"+Math.round(r.tempMax)+"℃以下");
+  if(r.insectMin!==undefined) parts.push("昆虫"+Math.round(r.insectMin)+"以上");
+  if(r.fertilityMin!==undefined) parts.push("肥沃度"+Math.round(r.fertilityMin)+"以上");
+  if(r.fertilityMax!==undefined) parts.push("肥沃度"+Math.round(r.fertilityMax)+"以下");
+  return parts.length?parts.join(" / "):"広い環境に定着可能";
+}
+
+const plantChains=[
+  {from:["岩場コケ","火山ゴケ"],to:["スナゴケ","朝露ゴケ","イノモトソウ"],label:"裸地の先駆者"},
+  {from:["ミズゴケ","沼ゴケ"],to:["カワゴケ","泡ゴケ","ガマ","ヨシ","ハス"],label:"湿原の広がり"},
+  {from:["ヨシ","ガマ"],to:["ハナショウブ","アヤメ","湿原草"],label:"水辺群落"},
+  {from:["ゼニゴケ","ジャゴケ","森ゴケ"],to:["オシダ","ベニシダ","影シダ","ドクダミ"],label:"日陰林床"},
+  {from:["ワラビ","ススキ","シバ"],to:["タンポポ","シロツメクサ","コスモス","カラスムギ"],label:"草原形成"},
+  {from:["タンポポ","シロツメクサ"],to:["サクラ","バラ","ツツジ","スイカズラ"],label:"花と昆虫"},
+  {from:["マツ","アカマツ","クロマツ"],to:["ヒノキ","スギ","コナラ","カエデ"],label:"森林への遷移"},
+  {from:["トウヒ","モミ"],to:["カラマツ","高山花","高山ユリ"],label:"寒冷林・高山"},
+  {from:["花サボテン","アロエ"],to:["砂漠ユリ","バオバブ","熱砂草","ローズマリー"],label:"乾燥適応"},
+  {from:["巨大シダ","木生シダ"],to:["バナナ","芭蕉","バニラ","ラフレシア"],label:"熱帯多層化"},
+  {from:["ラン","白ラン"],to:["星ラン","バニラ","黒バラ"],label:"特殊な花"},
+  {from:["モウセンゴケ"],to:["ハエトリグサ"],label:"食虫植物"}
+];
+function chainBonus(s){
+  let bonus=0;
+  for(const c of plantChains){
+    const hasFrom=c.from.some(n=>species.some(sp=>sp.name===n && found[sp.id]));
+    if(hasFrom && c.to.includes(s.name)) bonus+=45;
+  }
+  return bonus;
+}
+function activeChains(){
+  return plantChains.map(c=>{
+    const fromFound=c.from.filter(n=>species.some(sp=>sp.name===n && found[sp.id]));
+    const toFound=c.to.filter(n=>species.some(sp=>sp.name===n && found[sp.id]));
+    const toOpen=c.to.filter(n=>!toFound.includes(n));
+    return {label:c.label,fromFound,toFound,toOpen,total:c.to.length};
+  }).filter(x=>x.fromFound.length||x.toFound.length);
+}
+function nextChainTargets(s){
+  const arr=[];
+  for(const c of plantChains){
+    if(c.from.includes(s.name)){
+      arr.push(c.label+" → "+c.to.join("、"));
+    }
+  }
+  return arr.length?arr.join("<br>"):"この植物から直接つながるチェーンはまだありません。";
+}
+function scoreList(){const a=currentAverage();a.volatility=Number.isFinite(a.volatility)?a.volatility:0;a.stability=Number.isFinite(a.stability)?a.stability:100;return species.filter(s=>canLive(s,a)).map(s=>{let bonus=0;
 if(["サクラ","ヒマワリ","バラ","ハス","バナナ","ラン","トウモロコシ"].includes(s.name))bonus+=fit(a.fertility,70,28);
 if(["岩場コケ","スナゴケ","マツ","花サボテン","ソテツ"].includes(s.name))bonus+=fit(a.fertility,18,25);
 if(["ワラビ","ゼンマイ","スギ","カエデ","シロツメクサ"].includes(s.name))bonus+=fit(a.fertility,45,30);
@@ -409,6 +688,7 @@ if(bio==="desert" && ["花サボテン","アロエ","砂漠コケ","バオバブ
 if(bio==="alpine" && ["氷雪コケ","トウヒ","カラマツ","高山花","高山ユリ"].includes(s.name))bonus+=70;
 if(bio==="wetland" && ["ミズゴケ","沼ゴケ","カワゴケ","ハス","スイレン","ウキクサ","ミズワラビ"].includes(s.name))bonus+=70;
 if(bio==="grassland" && ["イネ","ムギ","ススキ","タンポポ","シロツメクサ"].includes(s.name))bonus+=45;
+bonus+=chainBonus(s);
 return Object.assign({},s,{score:Math.max(1,s.score(a)+bonus+rand(-8,8))})}).sort((x,y)=>y.score-x.score)}
 
 function cappedProbabilityList(limit=6){
@@ -427,11 +707,106 @@ function cappedProbabilityList(limit=6){
   list.forEach(s=>s.prob=Math.max(5,Math.min(80,Math.round(s.weight/total*100))));
   return list;
 }
-function decideEvolution(){finished=true;running=false;const list=cappedProbabilityList(6);const total=list.reduce((m,s)=>m+s.weight,0);let r=Math.random()*total,chosen=list[0];for(const s of list){r-=s.weight;if(r<=0){chosen=s;break}}const biomeId=evaluateBiome(currentAverage());const biome=biomeById(biomeId);biomes[biomeId]=true;biomeStats[biomeId]=(biomeStats[biomeId]||0)+1;if(!biomePlants[biomeId])biomePlants[biomeId]={};biomePlants[biomeId][chosen.id]=true;const isNew=!found[chosen.id];found[chosen.id]=true;history.unshift({id:chosen.id,name:chosen.name,icon:chosen.icon,rank:chosen.rank,date:new Date().toLocaleString("ja-JP")});history=history.slice(0,12);const gainR=chosen.rank==="希少種"?20:chosen.rank==="環境適応種"?14:10;const gainS=chosen.rank==="希少種"?3:chosen.rank==="環境適応種"?2:1;research+=gainR;seeds+=gainS;
+
+function envSnapshot(a){
+  return {
+    temp:Math.round(a.temp), water:Math.round(a.water), dry:Math.round(a.dry),
+    light:Math.round(a.light), insect:Math.round(a.insect), fertility:Math.round(a.fertility),
+    season:a.season
+  };
+}
+function addResearchNote(kind, payload){
+  if(!notes) notes=[];
+  const now=new Date().toLocaleString("ja-JP");
+  notes.unshift(Object.assign({kind,date:now},payload));
+  notes=notes.slice(0,30);
+  saveData();
+}
+function noteTitle(n){
+  if(n.kind==="plant") return `${n.icon||"🌱"} ${n.name} / ${n.biomeName}`;
+  if(n.kind==="dead") return `💀 枯れてしまった / ${n.biomeName}`;
+  return "🌱 実験記録";
+}
+function noteBody(n){
+  const e=n.env||{};
+  const envText=`温度${e.temp}℃・水分${e.water}・乾燥${e.dry}・日光${e.light}・昆虫${e.insect}・肥沃度${e.fertility}・季節${e.season}`;
+  if(n.kind==="plant"){
+    return `${n.rank} / ${n.group}<br>生態系：${n.biomeIcon} ${n.biomeName}<br>遷移：${n.stageIcon} ${n.stageName}<br>気候イベント：${n.eventName||"なし"}<br>伝説植物：${n.legendName||"なし"}<br>${envText}`;
+  }
+  if(n.kind==="dead"){
+    return `生態系：${n.biomeIcon} ${n.biomeName}<br>遷移：${n.stageIcon} ${n.stageName}<br>${envText}<br>定着可能な植物なし`;
+  }
+  return envText;
+}
+
+function replayNote(i){
+  if(running){
+    log("⚠️ 再実験はスタート前だけ使えます。","warn");
+    return;
+  }
+  const n=notes&&notes[i];
+  if(!n||!n.env){
+    log("⚠️ この研究ノートは再現できません。","warn");
+    return;
+  }
+  initialEnv={
+    water:clamp01(n.env.water||50),
+    light:clamp01(n.env.light||50),
+    dry:clamp01(n.env.dry||50),
+    temp:clampTemp(n.env.temp||16),
+    insect:clamp01(n.env.insect||10),
+    fertility:clamp01(n.env.fertility||30)
+  };
+  env={...initialEnv};
+  saveData();
+  log("🔁 研究ノートの環境を初期設定に再現しました。","good");
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function decideEvolution(){finished=true;running=false;const list=cappedProbabilityList(6);if(!list.length){showDeadResult();el.startBtn.disabled=false;playTone([220,180,140],.12);render();return}const total=list.reduce((m,s)=>m+s.weight,0);let r=Math.random()*total,chosen=list[0];for(const s of list){r-=s.weight;if(r<=0){chosen=s;break}}const biomeId=evaluateBiome(currentAverage());const biome=biomeById(biomeId);biomes[biomeId]=true;biomeStats[biomeId]=(biomeStats[biomeId]||0)+1;const stage=recordSuccession(biomeId);if(!biomePlants[biomeId])biomePlants[biomeId]={};biomePlants[biomeId][chosen.id]=true;discoveryCounts[chosen.id]=(discoveryCounts[chosen.id]||0)+1;const isNew=!found[chosen.id];found[chosen.id]=true;history.unshift({id:chosen.id,name:chosen.name,icon:chosen.icon,rank:chosen.rank,date:new Date().toLocaleString("ja-JP")});history=history.slice(0,12);const gainR=chosen.rank==="希少種"?20:chosen.rank==="環境適応種"?14:10;const gainS=chosen.rank==="希少種"?3:chosen.rank==="環境適応種"?2:1;research+=gainR;seeds+=gainS;
 const rare = rollRare(chosen);
 if(rare){rares.unshift(rare);rares=rares.slice(0,30);research+=8;log("✨ レア変異発見："+rare.label+" "+chosen.name+"！ 研究ポイント+8","good");}
-saveData();el.resultText.textContent="進化結果："+(rare?rare.label:"")+chosen.name;el.seedIcon.textContent=chosen.icon;el.phaseName.textContent=chosen.name;el.phaseDesc.textContent=chosen.group+"："+chosen.desc;el.startBtn.disabled=false;showResult(chosen,isNew,gainR,gainS,rare,biome);log("📖 図鑑登録："+chosen.name+"。"+chosen.desc,"good");playTone([523,659,784,1046],.12);render()}
-function showResult(s,isNew,gainR,gainS,rare,biome){const a=currentAverage();el.resultPanel.classList.add("show");el.resultContent.innerHTML=`<p><span class="badge">${s.rank}</span> ${isNew?"📖 新発見":"🔁 発見済み"}</p><h2>No.${String(s.no).padStart(3,"0")} ${s.icon} ${rare?rare.label:""}${s.name}</h2><p><b>${s.group}</b>：${s.desc}</p><p><b>今回の生態系</b><br>${biome.icon} ${biome.name}：${biome.desc}</p><p><b>生態系レポート</b><br>${ecosystemReport(a,biome,s)}</p><p><b>生態系評価</b><br>${ecosystemStars(a,biome)}　${ecosystemTitle(a,biome)}</p><p><b>次の狙い</b><br>${nextTargetAdvice(a,biome,s)}</p><div class="resultGrid"><div class="rbox">平均温度：<b>${Math.round(a.temp)}℃</b></div><div class="rbox">平均水分：<b>${Math.round(a.water)}</b></div><div class="rbox">平均乾燥：<b>${Math.round(a.dry)}</b></div><div class="rbox">平均日光：<b>${Math.round(a.light)}</b></div><div class="rbox">平均昆虫：<b>${Math.round(a.insect)}</b></div><div class="rbox">平均肥沃度：<b>${Math.round(a.fertility)}</b></div><div class="rbox">主な季節：<b>${a.season}</b></div><div class="rbox">環境評価：<b>${biome.icon} ${biome.name}</b></div></div><p><b>なぜ生まれた？</b><br>${s.why}${hiddenEnvComment(a,s)}</p><p><b>豆知識</b><br>${s.fact}</p><p><b>今回の獲得</b><br>🌱 種子 +${gainS}　🔬 研究ポイント +${gainR}${rare?"　✨ レア変異登録":""}</p>`}
+const legend=rollLegend(chosen,currentAverage(),biome);
+addResearchNote("plant",{id:chosen.id,name:(rare?rare.label:"")+chosen.name,icon:chosen.icon,rank:chosen.rank,group:chosen.group,biomeId,biomeName:biome.name,biomeIcon:biome.icon,stageName:stage.name,stageIcon:stage.icon,eventName:currentEvent?currentEvent.name:"なし",legendName:legend?legend.name:"なし",env:envSnapshot(currentAverage())});
+saveData();el.resultText.textContent="進化結果："+(rare?rare.label:"")+chosen.name;el.seedIcon.textContent=chosen.icon;el.phaseName.textContent=chosen.name;el.phaseDesc.textContent=chosen.group+"："+chosen.desc;el.startBtn.disabled=false;checkAchievements();showResult(chosen,isNew,gainR,gainS,rare,biome);log("📖 図鑑登録："+chosen.name+"。"+chosen.desc,"good");playTone([523,659,784,1046],.12);render()}
+
+
+function deadAdvice(a){
+  const tips=[];
+  if(a.temp>35) tips.push("温度が高すぎます。熱帯・砂漠以外は定着しにくいです。");
+  if(a.temp<-25) tips.push("温度が低すぎます。氷雪コケ級の植物でも厳しい可能性があります。");
+  if(a.water<12 && a.dry>85) tips.push("水分が少なすぎます。乾燥植物でも最低限の水分が必要です。");
+  if(a.water>95 && a.dry<5) tips.push("水分が極端に多すぎます。水生植物向けですが、日光や温度も必要です。");
+  if(a.light<10) tips.push("日光が弱すぎます。日陰植物でも最低限の光が必要です。");
+  if(a.light>95 && a.water<25) tips.push("強光と低水分が重なっています。砂漠型以外は定着しにくいです。");
+  if(a.insect<5 && a.light>60 && a.water>40) tips.push("花をもつ植物を狙うなら昆虫を増やすとよいです。");
+  if(!tips.length) tips.push("条件が少しずつ噛み合っていません。候補欄を見ながら、極端な値を5〜10だけ戻してみましょう。");
+  return tips.join("<br>");
+}
+function showDeadResult(){
+  const a=currentAverage();
+  const biomeId=evaluateBiome(a);
+  const biome=biomeById(biomeId);
+  biomes[biomeId]=true;
+  biomeStats[biomeId]=(biomeStats[biomeId]||0)+1;
+  const stage=recordSuccession(biomeId);
+  addResearchNote("dead",{biomeId,biomeName:biome.name,biomeIcon:biome.icon,stageName:stage.name,stageIcon:stage.icon,env:envSnapshot(a)});
+  saveData();
+  el.seedIcon.textContent="💀";
+  el.phaseName.textContent="枯れてしまった";
+  el.phaseDesc.textContent="この環境では、登録されている植物が定着できませんでした。";
+  el.resultText.innerHTML='<span class="dead">定着失敗</span>';
+  el.resultPanel.classList.add("show");
+  el.resultContent.innerHTML=`<p><span class="badge">定着失敗</span></p>
+  <h2>💀 枯れてしまった</h2>
+  <p><b>今回の生態系</b><br>${biome.icon} ${biome.name}：${biome.desc}</p><p><b>遷移段階</b><br>${stage.icon} ${stage.name}：${stage.desc}</p>
+  <p><b>考察</b><br>この環境では、現在の図鑑に登録されている植物の生息条件に合いませんでした。水分・乾燥・温度・日光・昆虫・肥沃度のどれかが極端すぎる可能性があります。</p>
+  <div class="resultGrid"><div class="rbox">平均温度：<b>${Math.round(a.temp)}℃</b></div><div class="rbox">平均水分：<b>${Math.round(a.water)}</b></div><div class="rbox">平均乾燥：<b>${Math.round(a.dry)}</b></div><div class="rbox">平均日光：<b>${Math.round(a.light)}</b></div><div class="rbox">平均昆虫：<b>${Math.round(a.insect)}</b></div><div class="rbox">平均肥沃度：<b>${Math.round(a.fertility)}</b></div><div class="rbox">主な季節：<b>${a.season}</b></div><div class="rbox">環境評価：<b>${biome.icon} ${biome.name}</b></div></div>
+  <p><b>次の実験</b><br>${deadAdvice(a)}</p>`;
+  log("💀 定着失敗。この環境では植物が枯れてしまった。","bad");checkAchievements();
+}
+function showResult(s,isNew,gainR,gainS,rare,biome){const a=currentAverage();el.resultPanel.classList.add("show");el.resultContent.innerHTML=`<p><span class="badge">${s.rank}</span> ${isNew?"📖 新発見":"🔁 発見済み"}</p><h2>No.${String(s.no).padStart(3,"0")} ${s.icon} ${rare?rare.label:""}${s.name}</h2><p><b>${s.group}</b>：${s.desc}</p><p><b>今回の生態系</b><br>${biome.icon} ${biome.name}：${biome.desc}</p><p><b>遷移段階</b><br>${stage.icon} ${stage.name}：${stage.desc}</p><p><b>生態系レポート</b><br>${ecosystemReport(a,biome,s)}</p><p><b>生態系評価</b><br>${ecosystemStars(a,biome)}　${ecosystemTitle(a,biome)}</p><p><b>次の狙い</b><br>${nextTargetAdvice(a,biome,s)}</p><p><b>遷移チェーン</b><br>${chainBonus(s)>0?"発見済み植物との相性によって、この植物が出やすくなっていました。":"この植物は環境条件を中心に発生しました。"}<br>${nextChainTargets(s)}</p><div class="resultGrid"><div class="rbox">平均温度：<b>${Math.round(a.temp)}℃</b></div><div class="rbox">平均水分：<b>${Math.round(a.water)}</b></div><div class="rbox">平均乾燥：<b>${Math.round(a.dry)}</b></div><div class="rbox">平均日光：<b>${Math.round(a.light)}</b></div><div class="rbox">平均昆虫：<b>${Math.round(a.insect)}</b></div><div class="rbox">平均肥沃度：<b>${Math.round(a.fertility)}</b></div><div class="rbox">主な季節：<b>${a.season}</b></div><div class="rbox">環境評価：<b>${biome.icon} ${biome.name}</b></div></div><p><b>なぜ生まれた？</b><br>${s.why}${hiddenEnvComment(a,s)}</p><p><b>豆知識</b><br>${s.fact}</p><p><b>今回の獲得</b><br>🌱 種子 +${gainS}　🔬 研究ポイント +${gainR}${rare?"　✨ レア変異登録":""}${legend?"　🌟 伝説植物発見":""}</p>${legend?`<p><b>🌟 特別発見</b><br>${legend.icon} ${legend.name}<br>${legend.desc}</p>`:""}`}
 
 
 
@@ -450,6 +825,56 @@ function biomePlantList(id){
   if(!arr.length) return "記録なし";
   return arr.map(s=>s.icon+s.name).join("、");
 }
+
+const achievementDefs=[
+  {id:"firstPlant",icon:"🌱",name:"はじめての発見",desc:"植物を1種発見する",check:()=>Object.keys(found||{}).length>=1,reward:"研究ポイント+5"},
+  {id:"plants10",icon:"📖",name:"小さな図鑑",desc:"植物を10種発見する",check:()=>Object.keys(found||{}).length>=10,reward:"研究ポイント+10"},
+  {id:"plants50",icon:"🌿",name:"植物調査員",desc:"植物を50種発見する",check:()=>Object.keys(found||{}).length>=50,reward:"研究ポイント+20"},
+  {id:"plants100",icon:"🌳",name:"植物学者",desc:"植物を100種発見する",check:()=>Object.keys(found||{}).length>=100,reward:"研究ポイント+40"},
+  {id:"plants200",icon:"🏆",name:"Plant Planet完全図鑑",desc:"植物を200種発見する",check:()=>Object.keys(found||{}).length>=200,reward:"称号"},
+  {id:"biome3",icon:"🌍",name:"バイオーム観測者",desc:"バイオームを3種類発見する",check:()=>Object.keys(biomes||{}).length>=3,reward:"研究ポイント+15"},
+  {id:"biomeAll",icon:"🧭",name:"惑星探検家",desc:"全バイオームを発見する",check:()=>Object.keys(biomes||{}).length>=biomeDefs.length,reward:"研究ポイント+30"},
+  {id:"rare1",icon:"✨",name:"変異の目撃者",desc:"レア変異を1つ発見する",check:()=> (rares||[]).length>=1,reward:"研究ポイント+10"},
+  {id:"rare10",icon:"🌟",name:"変異研究者",desc:"レア変異を10個発見する",check:()=> (rares||[]).length>=10,reward:"研究ポイント+30"},
+  {id:"dead1",icon:"💀",name:"定着失敗の記録",desc:"枯れてしまった記録を1回残す",check:()=> (notes||[]).some(n=>n.kind==="dead"),reward:"研究ポイント+5"},
+  {id:"succession5",icon:"🌿",name:"遷移を追う者",desc:"どれかの生態系を5回形成する",check:()=>Object.values(succession||{}).some(v=>v>=5),reward:"研究ポイント+15"},
+  {id:"notes10",icon:"📝",name:"研究ノート10冊目",desc:"研究ノートを10件ためる",check:()=> (notes||[]).length>=10,reward:"研究ポイント+10"},
+  {id:"wetland5",icon:"💧",name:"湿原研究者",desc:"湿原植物を5種発見する",check:()=>species.filter(s=>plantThemes(s).includes("wetland")&&found[s.id]).length>=5,reward:"研究ポイント+15"},
+  {id:"desert5",icon:"🌵",name:"砂漠研究者",desc:"砂漠植物を5種発見する",check:()=>species.filter(s=>plantThemes(s).includes("desert")&&found[s.id]).length>=5,reward:"研究ポイント+15"},
+  {id:"carnivorous3",icon:"🪰",name:"食虫植物研究者",desc:"食虫植物を3種発見する",check:()=>species.filter(s=>plantThemes(s).includes("carnivorous")&&found[s.id]).length>=3,reward:"研究ポイント+20"},
+  {id:"same5",icon:"🔁",name:"再現実験",desc:"同じ植物を5回発見する",check:()=>Object.values(discoveryCounts||{}).some(v=>v>=5),reward:"研究ポイント+10"},
+  {id:"eventPlant",icon:"🌦️",name:"気候を越えて",desc:"気候イベントが起きた実験で植物を発見する",check:()=> (notes||[]).some(n=>n.kind==="plant"&&n.eventName&&n.eventName!=="なし"),reward:"研究ポイント+15"},
+  {id:"legend1",icon:"🌟",name:"伝説の発見者",desc:"伝説植物・古代植物を1種発見する",check:()=>Object.keys(legends||{}).length>=1,reward:"研究ポイント+30"},
+  {id:"completion80",icon:"🏆",name:"惑星完成間近",desc:"総合進捗80%以上に到達する",check:()=>completionStats().score>=80,reward:"研究ポイント+50"}
+];
+function checkAchievements(){
+  let gained=[];
+  for(const a of achievementDefs){
+    if(!achievements[a.id] && a.check()){
+      achievements[a.id]=new Date().toLocaleString("ja-JP");
+      gained.push(a);
+      if(a.reward.includes("+5")) research+=5;
+      else if(a.reward.includes("+10")) research+=10;
+      else if(a.reward.includes("+15")) research+=15;
+      else if(a.reward.includes("+20")) research+=20;
+      else if(a.reward.includes("+30")) research+=30;
+      else if(a.reward.includes("+40")) research+=40;
+    }
+  }
+  if(gained.length){
+    gained.forEach(a=>log("🏆 実績達成："+a.name+"（"+a.reward+"）","good"));
+    saveData();
+  }
+}
+function achievementRank(){
+  const got=Object.keys(achievements||{}).length;
+  if(got>=achievementDefs.length) return "🏆 完全研究者";
+  if(got>=12) return "🌟 上級研究者";
+  if(got>=8) return "🌿 生態系研究者";
+  if(got>=4) return "📖 観察者";
+  if(got>=1) return "🌱 見習い研究者";
+  return "⬛ 未認定";
+}
 function missionDone(type){
   const foundCount=Object.keys(found||{}).length;
   const biomeCount=Object.keys(biomes||{}).length;
@@ -460,7 +885,55 @@ function missionDone(type){
   if(type==="biomeAll") return biomeCount>=biomeDefs.length;
   if(type==="rare1") return rareCount>=1;
   if(type==="mossAll") return species.filter(s=>s.group==="コケ植物").every(s=>found[s.id]);
+  if(type==="succession5") return Object.values(succession||{}).some(v=>v>=5);
+  if(type==="notes10") return (notes||[]).length>=10;
+  if(type==="chain1") return activeChains().length>=1;
+  if(type==="themeWetland5") return species.filter(s=>plantThemes(s).includes("wetland")&&found[s.id]).length>=5;
+  if(type==="themeDesert5") return species.filter(s=>plantThemes(s).includes("desert")&&found[s.id]).length>=5;
+  if(type==="themeCarnivorous3") return species.filter(s=>plantThemes(s).includes("carnivorous")&&found[s.id]).length>=3;
+  if(type==="discoverSame5") return Object.values(discoveryCounts||{}).some(v=>v>=5);
   return false;
+}
+
+function successionStage(id,count){
+  if(id==="wetland"){
+    if(count>=8) return {name:"泥炭湿原",icon:"🟤",desc:"湿原が長く保たれ、ミズゴケなどが堆積して有機物をためる段階。"};
+    if(count>=4) return {name:"発達湿原",icon:"💧",desc:"水分の多い環境が安定し、水辺植物やコケが広がる段階。"};
+    return {name:"初期湿原",icon:"💧",desc:"水分が集まり、湿った土地ができ始めた段階。"};
+  }
+  if(id==="grassland" || id==="savanna"){
+    if(count>=8) return {name:"低木草原",icon:"🌿",desc:"草本に加えて、乾燥や日光に強い低木が混ざり始める段階。"};
+    if(count>=4) return {name:"安定草原",icon:"🌾",desc:"日光を受ける草本が広がり、草原として安定した段階。"};
+    return {name:"初期草原",icon:"🌱",desc:"裸地に草本が入り始めた段階。"};
+  }
+  if(id==="temperateForest" || id==="shadedForest"){
+    if(count>=8) return {name:"成熟林",icon:"🌳",desc:"樹木が大きく育ち、林床には日陰に強い植物が増える段階。"};
+    if(count>=4) return {name:"若い森林",icon:"🌲",desc:"低木や若木が増え、森林へ向かって発達する段階。"};
+    return {name:"林縁",icon:"🌿",desc:"草地から森林へ移り変わる入り口の段階。"};
+  }
+  if(id==="desert" || id==="bareland"){
+    if(count>=8) return {name:"乾燥低木地",icon:"🏜",desc:"乾燥に強い低木や多肉植物が点在する段階。"};
+    if(count>=4) return {name:"安定砂地",icon:"🪨",desc:"乾燥した土地に先駆植物が定着し始める段階。"};
+    return {name:"裸地",icon:"🪨",desc:"まだ植物が少なく、環境条件が厳しい段階。"};
+  }
+  if(id==="rainforest"){
+    if(count>=8) return {name:"多層熱帯林",icon:"🌴",desc:"高温多湿が続き、高木・シダ・つる植物などが重なる段階。"};
+    if(count>=4) return {name:"若い熱帯林",icon:"🌴",desc:"大型の葉をもつ植物が広がり始める段階。"};
+    return {name:"熱帯林の芽生え",icon:"🌱",desc:"高温多湿の条件がそろい始めた段階。"};
+  }
+  if(id==="tundra" || id==="alpine"){
+    if(count>=8) return {name:"高山お花畑",icon:"⛰",desc:"短い生育期間に低い草花やコケが広がる段階。"};
+    if(count>=4) return {name:"寒冷草地",icon:"❄️",desc:"寒さに耐える低い植物が定着し始める段階。"};
+    return {name:"寒冷裸地",icon:"🧊",desc:"低温が厳しく、植物がまばらな段階。"};
+  }
+  return {name:"初期生態系",icon:"🌱",desc:"環境が形成され始めた段階。"};
+}
+function recordSuccession(id){
+  succession[id]=(succession[id]||0)+1;
+  return successionStage(id,succession[id]);
+}
+function currentSuccessionStage(id){
+  return successionStage(id,(succession&&succession[id])||0);
 }
 function ecosystemStars(a,biome){
   const sc = biomeScore(a,biome.id);
@@ -505,13 +978,30 @@ function hiddenEnvComment(a,s){
   return "";
 }
 function togglePause(){if(!running||finished)return;paused=!paused;el.pauseBtn.textContent=paused?"再開":"一時停止";playTone(paused?[260]:[520],.06)}
-function render(){setBar("time",Math.min(100,seconds/EVOLVE_SECONDS*100),seconds+"秒");setBar("water",env.water,Math.round(env.water));setBar("light",env.light,Math.round(env.light));setBar("dry",env.dry,Math.round(env.dry));setBar("temp",tempToPercent(env.temp),Math.round(env.temp)+"℃");setBar("insect",env.insect,Math.round(env.insect));setBar("fertility",env.fertility,Math.round(env.fertility));["water","light","dry","insect","fertility"].forEach(k=>el[k+"Now"].textContent=Math.round(env[k]));el.tempNow.textContent=Math.round(env.temp)+"℃";el.seasonNow.textContent=seasonName();if(el.stepNow)el.stepNow.textContent=stepSize||5;document.querySelectorAll("[data-step]").forEach(b=>b.classList.toggle("active",Number(b.dataset.step)===(stepSize||5)));renderPreStart();if(!running && !finished){
+
+function toggleFold(key){
+  foldState[key]=!foldState[key];
+  renderFolds();
+}
+function renderFolds(){
+  Object.keys(foldState).forEach(k=>{
+    const body=document.getElementById("foldBody_"+k);
+    const icon=document.getElementById("foldIcon_"+k);
+    if(body) body.classList.toggle("closed",!foldState[k]);
+    if(icon) icon.textContent=foldState[k]?"▼":"▶";
+  });
+}
+function render(){setBar("time",Math.min(100,seconds/EVOLVE_SECONDS*100),seconds+"秒");setBar("water",env.water,Math.round(env.water));setBar("light",env.light,Math.round(env.light));setBar("dry",env.dry,Math.round(env.dry));setBar("temp",tempToPercent(env.temp),Math.round(env.temp)+"℃");setBar("insect",env.insect,Math.round(env.insect));setBar("fertility",env.fertility,Math.round(env.fertility));["water","light","dry","insect","fertility"].forEach(k=>el[k+"Now"].textContent=Math.round(env[k]));el.tempNow.textContent=Math.round(env.temp)+"℃";el.seasonNow.textContent=seasonName();renderEvent();if(el.stepNow)el.stepNow.textContent=stepSize||5;document.querySelectorAll("[data-step]").forEach(b=>b.classList.toggle("active",Number(b.dataset.step)===(stepSize||5)));renderPreStart();if(!running && !finished){
   el.candidates.innerHTML=`<div class="candidate"><div class="candTop"><span>？？？？</span><span>--%</span></div><div class="candDesc">スタート後に進化予測が表示されます。</div></div>
   <div class="candidate"><div class="candTop"><span>？？？？</span><span>--%</span></div><div class="candDesc">初期設定から何が出るか予想してみよう。</div></div>`;
 }else{
   const list=cappedProbabilityList(6).slice(0,4);
-  el.candidates.innerHTML=list.map(s=>{const p=Math.max(5,Math.min(80,s.prob||5));return `<div class="candidate"><div class="candTop"><span>${s.icon} ${s.name}</span><span>${p}%</span></div><div class="meter" style="margin-top:7px"><div class="fill" style="width:${p}%"></div></div><div class="candDesc">${s.group}：${s.desc}</div></div>`}).join("");
-}renderZukan();renderHistory();renderRare();renderBiomes();renderTitles();renderMissions();el.researchText.textContent=research;el.seedText.textContent=seeds;el.foundText.textContent=Object.keys(found).length}
+  if(!list.length){
+    el.candidates.innerHTML=`<div class="candidate"><div class="candTop"><span class="dead">💀 定着できる植物なし</span><span>0%</span></div><div class="candDesc">このまま終了すると枯れてしまいます。水分・温度・乾燥・日光のどれかが極端すぎる可能性があります。</div></div>`;
+  }else{
+    el.candidates.innerHTML=list.map(s=>{const p=Math.max(5,Math.min(80,s.prob||5));return `<div class="candidate"><div class="candTop"><span>${s.icon} ${s.name}</span><span>${p}%</span></div><div class="meter" style="margin-top:7px"><div class="fill" style="width:${p}%"></div></div><div class="candDesc">${s.group}：${s.desc}<br>条件：${reqText(s)}${chainBonus(s)>0?"<br>🌿 発見済み植物から相性補正あり":""}</div></div>`}).join("");
+  }
+}renderZukan();renderHistory();renderRare();renderLegends();renderNotes();renderCompletion();renderRankings();renderBiomes();renderSuccession();renderThemeSummary();renderClassSummary();renderChains();renderTitles();renderAchievements();renderMissions();el.researchText.textContent=research;el.seedText.textContent=seeds;el.foundText.textContent=Object.keys(found).length;renderFolds()}
 
 
 
@@ -543,8 +1033,144 @@ function unlockHint(id){
   render();
 }
 function renderPreStart(){if(!el.preWaterNow)return;const e=initialEnv||env;el.preWaterNow.textContent=Math.round(e.water);el.preLightNow.textContent=Math.round(e.light);el.preDryNow.textContent=Math.round(e.dry);el.preTempNow.textContent=Math.round(e.temp)+"℃";el.preInsectNow.textContent=Math.round(e.insect);el.preFertilityNow.textContent=Math.round(e.fertility);}
-function renderZukan(){const groups=["コケ植物","シダ植物","裸子植物","単子葉類","双子葉類"];el.zukan.innerHTML=groups.map(g=>{const arr=species.filter(s=>s.group===g);const got=arr.filter(s=>found[s.id]).length;return `<div class="zcat"><button class="zhead" data-cat="${g}"><span>${openCats[g]?"▼":"▶"} ${g} (${got}/${arr.length})</span><span>${arr.length?Math.round(got/arr.length*100):0}%</span></button><div class="zbody ${openCats[g]?"":"closed"}">${arr.map(s=>{const ok=found[s.id];return `<div class="zitem ${ok?"found":""}">${ok?`No.${String(s.no).padStart(3,"0")} ${s.icon} ${s.name}<br><span style="font-size:11px;color:#b9c9b5">${s.rank}</span>`:`No.${String(s.no).padStart(3,"0")} <span class="hiddenIcon">⬛</span> ????<br><span style="font-size:11px;color:#777">${hints[s.id]?hintText(s):"未発見"}</span><br><button class="secondary" style="margin-top:6px;padding:6px 8px;font-size:12px" onclick="unlockHint('${s.id}')">${hints[s.id]?"ヒント済":"研究P 15でヒント"}</button>`}</div>`}).join("")}</div></div>`}).join("");document.querySelectorAll(".zhead").forEach(b=>b.onclick=()=>{openCats[b.dataset.cat]=!openCats[b.dataset.cat];renderZukan()})}
 
+
+
+const themeDefs=[
+  {id:"wetland",icon:"💧",name:"湿原植物"},
+  {id:"desert",icon:"🌵",name:"砂漠植物"},
+  {id:"tropical",icon:"🌴",name:"熱帯植物"},
+  {id:"alpine",icon:"⛰",name:"高山植物"},
+  {id:"carnivorous",icon:"🪰",name:"食虫植物"},
+  {id:"poison",icon:"☠️",name:"有毒植物"},
+  {id:"herb",icon:"🌿",name:"薬草・香草"},
+  {id:"flower",icon:"🌸",name:"花植物"},
+  {id:"tree",icon:"🌳",name:"樹木"},
+  {id:"grass",icon:"🌾",name:"イネ科・草原植物"},
+  {id:"ancient",icon:"👑",name:"古代植物"},
+  {id:"aquatic",icon:"🪷",name:"水生植物"}
+];
+function plantThemes(s){
+  const n=s.name,g=s.group,r=habitatRequirement(s);
+  const t=[];
+  function add(id){if(!t.includes(id))t.push(id)}
+  if(r.waterMin!==undefined && r.waterMin>=65) add("wetland");
+  if(r.waterMin!==undefined && r.waterMin>=85) add("aquatic");
+  if(r.dryMin!==undefined && r.dryMin>=55) add("desert");
+  if(r.tempMin!==undefined && r.tempMin>=20) add("tropical");
+  if(r.tempMax!==undefined && r.tempMax<=12) add("alpine");
+  if(r.insectMin!==undefined && r.insectMin>=50 && ["モウセンゴケ","ハエトリグサ","ウツボカズラ","高山モウセンゴケ"].some(x=>n.includes(x))) add("carnivorous");
+  if(["モウセンゴケ","ハエトリグサ","ウツボカズラ","高山モウセンゴケ"].some(x=>n.includes(x))) add("carnivorous");
+  if(["ドク","毒","ジギタリス","トリカブト"].some(x=>n.includes(x))) add("poison");
+  if(["ヨモギ","ミント","ハッカ","セージ","ローズマリー","ラベンダー","バジル","チャノキ","ショウガ","ミョウガ","ニンニク"].some(x=>n.includes(x))) add("herb");
+  if(["花","サクラ","バラ","ツツジ","ユリ","ラン","チューリップ","ヒヤシンス","スイセン","コスモス","パンジー","スミレ","ポピー","ヒマワリ","エーデルワイス","クロッカス"].some(x=>n.includes(x))) add("flower");
+  if(["木","樹","マツ","スギ","ヒノキ","トウヒ","モミ","ツガ","イチイ","ブナ","コナラ","クヌギ","ケヤキ","ヤナギ","シラカバ","ハンノキ","カエデ","オリーブ","カカオ","ゴムノキ","バオバブ"].some(x=>n.includes(x)) || g==="裸子植物") add("tree");
+  if(["イネ","ムギ","ススキ","シバ","ヨシ","ガマ","マコモ","サトウキビ","カラスムギ","エンバク","草","タンポポ","シロツメクサ","オオバコ"].some(x=>n.includes(x))) add("grass");
+  if(["ソテツ","イチョウ","メタセコイア","グネツム","木生シダ","巨大シダ","古代","地衣類"].some(x=>n.includes(x))) add("ancient");
+  if(["ハス","スイレン","ウキクサ","セキショウモ","アカウキクサ","パピルス"].some(x=>n.includes(x))) add("aquatic");
+  if(t.length===0 && g==="双子葉類") add("flower");
+  if(t.length===0 && g==="単子葉類") add("grass");
+  return t;
+}
+function themeLabel(id){
+  const d=themeDefs.find(x=>x.id===id);
+  return d?d.icon+" "+d.name:id;
+}
+function themeTitle(id,got,total){
+  const d=themeDefs.find(x=>x.id===id);
+  const p=total?got/total:0;
+  if(p>=1) return `${d.icon} ${d.name}マスター`;
+  if(p>=0.7) return `${d.icon} ${d.name}博士`;
+  if(p>=0.4) return `${d.icon} ${d.name}研究員`;
+  if(p>0) return `${d.icon} ${d.name}観察者`;
+  return `⬛ ${d.name}未踏`;
+}
+function themeText(s){
+  const arr=plantThemes(s);
+  return arr.length?arr.map(themeLabel).join(" / "):"未分類";
+}
+function strategyText(s){
+  const n=s.name, g=s.group;
+  if(["花サボテン","アロエ","砂漠コケ","バオバブ","熱砂草","砂漠ユリ"].includes(n)) return "乾燥に耐えるため、水をためたり、葉を小さくしたりして蒸散を抑える。";
+  if(["ハス","ウキクサ","セキショウモ","ガマ","ヨシ","ハナショウブ","アヤメ"].includes(n)) return "水辺に適応し、水分を十分に利用しながら、葉や茎を水面・水上へ広げる。";
+  if(["ミズゴケ","沼ゴケ","カワゴケ","泡ゴケ","水辺コケ"].includes(n)) return "体に水を保ち、湿った環境を利用して胞子で広がる。";
+  if(["氷雪コケ","雪シダ","トウヒ","カラマツ","雪原草","高山花","高山ユリ"].includes(n)) return "低温や強風に耐えるため、成長を抑えたり低い姿勢で日光を利用したりする。";
+  if(["ラン","白ラン","星ラン","バニラ","黒バラ","金桜","サクラ","バラ","ヒマワリ","ユリ"].includes(n)) return "花や香り、色を使って昆虫を引き寄せ、受粉の成功率を高める。";
+  if(["マツ","スギ","ヒノキ","トウヒ","モミ","ツガ","イチョウ","ソテツ"].includes(n)) return "種子で増え、針葉や厚い葉などで乾燥・寒さに耐えながら長く生きる。";
+  if(g==="コケ植物") return "根や花をもたず、湿った場所で胞子によって広がる。小さな体で環境変化に耐える。";
+  if(g==="シダ植物") return "維管束で水を運び、胞子で増える。湿った日陰や林床で葉を広げて光を受ける。";
+  if(g==="裸子植物") return "花ではなく球果などで種子をつくり、寒冷・乾燥環境にも耐えやすい。";
+  if(g==="単子葉類") return "細長い葉やひげ根をもち、草地や水辺などで素早く広がる種類が多い。";
+  if(g==="双子葉類") return "網状脈や主根をもち、花・果実・木本化など多様な戦略で環境に適応する。";
+  return "その環境で有利になる形や増え方を選び、定着しやすい場所で広がる。";
+}
+function classIcon(g){
+  return {"コケ植物":"🟢","シダ植物":"🌿","裸子植物":"🌲","単子葉類":"🌾","双子葉類":"🌸"}[g]||"🌱";
+}
+function classTitle(g,got,total){
+  const p=total?got/total:0;
+  if(p>=1) return classIcon(g)+" "+g+"マスター";
+  if(p>=0.7) return classIcon(g)+" "+g+"博士";
+  if(p>=0.4) return classIcon(g)+" "+g+"研究員";
+  if(p>0) return classIcon(g)+" "+g+"観察者";
+  return "⬛ "+g+"未踏";
+}
+function observePlant(id){
+  const s=species.find(x=>x.id===id);
+  if(!s || !found[id]) return;
+  el.resultPanel.classList.add("show");
+  el.seedIcon.textContent=s.icon;
+  el.phaseName.textContent=s.name;
+  el.phaseDesc.textContent=s.group+"："+s.desc;
+  el.resultText.textContent="観察記録："+s.name;
+  el.resultContent.innerHTML=`<p><span class="badge">観察記録</span></p>
+  <h2>No.${String(s.no).padStart(3,"0")} ${s.icon} ${s.name}</h2>
+  <p><b>分類</b><br>${s.group} / ${s.rank}</p><p><b>発見回数</b><br>${(discoveryCounts&&discoveryCounts[s.id])||0}回</p><p><b>テーマ</b><br>${themeText(s)}</p>
+  <p><b>概要</b><br>${s.desc}</p>
+  <p><b>なぜ生まれた？</b><br>${s.why}</p>
+  <p><b>豆知識</b><br>${s.fact}</p>
+  <p><b>生存戦略</b><br>${strategyText(s)}</p>
+  <p><b>出現・定着条件</b><br>${reqText(s)}</p>
+  <p><b>つながる植物</b><br>${nextChainTargets(s)}</p><p><b>観察メモ</b><br>この植物は、上の条件を満たす環境で候補に入りやすくなります。近い環境をつくって、同じ分類の植物も狙ってみよう。</p>`;
+  log("🔎 観察："+s.name+" の記録を開きました。","good");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderZukan(){const groups=["コケ植物","シダ植物","裸子植物","単子葉類","双子葉類"];el.zukan.innerHTML=groups.map(g=>{const arr=species.filter(s=>s.group===g);const got=arr.filter(s=>found[s.id]).length;return `<div class="zcat"><button class="zhead" data-cat="${g}"><span>${openCats[g]?"▼":"▶"} ${g} (${got}/${arr.length})</span><span>${arr.length?Math.round(got/arr.length*100):0}%</span></button><div class="zbody ${openCats[g]?"":"closed"}">${arr.map(s=>{const ok=found[s.id];return `<div class="zitem ${ok?"found":""}">${ok?`No.${String(s.no).padStart(3,"0")} ${s.icon} ${s.name}<br><span style="font-size:11px;color:#b9c9b5">${s.rank}<br>テーマ：${themeText(s)}<br>条件：${reqText(s)}<br>戦略：${strategyText(s)}</span><br><button class="secondary" style="margin-top:6px;padding:6px 8px;font-size:12px" onclick="observePlant('${s.id}')">観察</button>`:`No.${String(s.no).padStart(3,"0")} <span class="hiddenIcon">⬛</span> ????<br><span style="font-size:11px;color:#777">${hints[s.id]?hintText(s):"未発見"}</span><br><button class="secondary" style="margin-top:6px;padding:6px 8px;font-size:12px" onclick="unlockHint('${s.id}')">${hints[s.id]?"ヒント済":"研究P 15でヒント"}</button>`}</div>`}).join("")}</div></div>`}).join("");document.querySelectorAll(".zhead").forEach(b=>b.onclick=()=>{openCats[b.dataset.cat]=!openCats[b.dataset.cat];renderZukan()})}
+
+
+const legendPlants=[
+  {id:"ancient_metasequoia",icon:"👑",name:"古代メタセコイア",type:"古代植物",desc:"湿った明るい森に現れる、太古の記憶をもつ針葉樹。",need:"メタセコイア系発見済 / 温帯林・水分高",check:(s,a,bio)=>found["metasequoia"]&&bio.id==="temperateForest"&&a.water>=60&&a.temp<=18},
+  {id:"king_treefern",icon:"👑",name:"シダ王",type:"古代植物",desc:"高温多湿の森にそびえる巨大な木生シダ。",need:"木生シダ・巨大シダ系 / 熱帯雨林",check:(s,a,bio)=>bio.id==="rainforest"&&a.water>=75&&a.temp>=25&&(found["tree_fern"]||found["treefern_gold"]||s.group==="シダ植物")},
+  {id:"primeval_cycad",icon:"👑",name:"原始ソテツ",type:"古代植物",desc:"乾燥と強光に耐え、古い植物群の姿を残すソテツ。",need:"ソテツ系 / 高温・乾燥",check:(s,a,bio)=>a.temp>=25&&a.dry>=65&&(s.name.includes("ソテツ")||found["cycad_old"]||found["nanban_sotetsu"])},
+  {id:"glacier_flower",icon:"❄️",name:"氷河花",type:"伝説植物",desc:"極寒の高山帯で一瞬だけ咲く青白い花。",need:"高山植物 / 低温・強光",check:(s,a,bio)=>["alpine","tundra"].includes(bio.id)&&a.temp<=0&&a.light>=65&&plantThemes(s).includes("alpine")},
+  {id:"moon_orchid",icon:"🌙",name:"月光ラン",type:"伝説植物",desc:"暗い湿った森で月のように光るラン。",need:"ラン系 / 日陰・高湿度・昆虫",check:(s,a,bio)=>a.light<=35&&a.water>=65&&a.insect>=60&&(s.name.includes("ラン")||plantThemes(s).includes("flower"))},
+  {id:"stardust_sundew",icon:"✨",name:"星屑モウセンゴケ",type:"伝説植物",desc:"湿原の夜に光る、星屑のような食虫植物。",need:"食虫植物 / 湿原・昆虫多",check:(s,a,bio)=>bio.id==="wetland"&&a.water>=75&&a.insect>=70&&plantThemes(s).includes("carnivorous")},
+  {id:"volcano_tree",icon:"🔥",name:"火山樹",type:"伝説植物",desc:"裸地と火山性の土地から芽吹く、赤い樹木。",need:"裸地・乾燥・肥沃度低",check:(s,a,bio)=>["bareland","desert"].includes(bio.id)&&a.dry>=65&&a.fertility<=45&&a.light>=65},
+  {id:"world_moss",icon:"🌍",name:"世界苔",type:"伝説植物",desc:"あらゆる湿った土地をつなぐ、惑星規模のコケ群落。",need:"コケ植物多数 / 水分高",check:(s,a,bio)=>a.water>=80&&s.group==="コケ植物"&&species.filter(x=>x.group==="コケ植物"&&found[x.id]).length>=8}
+];
+function rollLegend(s,a,biome){
+  const candidates=legendPlants.filter(l=>!legends[l.id]&&l.check(s,a,biome));
+  if(!candidates.length) return null;
+  let chance=0.08;
+  if(s.rank==="希少種") chance+=0.04;
+  if((rares||[]).length>=5) chance+=0.02;
+  if(Math.random()>chance) return null;
+  const l=candidates[Math.floor(Math.random()*candidates.length)];
+  legends[l.id]={date:new Date().toLocaleString("ja-JP"),base:s.name,biome:biome.name};
+  research+=30;
+  log("🌟 伝説植物発見："+l.name+"！ 研究ポイント+30","good");
+  playTone([220,440,660,880,1100],.12);
+  return l;
+}
+function renderLegends(){
+  if(!el.legendSummary||!el.legendBox) return;
+  const got=Object.keys(legends||{}).length;
+  el.legendSummary.innerHTML=`<span class="pill">🌟 伝説・古代: <b>${got}/${legendPlants.length}</b></span>`;
+  el.legendBox.innerHTML=legendPlants.map(l=>{
+    const ok=legends&&legends[l.id];
+    return `<p>${ok?l.icon:"⬛"} <b>${ok?l.name:"????"}</b><br><span style="color:#b9c9b5">${ok?l.type+" / "+l.desc+"<br>発見："+ok.date+" / きっかけ："+ok.base:"未発見の特別植物"}<br>条件：${ok?l.need:"????"}</span></p>`;
+  }).join("");
+}
 function rollRare(s){
   let chance=0.035;
   const a=currentAverage();
@@ -563,6 +1189,47 @@ function rollRare(s){
   return {id:s.id+"_"+r.label+"_"+Date.now(),base:s.name,label:r.label,icon:r.icon,rank:s.rank,date:new Date().toLocaleString("ja-JP")};
 }
 
+
+
+function renderThemeSummary(){
+  if(!el.themeSummary || !el.themeTitleBox) return;
+  el.themeSummary.innerHTML=themeDefs.map(t=>{
+    const arr=species.filter(s=>plantThemes(s).includes(t.id));
+    const got=arr.filter(s=>found[s.id]).length;
+    const pct=arr.length?Math.round(got/arr.length*100):0;
+    return `<span class="pill">${t.icon} ${t.name}: <b>${got}/${arr.length}</b> ${pct}%</span>`;
+  }).join("");
+  el.themeTitleBox.innerHTML=themeDefs.map(t=>{
+    const arr=species.filter(s=>plantThemes(s).includes(t.id));
+    const got=arr.filter(s=>found[s.id]).length;
+    return `<p>${themeTitle(t.id,got,arr.length)}</p>`;
+  }).join("");
+}
+function renderClassSummary(){
+  if(!el.classSummary || !el.classTitleBox) return;
+  const groups=["コケ植物","シダ植物","裸子植物","単子葉類","双子葉類"];
+  el.classSummary.innerHTML=groups.map(g=>{
+    const arr=species.filter(s=>s.group===g);
+    const got=arr.filter(s=>found[s.id]).length;
+    const pct=arr.length?Math.round(got/arr.length*100):0;
+    return `<span class="pill">${classIcon(g)} ${g}: <b>${got}/${arr.length}</b> ${pct}%</span>`;
+  }).join("");
+  el.classTitleBox.innerHTML=groups.map(g=>{
+    const arr=species.filter(s=>s.group===g);
+    const got=arr.filter(s=>found[s.id]).length;
+    return `<p>${classTitle(g,got,arr.length)}</p>`;
+  }).join("");
+}
+
+function renderSuccession(){
+  if(!el.successionBox) return;
+  const entries=biomeDefs.map(b=>{
+    const count=(succession&&succession[b.id])||0;
+    const st=successionStage(b.id,count);
+    return `<p>${count?st.icon:"⬛"} ${count?st.name:"????"} <span style="color:#b9c9b5">${b.name} / 記録${count}回${count?" / "+st.desc:" / まだ遷移なし"}</span></p>`;
+  });
+  el.successionBox.innerHTML=entries.join("");
+}
 function renderBiomes(){
   if(!el.biomeBox) return;
   const got=biomeDefs.filter(b=>biomes&&biomes[b.id]).length;
@@ -574,6 +1241,16 @@ function renderBiomes(){
 }
 
 
+
+function renderAchievements(){
+  if(!el.achievementSummary || !el.achievementBox) return;
+  const got=Object.keys(achievements||{}).length;
+  el.achievementSummary.innerHTML=`<span class="pill">🏆 実績: <b>${got}/${achievementDefs.length}</b></span><span class="pill">称号: <b>${achievementRank()}</b></span>`;
+  el.achievementBox.innerHTML=achievementDefs.map(a=>{
+    const ok=achievements&&achievements[a.id];
+    return `<p>${ok?"✅":"⬜"} ${a.icon} <b>${a.name}</b><br><span style="color:#b9c9b5">${a.desc}<br>報酬：${a.reward}${ok?"<br>達成："+ok:""}</span></p>`;
+  }).join("");
+}
 function renderMissions(){
   if(!el.missionBox) return;
   const missions=[
@@ -582,9 +1259,22 @@ function renderMissions(){
     ["biome3","🌍 バイオームを3種類発見する"],
     ["biomeAll","🧭 全バイオームを発見する"],
     ["rare1","✨ レア変異を1つ発見する"],
-    ["mossAll","🟢 コケ植物を全種発見する"]
+    ["mossAll","🟢 コケ植物を全種発見する"],["succession5","🌿 どれかの生態系を5回形成する"],["notes10","📝 研究ノートを10件ためる"],["chain1","🌿 遷移チェーンを1つ開く"],["themeWetland5","💧 湿原植物を5種発見する"],["themeDesert5","🌵 砂漠植物を5種発見する"],["themeCarnivorous3","🪰 食虫植物を3種発見する"],["discoverSame5","🔁 同じ植物を5回発見する"]
   ];
   el.missionBox.innerHTML=missions.map(m=>`<p>${missionDone(m[0])?"✅":"⬜"} ${m[1]}</p>`).join("");
+}
+
+function renderChains(){
+  if(!el.chainBox) return;
+  const chains=activeChains();
+  if(!chains.length){
+    el.chainBox.innerHTML="<p>まだチェーンなし。植物を発見すると、次の植物につながることがあります。</p>";
+    return;
+  }
+  el.chainBox.innerHTML=chains.map(c=>{
+    const progress=Math.round((c.toFound.length/c.total)*100);
+    return `<p><b>🌿 ${c.label}</b><br><span style="color:#b9c9b5">起点：${c.fromFound.join("、")||"未発見"}<br>発見：${c.toFound.join("、")||"なし"}<br>次候補：${c.toOpen.slice(0,5).join("、")||"完了"}<br>進捗：${c.toFound.length}/${c.total} (${progress}%)</span></p>`;
+  }).join("");
 }
 function renderTitles(){
   if(!el.titleBox) return;
@@ -606,13 +1296,123 @@ function renderRare(){
   el.rareText.textContent=rares.length;
   el.rareBox.innerHTML=rares.length?rares.map(r=>`<p>${r.icon} ${r.label}${r.base} <span style="color:#b9c9b5">(${r.date})</span></p>`).join(""):"<p>まだレア変異なし</p>";
 }
+
+
+
+function percent(a,b){return b?Math.round(a/b*100):0}
+function completionStats(){
+  const plantGot=Object.keys(found||{}).length;
+  const plantTotal=species.length;
+  const biomeGot=Object.keys(biomes||{}).length;
+  const biomeTotal=biomeDefs.length;
+  const legendGot=Object.keys(legends||{}).length;
+  const legendTotal=legendPlants.length;
+  const achGot=Object.keys(achievements||{}).length;
+  const achTotal=achievementDefs.length;
+  const themeGot=themeDefs.filter(t=>species.some(s=>plantThemes(s).includes(t.id)&&found[s.id])).length;
+  const themeTotal=themeDefs.length;
+  const score=Math.round(
+    percent(plantGot,plantTotal)*0.45+
+    percent(biomeGot,biomeTotal)*0.15+
+    percent(legendGot,legendTotal)*0.15+
+    percent(achGot,achTotal)*0.15+
+    percent(themeGot,themeTotal)*0.10
+  );
+  return {plantGot,plantTotal,biomeGot,biomeTotal,legendGot,legendTotal,achGot,achTotal,themeGot,themeTotal,score};
+}
+function completionRank(score){
+  if(score>=100) return "🏆 Plant Planet 完全制覇";
+  if(score>=85) return "🌟 惑星生態系の守り人";
+  if(score>=65) return "🌳 上級植物惑星研究者";
+  if(score>=40) return "🌿 生態系調査員";
+  if(score>=15) return "🌱 見習いプラネット研究者";
+  return "🪨 はじまりの裸地";
+}
+function endingMessage(st){
+  if(st.score>=100) return "すべての植物と生態系の記録がつながりました。この惑星は、あなたの研究によって一つの植物図鑑になりました。";
+  if(st.legendGot>=1) return "伝説植物の発見により、この惑星にはまだ未知の生態系が眠っていることが分かりました。";
+  if(st.plantGot>=100) return "植物図鑑は大きく育っています。環境を変えれば、まだ見ぬ植物が応答してくれるはずです。";
+  if(st.biomeGot>=5) return "複数の生態系が記録されました。次はテーマ図鑑や伝説植物を狙ってみよう。";
+  return "まずは初期設定とプリセットを使い、湿原・砂漠・高山・熱帯などを作り分けてみよう。";
+}
+function renderCompletion(){
+  if(!el.completionSummary||!el.completionBox) return;
+  const st=completionStats();
+  el.completionSummary.innerHTML=
+    `<span class="pill">総合: <b>${st.score}%</b></span>`+
+    `<span class="pill">植物: <b>${st.plantGot}/${st.plantTotal}</b></span>`+
+    `<span class="pill">生態系: <b>${st.biomeGot}/${st.biomeTotal}</b></span>`+
+    `<span class="pill">テーマ: <b>${st.themeGot}/${st.themeTotal}</b></span>`+
+    `<span class="pill">伝説: <b>${st.legendGot}/${st.legendTotal}</b></span>`+
+    `<span class="pill">実績: <b>${st.achGot}/${st.achTotal}</b></span>`;
+  el.completionBox.innerHTML=`<p><b>${completionRank(st.score)}</b></p><p>${endingMessage(st)}</p><p><span style="color:#b9c9b5">このゲームは端末に自動保存されます。完成版では、データ管理からバックアップと初期化ができます。</span></p>`;
+}
+function renderRankings(){
+  if(!el.rankingBox) return;
+  const plantRank=Object.entries(discoveryCounts||{})
+    .map(([id,count])=>({s:species.find(x=>x.id===id),count}))
+    .filter(x=>x.s)
+    .sort((a,b)=>b.count-a.count)
+    .slice(0,10);
+  const biomeRank=biomeDefs.map(b=>({b,count:(biomeStats&&biomeStats[b.id])||0}))
+    .filter(x=>x.count>0).sort((a,b)=>b.count-a.count).slice(0,8);
+  const rareRank=(rares||[]).slice(0,8);
+  let html="";
+  html+=`<p><b>🌱 よく発見した植物 TOP10</b></p>`;
+  html+=plantRank.length?plantRank.map((x,i)=>`<p>${i+1}. ${x.s.icon} ${x.s.name} <span style="color:#b9c9b5">${x.count}回 / ${x.s.group}</span></p>`).join(""):"<p>まだ発見回数なし</p>";
+  html+=`<p><b>🌍 よく形成したバイオーム</b></p>`;
+  html+=biomeRank.length?biomeRank.map((x,i)=>`<p>${i+1}. ${x.b.icon} ${x.b.name} <span style="color:#b9c9b5">${x.count}回</span></p>`).join(""):"<p>まだバイオーム記録なし</p>";
+  html+=`<p><b>✨ 最近のレア変異</b></p>`;
+  html+=rareRank.length?rareRank.map((r,i)=>`<p>${i+1}. ${r.icon} ${r.label}${r.base} <span style="color:#b9c9b5">${r.date}</span></p>`).join(""):"<p>まだレア変異なし</p>";
+  el.rankingBox.innerHTML=html;
+}
+function renderNotes(){
+  if(!el.noteBox) return;
+  if(!notes || !notes.length){
+    el.noteBox.innerHTML="<p>まだ研究ノートなし</p>";
+    return;
+  }
+  el.noteBox.innerHTML=notes.map((n,i)=>`<p><b>${noteTitle(n)}</b><br><span style="color:#b9c9b5">${n.date}<br>${noteBody(n)}</span><br><button class="secondary miniBtn" onclick="replayNote(${i})">この環境を再現</button></p>`).join("");
+}
 function renderHistory(){el.historyBox.innerHTML=history.length?history.map(h=>`<p>${h.icon} ${h.name} <span style="color:#b9c9b5">(${h.rank})</span></p>`).join(""):"<p>まだ発見なし</p>"}
 function setBar(id,val,label){document.getElementById(id+"Bar").style.width=Math.round(clamp01(val))+"%";document.getElementById(id+"Text").textContent=label}
 function log(t,c=""){el.logBox.innerHTML=`<p class="${c}">${t}</p>`+el.logBox.innerHTML}
+
+function exportBackup(){
+  const raw=localStorage.getItem("plantPlanetV10")||"{}";
+  el.backupText.value=btoa(unescape(encodeURIComponent(raw)));
+  el.backupText.select();
+  try{
+    navigator.clipboard.writeText(el.backupText.value);
+    log("📤 バックアップをコピーしました。","good");
+  }catch(e){
+    log("📤 バックアップ文字列を表示しました。コピーして保存してください。","good");
+  }
+}
+function restoreBackup(){
+  const txt=(el.backupText.value||"").trim();
+  if(!txt){log("⚠️ バックアップ文字列を貼り付けてください。","warn");return;}
+  try{
+    const raw=decodeURIComponent(escape(atob(txt)));
+    const parsed=JSON.parse(raw);
+    localStorage.setItem("plantPlanetV10",JSON.stringify(parsed));
+    init(true);
+    log("📥 バックアップを復元しました。","good");
+  }catch(e){
+    log("⚠️ 復元に失敗しました。バックアップ文字列を確認してください。","bad");
+  }
+}
+function wipeAllData(){
+  const ok=confirm("本当に全データを初期化しますか？\\n図鑑・研究ノート・レア変異・バイオーム・遷移記録などがすべて消えます。");
+  if(!ok) return;
+  localStorage.removeItem("plantPlanetV10");
+  init(true);
+  log("🗑 全データを初期化しました。","bad");
+}
 function ensureAudio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}
 function playTone(freqs,dur){if(!soundOn)return;try{ensureAudio();const now=audioCtx.currentTime;freqs.forEach((f,i)=>{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type="sine";osc.frequency.value=f;gain.gain.setValueAtTime(.0001,now+i*dur);gain.gain.exponentialRampToValueAtTime(.08,now+i*dur+.01);gain.gain.exponentialRampToValueAtTime(.0001,now+(i+1)*dur);osc.connect(gain);gain.connect(audioCtx.destination);osc.start(now+i*dur);osc.stop(now+(i+1)*dur+.02)})}catch(e){}}
 function toggleSound(){soundOn=!soundOn;el.soundNow.textContent=soundOn?"ON":"OFF";if(soundOn)playTone([440,660,880],.08)}
-el.startBtn.onclick=startRun;el.pauseBtn.onclick=togglePause;el.resetBtn.onclick=resetAll;document.querySelectorAll("[data-k]").forEach(btn=>btn.onclick=()=>nudge(btn.dataset.k,Number(btn.dataset.a)));document.querySelectorAll("[data-pre]").forEach(btn=>btn.onclick=()=>adjustInitialEnv(btn.dataset.pre,Number(btn.dataset.a)));document.querySelectorAll("[data-preset]").forEach(btn=>btn.onclick=()=>applyPreset(btn.dataset.preset));document.querySelectorAll("[data-step]").forEach(btn=>btn.onclick=()=>setStepSize(Number(btn.dataset.step)));
+el.startBtn.onclick=startRun;el.pauseBtn.onclick=togglePause;el.resetBtn.onclick=resetAll;document.querySelectorAll("[data-k]").forEach(btn=>btn.onclick=()=>nudge(btn.dataset.k,Number(btn.dataset.a)));document.querySelectorAll("[data-pre]").forEach(btn=>btn.onclick=()=>adjustInitialEnv(btn.dataset.pre,Number(btn.dataset.a)));document.querySelectorAll("[data-preset]").forEach(btn=>btn.onclick=()=>applyPreset(btn.dataset.preset));document.querySelectorAll("[data-step]").forEach(btn=>btn.onclick=()=>setStepSize(Number(btn.dataset.step)));el.backupBtn.onclick=exportBackup;el.restoreBtn.onclick=restoreBackup;el.wipeBtn.onclick=wipeAllData;document.querySelectorAll("[data-fold]").forEach(btn=>btn.onclick=()=>toggleFold(btn.dataset.fold));
 init(false);log("待機中。スタートを押すと60秒の進化が始まります。","warn");intervalId=setInterval(tick,1000);
 </script>
 </body>
